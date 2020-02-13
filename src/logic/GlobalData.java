@@ -39,5 +39,9 @@ public class GlobalData {
     public int[][] getRectangles() {
         return rectangles;
     }
+
+    public int getNumRectangles() {
+        return numRectangles;
+    }
     
 }
