@@ -20,9 +20,10 @@ import java.io.BufferedReader;
 public class Reader {
     
     private String containerType;
-    private int containerHeight;
+    private int containerHeight = -1; //default of free variant
     private boolean rotationsAllowed;
     private int[][] rectangles;
+    private int numRectangles;
     private String path;
     
     public Reader(String path) {
@@ -52,10 +53,9 @@ public class Reader {
             bf.close();
         }
         catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("IOException" + e.getMessage());
         }
         
- 
         return numberOfLines;
     }
     
@@ -80,7 +80,7 @@ public class Reader {
             textReader.close();
         }
         catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("IOException: " + e.getMessage());
         }
         
         System.out.println("testing reader");
@@ -91,16 +91,62 @@ public class Reader {
         return textData;
     }
     
+    
+    
     /** reads input and returns it as GlobalData object */
     public GlobalData read() {
         GlobalData data;
         // read input
         String[] textData = createArrayOfInput();
+        
         // store the input in data
+        String containerHeightTypeString = textData[0].substring(18);
+        if (containerHeightTypeString.equals("free")) {
+            containerType = "free";
+        } else {
+            containerType = containerHeightTypeString.substring(0,5);
+            try {
+                containerHeight = Integer.parseInt(
+                        containerHeightTypeString.substring(6));
+            }
+            catch (NumberFormatException e) {
+                System.out.println("NumberFormatException: " + e.getMessage());
+            }
+        }
+        
+        if (textData[1].substring(18).equals("yes")) {
+            rotationsAllowed = true;
+        } else {
+            rotationsAllowed = false;
+        }
+        
+        numRectangles = Integer.parseInt(textData[2].substring(22));
+        
+        for (int i  = 3; i < textData.length; i++) { //loop through all rectan.
+            String currentRectangleString = textData[i];
+            int j = 0;
+            String xCoordinate = "";
+            while (! Character.toString(currentRectangleString.charAt(j)).equals(" ")) {
+                xCoordinate += Character.toString(currentRectangleString.charAt(j));
+                j++;
+            }
+            
+            int[] currentRectangle = {
+                    //Integer.parseInt(textData[i].substring(0, 2)),
+                    //Integer.parseInt(textData[i].substring())
+            };
+            //rectangles[i] = 
+        }
+        
+        System.out.println("Reader tests: ");
+        System.out.println("containerType: " + containerType);
+        System.out.println("containerHeight: " + containerHeight);
+        System.out.println("rotationsAllowed: " + rotationsAllowed);
+        System.out.println("numRectagnles: " + numRectangles);
         
         
-        data = new GlobalData(containerType, containerHeight, rotationsAllowed
-                                , rectangles);
+        data = new GlobalData(containerType, containerHeight, rotationsAllowed,
+                rectangles, numRectangles);
         return data;
     }
 }
