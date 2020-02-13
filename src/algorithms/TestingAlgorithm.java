@@ -13,11 +13,10 @@ import logic.Grid;
  */
 public class TestingAlgorithm extends AbstractAlgorithm{
     
-    public TestingAlgorithm(Grid grid) {
-        super(grid); 
+    public TestingAlgorithm(Grid grid, GlobalData data) {
+        super(grid, data); 
     }
     
-    GlobalData global;
     
     private int x = 0; 
     private int y = 0; 

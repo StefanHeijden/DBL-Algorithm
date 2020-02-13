@@ -14,12 +14,14 @@ public class GlobalData {
     private final int containerHeight;
     private final boolean rotationsAllowed;
     private final int[][] rectangles;
+    private final int numRectangles;
 
-    GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles) {
+    GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
         this.containerType = containerType;
         this.containerHeight = containerHeight;
         this.rotationsAllowed = rotationsAllowed;
         this.rectangles = rectangles;
+        this.numRectangles = numRectangles;
     }
     
     public String getType() {

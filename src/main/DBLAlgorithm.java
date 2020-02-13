@@ -21,7 +21,7 @@ public class DBLAlgorithm {
      */
     public static void main(String[] args) {
         // read inputs from file
-        Reader input = new Reader();
+        Reader input = new Reader("");
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?

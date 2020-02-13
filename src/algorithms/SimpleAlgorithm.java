@@ -5,6 +5,7 @@
  */
 package algorithms;
 
+import logic.GlobalData;
 import logic.Grid;
 
 /**
@@ -13,8 +14,8 @@ import logic.Grid;
  */
 public class SimpleAlgorithm extends AbstractAlgorithm{
 
-    public SimpleAlgorithm(Grid grid) {
-        super(grid);
+    public SimpleAlgorithm(Grid grid, GlobalData data) {
+        super(grid, data); 
     }
 
     @Override

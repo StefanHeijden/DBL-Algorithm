@@ -5,6 +5,7 @@
  */
 package algorithms;
 
+import logic.GlobalData;
 import logic.Grid;
 
 
@@ -14,8 +15,9 @@ import logic.Grid;
  */
 public abstract class AbstractAlgorithm {
     Grid grid;
+    GlobalData global;
     
-    public AbstractAlgorithm(Grid grid){
+    public AbstractAlgorithm(Grid grid, GlobalData data){
         this.grid = grid;
     };
     
