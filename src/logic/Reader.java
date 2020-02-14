@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.BufferedReader;
+import java.util.Arrays;
 
 
 /**
@@ -83,11 +84,6 @@ public class Reader {
             System.out.println("IOException: " + e.getMessage());
         }
         
-        System.out.println("testing reader");
-        for (int i = 0; i < textData.length; i++){
-            System.out.println(textData[i]);
-        }
-        
         return textData;
     }
     
@@ -114,13 +110,11 @@ public class Reader {
             }
         }
         
-        if (textData[1].substring(18).equals("yes")) {
-            rotationsAllowed = true;
-        } else {
-            rotationsAllowed = false;
-        }
+        rotationsAllowed = textData[1].substring(19).equals("yes");
         
         numRectangles = Integer.parseInt(textData[2].substring(22));
+        
+        rectangles = new int[numRectangles][2];
         
         for (int i  = 3; i < textData.length; i++) { //loop through all rectan.
             String currentRectangleString = textData[i];
@@ -130,20 +124,24 @@ public class Reader {
                 xCoordinate += Character.toString(currentRectangleString.charAt(j));
                 j++;
             }
+            String yCoordinate = currentRectangleString.substring(j+1);
             
             int[] currentRectangle = {
-                    //Integer.parseInt(textData[i].substring(0, 2)),
-                    //Integer.parseInt(textData[i].substring())
+                    Integer.parseInt(xCoordinate),
+                    Integer.parseInt(yCoordinate)
             };
-            //rectangles[i] = 
+            rectangles[i-3] = currentRectangle;
         }
         
         System.out.println("Reader tests: ");
         System.out.println("containerType: " + containerType);
         System.out.println("containerHeight: " + containerHeight);
         System.out.println("rotationsAllowed: " + rotationsAllowed);
-        System.out.println("numRectagnles: " + numRectangles);
-        
+        System.out.println("numRectangles: " + numRectangles);
+        System.out.println("rectangles: ");        
+        for (int i = 0; i < numRectangles; i++) {
+            System.out.println(Arrays.toString(rectangles[i]));
+        }
         
         data = new GlobalData(containerType, containerHeight, rotationsAllowed,
                 rectangles, numRectangles);
