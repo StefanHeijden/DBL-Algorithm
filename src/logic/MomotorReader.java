@@ -39,7 +39,7 @@ public class MomotorReader extends AbstractReader{
         
         int counter2 = 0;
         while (counter2 < numRectangles) { //read all lines with rectangles
-            String line = sc.nextLine();
+            String line = "";
             if (sc.hasNextLine()) {
                 line = sc.nextLine();
 
