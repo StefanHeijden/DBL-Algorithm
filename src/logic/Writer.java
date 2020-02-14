@@ -22,7 +22,7 @@ public class Writer {
     // output data
     public void writeOutput() {
         // Write the input Data
-        //writeGlobalData();
+        writeGlobalData();
         
         // Then write the placement of the rectangles
         int[][] placement = grid.getPlacement();
