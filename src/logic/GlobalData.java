@@ -15,6 +15,8 @@ public class GlobalData {
     private final boolean rotationsAllowed;
     private final int[][] rectangles;
     private final int numRectangles;
+    public final String FREE = "free";
+    public final String FIXED = "fixed";
 
     GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
         this.containerType = containerType;

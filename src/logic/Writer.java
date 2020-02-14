@@ -40,4 +40,26 @@ public class Writer {
             }
         }
     }
+    
+    public void writeGlobalData(){
+        // Print First line
+        System.out.print("container height: ");
+        System.out.print(data.getType());
+        if(data.getType() == null ? data.FIXED == null : data.getType().equals(data.FIXED)){
+            System.out.print(" " + data.getHeight());
+        }
+        System.out.println();
+        
+        // Print Second Line
+        System.out.print("rotations allowed: ");
+        if(data.getRA()){
+            System.out.println("yes");
+        }else{
+            System.out.println("no");
+        }
+        
+        // Print Third line
+        System.out.print("number of rectangles: ");
+        System.out.println(data.getNumRectangles());
+    }
 }
