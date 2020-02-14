@@ -9,6 +9,8 @@ package main;
 import logic.*;
 import algorithms.*;
 
+import java.util.Arrays;
+
 /**
  *
  * @author stefa
@@ -38,9 +40,12 @@ public class PackingSolver {
         
         // Use inputs to determine what algorithm to run
         Grid grid = new Grid();
-        AbstractAlgorithm algorithm;
+        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
+        algorithm.run();
+        
         //Use the results of the algorithm to write the output
         Writer output = new Writer(data, grid);
+        output.writeOutput();
     }
     
 }

@@ -86,16 +86,16 @@ public class AbstractReader {
             };
             rectangles[i-3] = currentRectangle;
         }
-        
-        System.out.println("Reader tests: ");
-        System.out.println("containerType: " + containerType);
-        System.out.println("containerHeight: " + containerHeight);
-        System.out.println("rotationsAllowed: " + rotationsAllowed);
-        System.out.println("numRectangles: " + numRectangles);
-        System.out.println("rectangles: ");        
-        for (int i = 0; i < numRectangles; i++) {
-            System.out.println(Arrays.toString(rectangles[i]));
-        }
+//the following lines are for testing purposes:        
+//        System.out.println("Reader tests: ");
+//        System.out.println("containerType: " + containerType);
+//        System.out.println("containerHeight: " + containerHeight);
+//        System.out.println("rotationsAllowed: " + rotationsAllowed);
+//        System.out.println("numRectangles: " + numRectangles);
+//        System.out.println("rectangles: ");        
+//        for (int i = 0; i < numRectangles; i++) {
+//            System.out.println(Arrays.toString(rectangles[i]));
+//        }
         
         data = new GlobalData(containerType, containerHeight, rotationsAllowed,
                 rectangles, numRectangles);

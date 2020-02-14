@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//package algorithms;
-//import logic.GlobalData;
-//import logic.Grid;
+package algorithms;
+import logic.GlobalData;
+import logic.Grid;
 
 /**
  *
- * @author Ezra
+ * @author Ezra, and fixes leighton
  */
 public class TestingAlgorithm extends AbstractAlgorithm{
     
@@ -20,19 +20,25 @@ public class TestingAlgorithm extends AbstractAlgorithm{
     
     private int x = 0; 
     private int y = 0; 
-    public int[] bottomleft = {x, y};
+    public int[] bottomleft = new int[2];
     
     // computation of bottomleft corner in case (containerType == "free")
     public int[] computeBottomleftFree(int width, int height) {
         x += width; 
-        y += height; 
-        return bottomleft;
+        y += height;
+        int[] returnCoordinates = new int[2];
+        returnCoordinates[0] = x;
+        returnCoordinates[1] = y;
+        return returnCoordinates;
     }
     
     // computation of bottomleft corner in case (containerType == "fixed")
     public int[] computeBottomleftFixed(int width) {
         x += width; 
-        return bottomleft;
+        int[] returnCoordinates = new int[2];
+        returnCoordinates[0] = x;
+        returnCoordinates[1] = y;
+        return returnCoordinates;
     }
     
     @Override
@@ -40,11 +46,9 @@ public class TestingAlgorithm extends AbstractAlgorithm{
         
         // getting the data from the logic package
         int[][] rectangle = global.getRectangles();
-        int[][] placement = grid.getPlacement();
+        int[][] placement = new int[global.getNumRectangles()][];
         
-        for (int i= 0; i < rectangle.length; i++) {
-            placement[i] = bottomleft;
-            grid.storePlacement(placement);
+        for (int i = 0; i < rectangle.length; i++) { 
             int rectWidth = rectangle[i][0]; 
             int rectHeight = rectangle[i][1];
             
@@ -53,20 +57,21 @@ public class TestingAlgorithm extends AbstractAlgorithm{
             // Very ugly implementation, purely meant for simple testing
             if (global.getType().equals("free") && 
                     !global.getRA() ) {
-               computeBottomleftFree(rectWidth, rectHeight); 
+                placement[i] = computeBottomleftFree(rectWidth, rectHeight); 
             } else if (global.getType().equals("free") && 
                     global.getRA() ) {
-                computeBottomleftFree(rectHeight, rectWidth);
-                grid.getRotations()[i] = true;
+                placement[i] = computeBottomleftFree(rectHeight, rectWidth);
+                grid.setRotationsIndexI(true, i);
             } else if (global.getType().equals("fixed") && 
                     !global.getRA() ) {
-                computeBottomleftFixed(rectWidth);
+                placement[i] = computeBottomleftFixed(rectWidth);
             } else if (global.getType().equals("fixed") && 
                     global.getRA() ) {
-                computeBottomleftFixed(rectHeight);
-                grid.getRotations()[i] = true;
+                placement[i] = computeBottomleftFixed(rectHeight);
+                grid.setRotationsIndexI(true, i);
             }
         }
+        grid.storePlacement(placement);
     }
     
 }

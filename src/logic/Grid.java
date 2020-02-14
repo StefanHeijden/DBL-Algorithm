@@ -28,6 +28,10 @@ public class Grid {
         return rotations;
     }
     
+    public void setRotationsIndexI(boolean rotation, int i) {
+        this.rotations[i] = rotation;
+    }
+    
     public void storeRotations(boolean[] rotations) {
         this.rotations = rotations;
     }
