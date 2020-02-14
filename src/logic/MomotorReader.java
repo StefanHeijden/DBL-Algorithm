@@ -6,6 +6,7 @@
 package logic;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  *
@@ -26,8 +27,9 @@ public class MomotorReader extends AbstractReader{
             String line = "";
             if (sc.hasNextLine()) {
                 line = sc.nextLine();
+                count++;
             }
-            firstThreeLines[count] = line;
+            firstThreeLines[count - 1] = line;
         }
         //counts number of rectangles
         int numRectangles = Integer.parseInt(firstThreeLines[2].substring(22));

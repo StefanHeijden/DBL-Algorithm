@@ -24,7 +24,7 @@ public class PackingSolver {
     private static final String pathJodi = "";
     
     // Name of the file you want to test
-    private static final String fileName = "0009_r10000-h1836-rn.in";
+    private static final String fileName = "0000_r4-h20-rn.in";
     
     /**
      * @param args the command line arguments

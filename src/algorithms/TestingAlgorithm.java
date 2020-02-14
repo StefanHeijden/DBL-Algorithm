@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package algorithms;
-import logic.GlobalData;
-import logic.Grid;
+//package algorithms;
+//import logic.GlobalData;
+//import logic.Grid;
 
 /**
  *
