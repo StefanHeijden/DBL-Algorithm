@@ -13,7 +13,7 @@ import algorithms.*;
  *
  * @author stefa
  */
-public class DBLAlgorithm {
+public class PackingSolver {
 
     
     /**
