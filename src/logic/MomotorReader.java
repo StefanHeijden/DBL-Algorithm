@@ -9,10 +9,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  *
- * @author stefa
+ * @author leighton
  */
 public class MomotorReader extends AbstractReader{
     
@@ -20,17 +21,31 @@ public class MomotorReader extends AbstractReader{
         super(path);
     }
     
-    /** reads the number of lines the input file has and returns it
-     * need to read the lines because array is faster implementation.
-     */
-    @Override
-    public int readLines() {
-        
-    }
-    
     @Override
     public String[] createArrayOfInput() {
+        Scanner sc = new Scanner(System.in);
+        int count = 0;
+        String[] firstThreeLines = new String[3];
+        while (count < 3) { //reading the first three lines, to create other part
+            String line = sc.nextLine();
+            firstThreeLines[count] = line;
+        }
+        //counts number of rectangles
+        int numRectangles = Integer.parseInt(firstThreeLines[2].substring(22));
+        int ArraySize = numRectangles + 3; //because there are three lines in front of rectangles
+        String[] textData = new String[ArraySize];//array to store input in
+        for (int i = 0; i < 3; i++) {
+            textData[i] = firstThreeLines[i]; //copy first three lines
+        }
         
+        int counter2 = 0;
+        while (counter2 < numRectangles) { //read all lines with rectangles
+            String line = sc.nextLine();
+            textData[counter2 + 3] = line; //store these lines in textData
+            counter2++;
+        }
+        
+        return textData;
     }
     
 }

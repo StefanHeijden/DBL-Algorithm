@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  *
- * @author stefa
+ * @author stefa & leighton
  */
 public class TestReader extends AbstractReader{
     
