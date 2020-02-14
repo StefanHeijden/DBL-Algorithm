@@ -31,7 +31,7 @@ public class PackingSolver {
      */
     public static void main(String[] args) {
         // read inputs from file
-        AbstractReader input = new TestReader(pathLeigthon + fileName);
+        AbstractReader input = new MomotorReader(pathLeigthon + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
