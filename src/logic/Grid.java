@@ -5,7 +5,7 @@
  */
 package logic;
 
-import java.util.List;
+//import java.util.List;
 
 /**
  *
@@ -14,7 +14,7 @@ import java.util.List;
 public class Grid {
     
     private int[][] placement;
-    private List rotations; 
+    private boolean[] rotations; 
     
     public int[][] getPlacement() {
         return placement;
@@ -24,11 +24,11 @@ public class Grid {
         this.placement = placement;
     }
 
-    public List getRotations() {
+    public boolean[] getRotations() {
         return rotations;
     }
     
-    public void storeRotations(List rotations) {
+    public void storeRotations(boolean[] rotations) {
         this.rotations = rotations;
     }
 }

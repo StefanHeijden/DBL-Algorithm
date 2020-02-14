@@ -13,11 +13,10 @@ import logic.Grid;
  */
 public class TestingAlgorithm extends AbstractAlgorithm{
     
-    public TestingAlgorithm(Grid grid) {
-        super(grid); 
+    public TestingAlgorithm(Grid grid, GlobalData data) {
+        super(grid, data); 
     }
     
-    GlobalData global;
     
     private int x = 0; 
     private int y = 0; 
@@ -46,8 +45,8 @@ public class TestingAlgorithm extends AbstractAlgorithm{
         for (int i= 0; i < rectangle.length; i++) {
             placement[i] = bottomleft;
             grid.storePlacement(placement);
-            int rectWidth = rectangle[i][1]; 
-            int rectHeight = rectangle[i][2];
+            int rectWidth = rectangle[i][0]; 
+            int rectHeight = rectangle[i][1];
             
             // Series of if-statements that compute bottomleft differently
             // Computation based on vars containerType and rotationsAllowed
@@ -58,12 +57,14 @@ public class TestingAlgorithm extends AbstractAlgorithm{
             } else if (global.getType().equals("free") && 
                     global.getRA() ) {
                 computeBottomleftFree(rectHeight, rectWidth);
+                grid.getRotations()[i] = true;
             } else if (global.getType().equals("fixed") && 
                     !global.getRA() ) {
                 computeBottomleftFixed(rectWidth);
             } else if (global.getType().equals("fixed") && 
                     global.getRA() ) {
                 computeBottomleftFixed(rectHeight);
+                grid.getRotations()[i] = true;
             }
         }
     }
