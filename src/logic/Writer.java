@@ -22,11 +22,11 @@ public class Writer {
     // output data
     public void writeOutput() {
         // Write the input Data
-        writeGlobalData();
+        //writeGlobalData();
         
         // Then write the placement of the rectangles
         int[][] placement = grid.getPlacement();
-        System.out.println("placement of rectangles: ");
+        System.out.println("placement of rectangles");
         // If it is without rotation
         if (!data.getRA()) {
             // Then place it simple x and y coordinates without yes / no
@@ -37,10 +37,10 @@ public class Writer {
             for (int i = 0; i < placement.length; i++) {
                 // Then place it simple x and y coordinates with yes / no
                 if (grid.getRotations()[i]) {
-                    System.out.println("yes" + placement[i][0] + " " + 
+                    System.out.println("yes " + placement[i][0] + " " + 
                             placement[i][1]);
                 } else {
-                    System.out.println("no" + placement[i][0] + " " + 
+                    System.out.println("no " + placement[i][0] + " " + 
                             placement[i][1]);
                 }
             }

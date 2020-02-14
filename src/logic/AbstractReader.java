@@ -5,9 +5,6 @@
  */
 package logic;
 
-import java.util.Arrays;
-
-
 /**
  *
  *  This class turns the current solution into output that is accepted by

@@ -47,6 +47,7 @@ public class TestingAlgorithm extends AbstractAlgorithm{
         // getting the data from the logic package
         int[][] rectangle = global.getRectangles();
         int[][] placement = new int[global.getNumRectangles()][];
+        grid.setRotationsLength(global.getNumRectangles());
         
         for (int i = 0; i < rectangle.length; i++) { 
             int rectWidth = rectangle[i][0]; 
