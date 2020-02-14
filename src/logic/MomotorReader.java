@@ -5,10 +5,6 @@
  */
 package logic;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -27,7 +23,10 @@ public class MomotorReader extends AbstractReader{
         int count = 0;
         String[] firstThreeLines = new String[3];
         while (count < 3) { //reading the first three lines, to create other part
-            String line = sc.nextLine();
+            String line = "";
+            if (sc.hasNextLine()) {
+                line = sc.nextLine();
+            }
             firstThreeLines[count] = line;
         }
         //counts number of rectangles
@@ -41,6 +40,10 @@ public class MomotorReader extends AbstractReader{
         int counter2 = 0;
         while (counter2 < numRectangles) { //read all lines with rectangles
             String line = sc.nextLine();
+            if (sc.hasNextLine()) {
+                line = sc.nextLine();
+
+            }
             textData[counter2 + 3] = line; //store these lines in textData
             counter2++;
         }
