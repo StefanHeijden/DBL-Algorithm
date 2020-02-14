@@ -18,16 +18,16 @@ import java.util.Arrays;
  *  momoter
  * @author Stefan setup of class, implementation reader Leighton
  */
-public class Reader {
+public class AbstractReader {
     
     private String containerType;
     private int containerHeight = -1; //default of free variant
     private boolean rotationsAllowed;
     private int[][] rectangles;
     private int numRectangles;
-    private String path;
+    String path;
     
-    public Reader(String path) {
+    public AbstractReader(String path) {
         this.path = path;
     }
     
@@ -35,56 +35,14 @@ public class Reader {
      * need to read the lines because array is faster implementation.
      */
     public int readLines() {
-        FileReader fileToRead = null;
-        BufferedReader bf = null;
-        try {
-        fileToRead = new FileReader(path);
-        bf = new BufferedReader(fileToRead);
-        }  
-        catch (FileNotFoundException e) {
-            System.out.println("Reader.readLines - File not found: " + path);
-        }
+        System.out.println("DO NOT USE ABSTRACTREADER!!!!");
         
-        String aLine;
-        int numberOfLines = 0;
-        try {
-            while (( aLine = bf.readLine()) != null ) {
-                numberOfLines++;
-            }
-            bf.close();
-        }
-        catch (IOException e) {
-            System.out.println("IOException" + e.getMessage());
-        }
-        
-        return numberOfLines;
+        return -1;
     }
     
-    private String[] createArrayOfInput() {
-        FileReader fr = null;
-        BufferedReader textReader = null;
-        try{
-            fr = new FileReader(path);
-            textReader = new BufferedReader(fr);
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Reader.read - File not found: " + path);
-        }
-        
-        int numberOfLines = readLines();
-        String[] textData = new String[numberOfLines];
-        
-        try {
-            for (int i = 0; i < numberOfLines; i++) {
-                textData[i] = textReader.readLine();
-            }
-            textReader.close();
-        }
-        catch (IOException e) {
-            System.out.println("IOException: " + e.getMessage());
-        }
-        
-        return textData;
+    public String[] createArrayOfInput() {
+        System.out.println("DO NOT USE ABSTRACTREADER!!!!");
+        return new String[1];
     }
     
     

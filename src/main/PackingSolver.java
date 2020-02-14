@@ -21,7 +21,7 @@ public class PackingSolver {
      */
     public static void main(String[] args) {
         // read inputs from file
-        Reader input = new Reader("E:/TUe/PT/Courses/Y3/"
+        AbstractReader input = new TestReader("E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/0009_r10000-h1836-rn.in");
         // read inputs from reader
         GlobalData data = input.read();
