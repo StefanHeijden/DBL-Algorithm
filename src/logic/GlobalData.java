@@ -11,15 +11,18 @@ package logic;
  */
 public class GlobalData {
     private final String containerType;
-    private final int containerHeight;
+    private final int containerHeight; //set to -1 by Reader if type == free
     private final boolean rotationsAllowed;
     private final int[][] rectangles;
+    private final int numRectangles;
 
-    GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles) {
+    GlobalData(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
         this.containerType = containerType;
         this.containerHeight = containerHeight;
         this.rotationsAllowed = rotationsAllowed;
         this.rectangles = rectangles;
+        this.numRectangles = numRectangles;
     }
     
     public String getType() {
@@ -36,6 +39,10 @@ public class GlobalData {
 
     public int[][] getRectangles() {
         return rectangles;
+    }
+    
+    public int getNumRectangles() {
+        return numRectangles;
     }
     
 }
