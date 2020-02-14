@@ -14,15 +14,24 @@ import algorithms.*;
  * @author stefa
  */
 public class PackingSolver {
-
+    // You can add you file path here 
+    private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
+                + "DBL algorithms/testcases/";
+    private static final String pathStefan = "E:/TUe/PT/Courses/Y3/"
+                + "DBL algorithms/testcases/";
+    private static final String pathEzra = "";
+    private static final String pathYana = "";
+    private static final String pathJodi = "";
+    
+    // Name of the file you want to test
+    private static final String fileName = "0009_r10000-h1836-rn.in";
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // read inputs from file
-        AbstractReader input = new TestReader("E:/TUe/PT/Courses/Y3/"
-                + "DBL algorithms/testcases/0009_r10000-h1836-rn.in");
+        AbstractReader input = new TestReader(pathLeigthon + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
