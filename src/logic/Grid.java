@@ -5,7 +5,7 @@
  */
 package logic;
 
-//import java.util.List;
+import java.util.List;
 
 /**
  *
@@ -26,6 +26,14 @@ public class Grid {
 
     public boolean[] getRotations() {
         return rotations;
+    }
+    
+    public void setRotationsLength(int length) {
+        this.rotations = new boolean[length];
+    }
+    
+    public void setRotationsIndexI(boolean rotation, int i) {
+        this.rotations[i] = rotation;
     }
     
     public void storeRotations(boolean[] rotations) {

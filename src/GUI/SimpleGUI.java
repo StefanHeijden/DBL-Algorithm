@@ -6,7 +6,6 @@
 package GUI;
 
 import javax.swing.*;
-import tester.*;
 
 /**
  *

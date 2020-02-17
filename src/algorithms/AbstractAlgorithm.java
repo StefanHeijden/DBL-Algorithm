@@ -19,6 +19,7 @@ public abstract class AbstractAlgorithm {
     
     public AbstractAlgorithm(Grid grid, GlobalData data){
         this.grid = grid;
+        this.global = data;
     };
     
     public abstract void run();
