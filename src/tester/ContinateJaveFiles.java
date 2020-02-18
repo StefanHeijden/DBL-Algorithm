@@ -6,9 +6,13 @@
 package tester;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  *
@@ -18,11 +22,26 @@ import java.io.IOException;
  */
 public class ContinateJaveFiles {
     // Path variables for Stefan:
-    static String pathStefan = "C:/Users/stefa/Documents/";
-    static String destinationStefan = "C:/Users/stefa/Downloads/";
+    static final String PSTEFAN = "C:/Users/stefa/Documents/";
+    static final String DSTEFAN = "C:/Users/stefa/Downloads/";
+    // ADD YOURS HERE:
+    // Path variables for Leighton
+    
+    // Path variables for Ezra:
+    
+    // Path variables for Jodi
+    
+    // Path variables for Yana
+    
+    
+    
+    // Specify which path and destination to use
+    static final String PATH1 = PSTEFAN;
+    static final String DESTINATION = DSTEFAN;
     // Standard variables
-    static String path2 = "DBL-Algorithm/src/";
-    static String[] names = {"PackingSolver.java",
+    static final String PATH2 = "DBL-Algorithm/src/";
+    static final String PATH = PATH1 + PATH2;
+    static final String[] NAMES = {"PackingSolver.java",
         //algorithms
         "AbstractAlgorithm.java",
         "SimpleAlgorithm.java",
@@ -35,7 +54,7 @@ public class ContinateJaveFiles {
         "TestReader.java",
         "Writer.java"
     };
-    static String[] packages = {"main/",
+    static final String[] PACKAGES = {"main/",
         //algorithms
         "algorithms/",
         "algorithms/",
@@ -55,15 +74,41 @@ public class ContinateJaveFiles {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        String path = pathStefan + path2;
         // for each file
-        for(int i = 0; i < names.length; i++){
+        for(int i = 0; i < NAMES.length; i++){
             // Create a copy of the file in destinationPath
-            CopyFile copyFile = new CopyFile(path + packages[i], names[i], destinationStefan);
-            if(copyFile.succes) {
+            boolean succes = copyFile(PATH + PACKAGES[i], NAMES[i], DESTINATION);
+            if(succes) {
                 // Then replace the package on import lines with comments
-                replaceLines(destinationStefan + names[i]);
+                replaceLines(DESTINATION + NAMES[i]);
             }
+        }
+        appendFiles();
+    }
+    
+    public static void appendFiles(){
+            StringBuffer inputBuffer = new StringBuffer();
+            String line;
+            for(int i = 1; i < NAMES.length; i++){
+            try {
+                BufferedReader file = new BufferedReader(new FileReader(DESTINATION + NAMES[i]));
+                while ((line = file.readLine()) != null) {
+                    inputBuffer.append(line);
+                    inputBuffer.append('\n');
+                }
+            // Done reading file 
+            file.close();
+            } catch (IOException e) {
+                    System.out.println("Problem reading file for appending");
+            }
+        }
+        try {
+            // write the new string with the replaced line OVER the same file
+            FileOutputStream fileOut = new FileOutputStream(DESTINATION + "Combined.java");
+            fileOut.write(inputBuffer.toString().getBytes());
+            fileOut.close();
+        }catch(IOException e){
+            System.out.println("Problem writing file for appending");
         }
     }
     
@@ -96,9 +141,44 @@ public class ContinateJaveFiles {
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
 
-        } catch (Exception e) {
-            System.out.println("Problem reading file.");
+        } catch (IOException e) {
+            System.out.println("Problem reading file for line augmentation");
         }
     }
 
+    // Create a copy of a certain file
+    public static boolean copyFile(String path, String file, String targetPath)
+    {	
+    	
+    	InputStream inStream = null;
+	OutputStream outStream = null;
+        
+    	try{
+            // Get files 
+    	    File afile = new File(path + file);
+    	    File bfile = new File(targetPath + file);
+            
+            // Create stream for the files
+    	    inStream = new FileInputStream(afile);
+    	    outStream = new FileOutputStream(bfile);
+            
+            // Create variables needed to copy file
+    	    byte[] buffer = new byte[1024];
+    	    int length;
+            
+    	    //copy the file content in bytes 
+    	    while ((length = inStream.read(buffer)) > 0){
+    	    	outStream.write(buffer, 0, length);
+    	    }
+    	 
+            // Close both streams
+    	    inStream.close();
+    	    outStream.close();
+    	    
+            // File is coppied succesfull
+    	    return true;
+    	}catch(IOException e){
+            return false;
+        }
+    }
 }
