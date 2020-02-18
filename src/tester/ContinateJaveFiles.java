@@ -22,8 +22,8 @@ import java.io.OutputStream;
  */
 public class ContinateJaveFiles {
     // Path variables for Stefan:
-    static final String PSTEFAN = "C:/Users/stefa/Documents/";
-    static final String DSTEFAN = "C:/Users/stefa/Downloads/";
+    static final String PSTEFAN = "C:/Users/stefa/Documents/"; // Location of DBL-Algorithm folder
+    static final String DSTEFAN = "C:/Users/stefa/Downloads/"; // Location where you want the files to be
     // ADD YOURS HERE:
     // Path variables for Leighton
     
@@ -36,7 +36,7 @@ public class ContinateJaveFiles {
     
     
     // Specify which path and destination to use
-    static final String PATH1 = PSTEFAN;
+    static final String PATH1 = PSTEFAN; 
     static final String DESTINATION = DSTEFAN;
     // Standard variables
     static final String PATH2 = "DBL-Algorithm/src/";
@@ -83,29 +83,66 @@ public class ContinateJaveFiles {
                 replaceLines(DESTINATION + NAMES[i]);
             }
         }
+        // Append all smaller files into a bigger files named PackingSolver2
         appendFiles();
+        // Delete the smaller files
+        deleteFiles();
+        // Then rename the Contanited file
+        File file = new File(DESTINATION + "PackingSolver2.java");
+        file.renameTo(new File(DESTINATION + "PackingSolver.java"));
+    }
+    
+    public static void deleteFiles(){
+        for (String NAMES1 : NAMES) {
+            try {
+                File file = new File(DESTINATION + NAMES1);
+                if(!file.delete()){
+                    System.out.println("Problem deleting file");
+                }
+            }catch(Exception e){
+                System.out.println("Problem deleting files");
+            }
+        }
     }
     
     public static void appendFiles(){
-            StringBuffer inputBuffer = new StringBuffer();
+            StringBuffer importBuffer = new StringBuffer();
+            StringBuffer classBuffer = new StringBuffer();
             String line;
-            for(int i = 1; i < NAMES.length; i++){
+        for (String NAMES1 : NAMES) {
             try {
-                BufferedReader file = new BufferedReader(new FileReader(DESTINATION + NAMES[i]));
+                BufferedReader file = new BufferedReader(new FileReader(DESTINATION + NAMES1));
                 while ((line = file.readLine()) != null) {
-                    inputBuffer.append(line);
-                    inputBuffer.append('\n');
+                    // Check whether it is an import
+                    if(line.contains("import")){
+                        // Add it to import buffer if it is
+                        importBuffer.append(line);
+                        importBuffer.append('\n');
+                    }else{
+                        // If not then its a class and it can be added to classbuffer
+                        // But also make sure each class is private
+                        if((line.contains("public class") || 
+                                line.contains("public static class") ||
+                                line.contains("public abstract class"))
+                                && !line.contains("PackingSolver")){
+                            line = line.substring(6);
+                            //line = "private" + line;
+                        }
+                        classBuffer.append(line);
+                        classBuffer.append('\n');
+                    }
                 }
-            // Done reading file 
-            file.close();
-            } catch (IOException e) {
-                    System.out.println("Problem reading file for appending");
+                // Done reading file
+                file.close();
+            }catch (IOException e) {
+                System.out.println("Problem reading file for appending");
             }
         }
         try {
             // write the new string with the replaced line OVER the same file
-            FileOutputStream fileOut = new FileOutputStream(DESTINATION + "Combined.java");
-            fileOut.write(inputBuffer.toString().getBytes());
+            FileOutputStream fileOut = new FileOutputStream(DESTINATION + "PackingSolver2.java");
+            fileOut.write(importBuffer.toString().getBytes());
+            fileOut.write(classBuffer.toString().getBytes());
             fileOut.close();
         }catch(IOException e){
             System.out.println("Problem writing file for appending");
