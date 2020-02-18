@@ -5,9 +5,9 @@
  */
 package tester;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -17,21 +17,37 @@ import java.io.IOException;
  * and imports to those packages
  */
 public class ContinateJaveFiles {
-    static String path1 = "C:/Users/stefa/Documents/";
+    // Path variables for Stefan:
+    static String pathStefan = "C:/Users/stefa/Documents/";
+    static String destinationStefan = "C:/Users/stefa/Downloads/";
+    // Standard variables
     static String path2 = "DBL-Algorithm/src/";
-    static String destination = "C:/Users/stefa/Downloads";
-    static String[] names = {"main/PackingSolver",
+    static String[] names = {"PackingSolver.java",
         //algorithms
-        "algorithms/AbstractAlgorithm",
-        "algorithms/SimpleAlgorithm",
-        "algorithms/TestingAlgorithm",
+        "AbstractAlgorithm.java",
+        "SimpleAlgorithm.java",
+        "TestingAlgorithm.java",
         //logic
-        "logic/AbstractReader",
-        "logic/GlobalData",
-        "logic/Grid",
-        "logic/MomotorReader",
-        "logic/TestReader",
-        "logic/Writer"
+        "AbstractReader.java",
+        "GlobalData.java",
+        "Grid.java",
+        "MomotorReader.java",
+        "TestReader.java",
+        "Writer.java"
+    };
+    static String[] packages = {"main/",
+        //algorithms
+        "algorithms/",
+        "algorithms/",
+        "algorithms/",
+        //logic
+        "logic/",
+        "logic/",
+        "logic/",
+        "logic/",
+        "logic/",
+        "logic/"
+        
     };
         
     /**
@@ -39,27 +55,50 @@ public class ContinateJaveFiles {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        String path = path1 + path2;
-        File source = new File("src/resources/bugs.txt");
-        File dest = new File(destination + "PackingSolver.java");
-
-        try (FileInputStream fis = new FileInputStream(source);
-             FileOutputStream fos = new FileOutputStream(dest)) {
-
-            byte[] buffer = new byte[1024];
-            int length;
-
-            while ((length = fis.read(buffer)) > 0) {
-
-                fos.write(buffer, 0, length);
+        String path = pathStefan + path2;
+        // for each file
+        for(int i = 0; i < names.length; i++){
+            // Create a copy of the file in destinationPath
+            CopyFile copyFile = new CopyFile(path + packages[i], names[i], destinationStefan);
+            if(copyFile.succes) {
+                // Then replace the package on import lines with comments
+                replaceLines(destinationStefan + names[i]);
             }
         }
-        // for each file
-        // find file
-        // Remove package statement
-        // Remove imports to package: logic, algorithms, main
-        // if first then result = file
-        // if not then result = result + file
     }
     
+    // This method replaces certain package lines and import lines with comments
+    public static void replaceLines(String source) {
+        try {
+            // input the (modified) file content to the StringBuffer "input"
+            BufferedReader file = new BufferedReader(new FileReader(source));
+            StringBuffer inputBuffer = new StringBuffer();
+            String line;
+
+            // Loop over each line in the file
+            while ((line = file.readLine()) != null) {
+                // If line has the be outcommented
+                if(line.contains("package") || line.contains("import logic")
+                        || line.contains("import algorithms")
+                                || line.contains("import algorithms")){
+                    // Then add comment lines 
+                    line = "//" + line;
+                }
+                // Add the lines to the buffer
+                inputBuffer.append(line);
+                inputBuffer.append('\n');
+            }
+            // Done reading file 
+            file.close();
+
+            // write the new string with the replaced line OVER the same file
+            FileOutputStream fileOut = new FileOutputStream(source);
+            fileOut.write(inputBuffer.toString().getBytes());
+            fileOut.close();
+
+        } catch (Exception e) {
+            System.out.println("Problem reading file.");
+        }
+    }
+
 }
