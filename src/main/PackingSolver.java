@@ -20,7 +20,8 @@ public class PackingSolver {
     private static final String pathStefan = "E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/";
     private static final String pathEzra = "";
-    private static final String pathYana = "";
+    private static final String pathYana = "C:/Users/yana/Documents/"
+            +"DBL-Algorithm/testcases/";
     private static final String pathJodi = "";
     
     // Name of the file you want to test
@@ -31,14 +32,14 @@ public class PackingSolver {
      */
     public static void main(String[] args) {
         // read inputs from file
-        AbstractReader input = new MomotorReader(pathLeigthon + fileName);
+        AbstractReader input = new TestReader(pathYana + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
         
         // Use inputs to determine what algorithm to run
         Grid grid = new Grid();
-        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
+        AbstractAlgorithm algorithm = new LevelPackingAlgorithm(grid, data);
         algorithm.run();
         
         //Use the results of the algorithm to write the output
