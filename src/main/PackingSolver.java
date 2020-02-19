@@ -17,8 +17,7 @@ public class PackingSolver {
     // You can add you file path here 
     private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/";
-    private static final String pathStefan = "E:/TUe/PT/Courses/Y3/"
-                + "DBL algorithms/testcases/";
+    private static final String pathStefan = "./../testfiles";
     private static final String pathEzra = "";
     private static final String pathYana = "C:/Users/yana/Documents/"
             +"DBL-Algorithm/testcases/";
