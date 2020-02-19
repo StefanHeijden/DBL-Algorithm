@@ -5,6 +5,8 @@
  */
 package tester;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,55 +18,60 @@ import logic.GlobalData;
  * of choise and random generated rectangles
  */
 public class AbstractTestFileGenerator {
-    private final String containerType;
-    private final int containerHeight;
-    private final boolean rotationsAllowed;
-    private final int numRectangles;
+    public GlobalData data;
+    private final String PATH = "./../testfiles";
+    StringBuffer inputBuffer;
     
     // Standard, mostly used in GUI to create random input files
-    public AbstractTestFileGenerator(String containerType, int containerHeight, boolean rotationsAllowed, int numRectangles) {
-        this.containerType = containerType;
-        this.containerHeight = containerHeight;
-        this.rotationsAllowed = rotationsAllowed;
-        this.numRectangles = numRectangles;
+    public AbstractTestFileGenerator(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int numRectangles) {
+        int[][] simple = {{1, 1}};
+        data = new GlobalData(containerType, containerHeight, rotationsAllowed, 
+                simple, numRectangles);
         generateFile();
     }
     
     // Can also be init from global data object
     public AbstractTestFileGenerator(GlobalData data){
-        containerType = data.getType();
-        containerHeight = data.getHeight();
-        rotationsAllowed = data.getRA();
-        numRectangles = data.getNumRectangles();
+        int[][] simple = {{1, 1}};
+        this.data = new GlobalData(data.getType(), data.getHeight(), 
+                data.getRA(), simple, data.getNumRectangles());
         generateFile();
     }
     
     // Generate a new file 
     public void generateFile(){
-        String filename = containerType + containerHeight + rotationsAllowed + numRectangles;
-        createFile(filename);
-        findAndOpenFile(filename);
-        System.out.print("TO DO: finish generating");
-        // Write basic stuff
+        // Create new filename
+        String filename = data.getType() + data.getHeight() + data.getRA() + 
+                data.getNumRectangles() + ".java";
+        System.out.print(filename);
+        
         // Generate rectangles
-        // Write rectangles
+        int[][] rectangles = generateRectangles();
+        
+        // Replace rectanges in Global data for easy printing
+        data.setRectangles(rectangles);
+        
+        // Write global data into inputbuffer
+        writeGlobalData();
+        
+        // Wite input buffer into the file and then close file
+        try{
+            FileOutputStream fileOut = new FileOutputStream(PATH + filename);
+            fileOut.write(inputBuffer.toString().getBytes());
+            fileOut.close();
+        }catch(IOException e){
+            System.out.println("Writing buffer to test file went wrong");
+        }
     }
     
     // Generate the rectangles
-    public void generateRectangles(){
+    public int[][] generateRectangles(){
+        int[][] simple = {{1, 1}};
         System.out.print("Extend this method for implementation");
+        return simple;
     }
     
-    
-    // Create a new file with a certain name such that it can be writen in
-    public void createFile(String filename){
-        System.out.print("TO DO: create File");
-    }
-    
-    // Find and open the file such that it can be writen in
-    public void findAndOpenFile(String filename){
-        System.out.print("TO DO: find and open File");
-    }
     
     // This method writes a string to the file and places a next line at the end
     public void writeToFileWithNewline( String textLine ) throws IOException {
@@ -80,5 +87,12 @@ public class AbstractTestFileGenerator {
         PrintWriter print_line = new PrintWriter(write);
         
         print_line.printf( "%s" , textLine + " ");
+    }
+    
+    public void writeGlobalData(){
+        String[] lines = data.dataToString();
+        for(String line : lines){
+            inputBuffer.append(line);
+        }
     }
 }

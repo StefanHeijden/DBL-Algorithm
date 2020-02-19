@@ -13,12 +13,12 @@ public class GlobalData {
     private final String containerType;
     private final int containerHeight;
     private final boolean rotationsAllowed;
-    private final int[][] rectangles;
+    private int[][] rectangles;
     private final int numRectangles;
     public final String FREE = "free";
     public final String FIXED = "fixed";
 
-    GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
+    public GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
         this.containerType = containerType;
         this.containerHeight = containerHeight;
         this.rotationsAllowed = rotationsAllowed;
@@ -44,6 +44,40 @@ public class GlobalData {
 
     public int getNumRectangles() {
         return numRectangles;
+    }
+
+    public void setRectangles(int[][] rectangles) {
+        this.rectangles = rectangles;
+    }
+    
+    public String[] dataToString(){
+        //String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles
+        // Add first Line
+        String[] result = new String[3 + numRectangles];
+        result[0] = "container height: " + containerType;
+        if(containerType.equals(FIXED)){
+            result[0] = result[0] + containerHeight;
+        }
+        result[0] = result[0] + '\n';
+        
+        // Add Second Line
+        result[1] = "rotations allowed: ";
+        if(rotationsAllowed){
+            result[1] = result[1] + "yes";
+        }else{
+            result[1] = result[1] + "no";
+        }
+        result[1] = result[1] + '\n';
+        
+        // Add Third line
+        result[2] = "number of rectangles: " + numRectangles + '\n';
+        
+        // Add Rectangles Input
+        for(int i = 3; i < result.length; i++){
+            result[i] = rectangles[i-3][0] + " " + rectangles[i-3][1] + '\n';
+        }
+        
+        return result;
     }
     
 }

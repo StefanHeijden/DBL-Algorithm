@@ -16,8 +16,10 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     }
     
     @Override
-    public void generateRectangles(){
+    public int[][] generateRectangles(){
         System.out.print("TO DO: random generation of rectangles");
+        int[][] simple = {{1, 1}};
+        return simple;
     }
     
 }

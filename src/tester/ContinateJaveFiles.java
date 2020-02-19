@@ -106,9 +106,9 @@ public class ContinateJaveFiles {
     }
     
     public static void appendFiles(){
-            StringBuffer importBuffer = new StringBuffer();
-            StringBuffer classBuffer = new StringBuffer();
-            String line;
+        StringBuffer importBuffer = new StringBuffer();
+        StringBuffer classBuffer = new StringBuffer();
+        String line;
         for (String NAMES1 : NAMES) {
             try {
                 BufferedReader file = new BufferedReader(new FileReader(DESTINATION + NAMES1));
