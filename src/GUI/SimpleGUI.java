@@ -35,6 +35,8 @@ public class SimpleGUI {
         frame.setJMenuBar(menuBar);
         frame.getContentPane().add(button); // Adds Button to content pane of frame
         frame.setVisible(true);
+        
+        JButton buttonPackingSolver = new JButton ("running Packing Solver");
 
     }
     

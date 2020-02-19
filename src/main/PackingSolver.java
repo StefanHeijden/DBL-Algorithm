@@ -21,7 +21,7 @@ public class PackingSolver {
     private static final String pathEzra = "";
     private static final String pathYana = "C:/Users/yana/Documents/"
             +"DBL-Algorithm/testcases/";
-    private static final String pathJodi = "C:\Users\s165698\Documents\DBL Algorithms";
+    private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
     // Name of the file you want to test
     private static final String fileName = "0000_r4-h20-rn.in";
