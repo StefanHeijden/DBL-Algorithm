@@ -46,6 +46,7 @@ public class ContinateJaveFiles {
         "AbstractAlgorithm.java",
         "SimpleAlgorithm.java",
         "TestingAlgorithm.java",
+        "LevelPackingAlgorithm.java",
         //logic
         "AbstractReader.java",
         "GlobalData.java",
@@ -55,6 +56,7 @@ public class ContinateJaveFiles {
     };
     static final String[] PACKAGES = {"main/",
         //algorithms
+        "algorithms/",
         "algorithms/",
         "algorithms/",
         "algorithms/",

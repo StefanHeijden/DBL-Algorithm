@@ -19,8 +19,9 @@ public class PackingSolver {
                 + "DBL algorithms/testcases/";
     private static final String pathStefan = "./../testfiles";
     private static final String pathEzra = "";
-    private static final String pathYana = "";
-    private static final String pathJodi = "";
+    private static final String pathYana = "C:/Users/yana/Documents/"
+            +"DBL-Algorithm/testcases/";
+    private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
     // Name of the file you want to test
     private static final String fileName = "0001_r4-hf-rn.in";
@@ -30,14 +31,18 @@ public class PackingSolver {
      */
     public static void main(String[] args) {
         // read inputs from file
+<<<<<<< HEAD
         AbstractReader input = new TestReader(pathLeigthon + fileName);
+=======
+        AbstractReader input = new TestReader(pathJodi + fileName);
+>>>>>>> 44bded137de76670db90c18f9529428689081b35
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
         
         // Use inputs to determine what algorithm to run
         Grid grid = new Grid();
-        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
+        AbstractAlgorithm algorithm = new LevelPackingAlgorithm(grid, data);
         algorithm.run();
         
         //Use the results of the algorithm to write the output
