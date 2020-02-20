@@ -24,6 +24,13 @@ public class AbstractReader {
         this.path = path;
     }
     
+    //this class is used to test for errors in read() of incorrect parsing
+    public class NotAStringException extends Exception {
+        public NotAStringException(String errorMessage) {
+            super(errorMessage);
+        }
+    }
+    
     /** reads the number of lines the input file has and returns it
      * need to read the lines because array is faster implementation.
      */
@@ -39,9 +46,8 @@ public class AbstractReader {
     }
     
     
-    
     /** reads input and returns it as GlobalData object */
-    public GlobalData read() {
+    public GlobalData read() throws NotAStringException {
         GlobalData data;
         // read input
         String[] textData = createArrayOfInput();
@@ -76,6 +82,11 @@ public class AbstractReader {
                 j++;
             }
             String yCoordinate = currentRectangleString.substring(j+1);
+            
+            if (! (yCoordinate instanceof String)) {
+                throw new NotAStringException("This is not a string: " + 
+                        yCoordinate);
+            }
             
             int[] currentRectangle = {
                     Integer.parseInt(xCoordinate),
