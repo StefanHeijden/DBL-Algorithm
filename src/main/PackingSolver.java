@@ -25,24 +25,22 @@ public class PackingSolver {
     
     // Name of the file you want to test
     private static final String fileName = "0001_r4-hf-rn.in";
+    //choose you path
+    private static final String path = pathLeigthon;
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // read inputs from file
-<<<<<<< HEAD
-        AbstractReader input = new TestReader(pathLeigthon + fileName);
-=======
-        AbstractReader input = new TestReader(pathJodi + fileName);
->>>>>>> 44bded137de76670db90c18f9529428689081b35
+        AbstractReader input = new MomotorReader(path + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
         
         // Use inputs to determine what algorithm to run
         Grid grid = new Grid();
-        AbstractAlgorithm algorithm = new LevelPackingAlgorithm(grid, data);
+        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
         algorithm.run();
         
         //Use the results of the algorithm to write the output
