@@ -70,7 +70,7 @@ public class AbstractReader {
             String currentRectangleString = textData[i];
             int j = 0;
             //String xCoordinate = "";
-            while (! Character.toString(currentRectangleString.charAt(j)).equals(" ")) {
+            while (! currentRectangleString.substring(j, j + 1).equals(" ")) {
                 //xCoordinate += Character.toString(currentRectangleString.charAt(j));
                 j++;
                 //xCoordinate = currentRectangleString.substring(0, j);
