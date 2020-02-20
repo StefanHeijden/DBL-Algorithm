@@ -73,9 +73,7 @@ public class GlobalData {
         result[2] = "number of rectangles: " + numRectangles + '\n';
         
         // Add Rectangles Input
-        System.out.println("length: " + result.length);
         for(int i = 3; i < result.length; i++){
-            System.out.println("i: " + i);
             result[i] = rectangles[i-3][0] + " " + rectangles[i-3][1] + '\n';
         }
         

@@ -13,6 +13,7 @@ import logic.GlobalData;
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
+    public final int MAXIMUMSIZE = 25;
     private final String PATH = "C:/Users/stefa/Downloads/";
     StringBuffer inputBuffer;
     
@@ -36,9 +37,14 @@ public class AbstractTestFileGenerator {
     // Generate a new file 
     public void generateFile(){
         // Create new filename
-        String filename = data.getType() + data.getHeight() + data.getRA() + 
+        String filename;
+        if(data.getType().equalsIgnoreCase(data.FREE)){
+            filename = data.getType() + data.getRA() + 
                 data.getNumRectangles() + ".java";
-        System.out.print(filename);
+        }else{
+            filename = data.getType() + data.getHeight() + data.getRA() + 
+                    data.getNumRectangles() + ".java";
+        }
         
         // Generate rectangles
         int[][] rectangles = generateRectangles();

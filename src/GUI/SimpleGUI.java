@@ -22,9 +22,8 @@ public class SimpleGUI {
     static String[] titelsGroup2 = {"no rotation", "rotation"};
     static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
     static String[] titelsGroup4 = {"Random generation", 
-                                    "Rectangles differ a lot",
-                                    "Rectangles almost the same", 
-                                    "Rectangles almost the same"
+                                    "Random generation with bounds",
+                                    "Squares only"
     };// TitelGroup4 has to be added manually to the switch in generateTestFile()
       // in the class GenerateTestFile inside the class GUI!!
 
@@ -100,19 +99,20 @@ public class SimpleGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             String containerType; 
-            int containerHeight = 4; // TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+            int containerHeight = 0;
             boolean rotationsAllowed; 
             int numRectangles;
             // Get type from radiobuttons
             containerType = getSelected(group1);
-            System.out.println(containerType);
             // Get container heigth
+            if(containerType.equalsIgnoreCase("fixed")){
+                 String heigth = JOptionPane.showInputDialog("Please input heigth: ");
+                 containerHeight = Integer.parseInt(heigth);
+            }
             System.out.println("containerHeight" + containerHeight);
             // Get rotations
             rotationsAllowed = getSelected(group2).equalsIgnoreCase(titelsGroup2[1]);
-            System.out.println("rotations: " + rotationsAllowed);
             numRectangles = Integer.parseInt(getSelected(group3));
-            System.out.println("numOfRect: " + numRectangles);
             //  Generate a new test file
             generateTestFile(containerType, containerHeight, rotationsAllowed, 
                     numRectangles, getSelected(group4));
@@ -135,6 +135,13 @@ public class SimpleGUI {
             switch(selected) {
               case "Random generation":
                 createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
+                break;
+              case "Random generation with bounds":
+                  
+                //createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
+                break;
+              case "Squares only":
+                //createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
                 break;
               default:
                 // code block

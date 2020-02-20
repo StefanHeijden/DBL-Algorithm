@@ -13,11 +13,16 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     @Override
     public int[][] generateRectangles(){
         int[][] rectangles = new int[data.getNumRectangles()][2];
-        for (int[] rectangle : rectangles) {
-            rectangle[0] = 1;
-            rectangle[1] = 1;
+        int maxSizeX;
+        if(data.getType().equalsIgnoreCase(data.FIXED) && MAXIMUMSIZE > data.getHeight()){
+            maxSizeX = data.getHeight();
+        }else{
+            maxSizeX = MAXIMUMSIZE;
         }
-        System.out.println("rectangles length: " + rectangles.length);
+        for (int[] rectangle : rectangles) {
+            rectangle[0] = (int) Math.round((maxSizeX - 1) * Math.random() + 1);
+            rectangle[1] = (int) Math.round((MAXIMUMSIZE - 1) * Math.random() + 1);
+        }
         return rectangles;
     }
     
