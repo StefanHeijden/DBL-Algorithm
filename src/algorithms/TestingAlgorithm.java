@@ -63,14 +63,14 @@ public class TestingAlgorithm extends AbstractAlgorithm{
             } else if (global.getType().equals("free") && 
                     global.getRA() ) {
                 placement[i] = computeBottomleftFixed(rectWidth);
-                grid.setRotationsIndexI(true, i);
+                grid.setRotationsIndexI(false, i);
             } else if (global.getType().equals("fixed") && 
                     !global.getRA() ) {
                 placement[i] = computeBottomleftFixed(rectWidth);
             } else if (global.getType().equals("fixed") && 
                     global.getRA() ) {
                 placement[i] = computeBottomleftFixed(rectWidth);
-                grid.setRotationsIndexI(true, i);
+                grid.setRotationsIndexI(false, i);
             }
         }
         grid.storePlacement(placement);

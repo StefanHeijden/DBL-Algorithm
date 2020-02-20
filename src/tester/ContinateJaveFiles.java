@@ -26,6 +26,8 @@ public class ContinateJaveFiles {
     static final String DSTEFAN = "C:/Users/stefa/Downloads/"; // Location where you want the files to be
     // ADD YOURS HERE:
     // Path variables for Leighton
+    static final String PLEIGHTON = "E:/TUe/PT/Courses/Y3/DBL algorithms/";
+    static final String DLEIGHTON = "C:/Users/20167014/Downloads/";
     
     // Path variables for Ezra:
     
@@ -36,8 +38,8 @@ public class ContinateJaveFiles {
     
     
     // Specify which path and destination to use
-    static final String PATH1 = PSTEFAN; 
-    static final String DESTINATION = DSTEFAN;
+    static final String PATH1 = PLEIGHTON; 
+    static final String DESTINATION = DLEIGHTON;
     // Standard variables
     static final String PATH2 = "DBL-Algorithm/src/";
     static final String PATH = PATH1 + PATH2;
