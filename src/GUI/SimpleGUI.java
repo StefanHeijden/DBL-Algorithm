@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import javax.swing.*;
 import tester.AbstractTestFileGenerator;
 import tester.RandomTestFileGenerator;
+import main.PackingSolver;
 
 /**
  *
@@ -44,13 +45,15 @@ public class SimpleGUI {
         // Create buttons for generating 
         JButton generateFileButton = new JButton("Generate");
         generateFileButton.addActionListener(new GenerateTestFile());
+        
+        JButton buttonPackingSolver = new JButton ("running Packing Solver");
+        buttonPackingSolver.addActionListener(new RunPackingSolver());  
+        
         // Add button and menu to frame
         frame.setJMenuBar(menuBar);
         frame.getContentPane().add(generateFileButton); // Adds Button to content pane of frame
+        frame.getContentPane().add(buttonPackingSolver);
         frame.setVisible(true);
-        
-        JButton buttonPackingSolver = new JButton ("running Packing Solver");
-
     }
     
     // This method adds a menu that can be used for generating test files
@@ -149,4 +152,20 @@ public class SimpleGUI {
             
         }
     }
+    
+    static class RunPackingSolver implements ActionListener {
+        //public RunPackingSolver(){
+        
+        //}
+        
+        @Override
+        public void actionPerformed(ActionEvent e){
+            System.out.println("add action");
+            //PackingSolver packingSolver = new PackingSolver();
+            //packingSolver.main(args);
+    }
+
+    }
+    
+    
 }
