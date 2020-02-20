@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tester;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,7 +13,7 @@ import logic.GlobalData;
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
-    private final String PATH = "./../testfiles";
+    private final String PATH = "C:/Users/stefa/Downloads/";
     StringBuffer inputBuffer;
     
     // Standard, mostly used in GUI to create random input files
@@ -67,9 +61,13 @@ public class AbstractTestFileGenerator {
     
     // Generate the rectangles
     public int[][] generateRectangles(){
-        int[][] simple = {{1, 1}};
         System.out.print("Extend this method for implementation");
-        return simple;
+        int[][] rectangles = new int[data.getHeight()][2];
+        for (int[] rectangle : rectangles) {
+            rectangle[0] = 1;
+            rectangle[1] = 1;
+        }
+        return rectangles;
     }
     
     
@@ -90,6 +88,7 @@ public class AbstractTestFileGenerator {
     }
     
     public void writeGlobalData(){
+        inputBuffer = new StringBuffer();
         String[] lines = data.dataToString();
         for(String line : lines){
             inputBuffer.append(line);

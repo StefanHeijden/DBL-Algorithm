@@ -1,18 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import javax.swing.*;
+import tester.AbstractTestFileGenerator;
+import tester.RandomTestFileGenerator;
 
 /**
  *
  * GUI class
  */
 public class SimpleGUI {
-    
+    int testInt = 0;
+    // These are the groups and input neeeded for TestFileGenerator menu
+    static ButtonGroup group1;
+    static ButtonGroup group2;
+    static ButtonGroup group3;
+    static ButtonGroup group4;
+    static String[] titelsGroup1 = {"free", "fixed"};
+    static String[] titelsGroup2 = {"no rotation", "rotation"};
+    static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
+    static String[] titelsGroup4 = {"Random generation", 
+                                    "Rectangles differ a lot",
+                                    "Rectangles almost the same", 
+                                    "Rectangles almost the same"
+    };// TitelGroup4 has to be added manually to the switch in generateTestFile()
+      // in the class GenerateTestFile inside the class GUI!!
+
     /**
      * // This main method can now just be used for testing, but can later be implemented in MAIN
      */
@@ -28,12 +43,11 @@ public class SimpleGUI {
         System.out.println("TO DO: addway to insert height");
          
         // Create buttons for generating 
-        JButton button = new JButton("Generate");
-        // -----------------------------------------Add action to button such that file is generated
-        System.out.println("TO DO: add button or something to start generating");
+        JButton generateFileButton = new JButton("Generate");
+        generateFileButton.addActionListener(new GenerateTestFile());
         // Add button and menu to frame
         frame.setJMenuBar(menuBar);
-        frame.getContentPane().add(button); // Adds Button to content pane of frame
+        frame.getContentPane().add(generateFileButton); // Adds Button to content pane of frame
         frame.setVisible(true);
         
         JButton buttonPackingSolver = new JButton ("running Packing Solver");
@@ -49,63 +63,83 @@ public class SimpleGUI {
                 "This menu can be used to generate test files");
         menuBar.add(menu);
 
-        //a group of radio button menu items
-        menu.addSeparator();
-        ButtonGroup group = new ButtonGroup();
-        JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem("Free");
-        rbMenuItem.setSelected(true);
-        group.add(rbMenuItem);
-        menu.add(rbMenuItem);
-
-        rbMenuItem = new JRadioButtonMenuItem("Fixed");
-        group.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-        // A second group of radio button menu items for number of rectangles
-        menu.addSeparator();
-        ButtonGroup group2 = new ButtonGroup();
-        rbMenuItem = new JRadioButtonMenuItem("4");
-        rbMenuItem.setSelected(true);
-        group2.add(rbMenuItem);
-        menu.add(rbMenuItem);
-
-        rbMenuItem = new JRadioButtonMenuItem("6");
-        group2.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-        rbMenuItem = new JRadioButtonMenuItem("10");
-        group2.add(rbMenuItem);
-        menu.add(rbMenuItem);
-
-        rbMenuItem = new JRadioButtonMenuItem("25");
-        group2.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-        rbMenuItem = new JRadioButtonMenuItem("10000");
-        group2.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-         // A third group of radio button menu items for way the rectangles are generated
-        menu.addSeparator();
-        ButtonGroup group3 = new ButtonGroup();
-        rbMenuItem = new JRadioButtonMenuItem("Random generation");
-        rbMenuItem.setSelected(true);
-        group3.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-        rbMenuItem = new JRadioButtonMenuItem("Rectangles differ a lot");
-        group3.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-        rbMenuItem = new JRadioButtonMenuItem("Rectangles almost the same");
-        group3.add(rbMenuItem);
-        menu.add(rbMenuItem);
-        
-        rbMenuItem = new JRadioButtonMenuItem("Rectangles almost the same");
-        group3.add(rbMenuItem);
-        menu.add(rbMenuItem);
+        // Create and add a group of radio button menu items for selecting free or fixed
+        group1 = new ButtonGroup();
+        createMenuRadioButtons(group1, menu, titelsGroup1);
+        // Create and add a group of radio button menu items for rotation allowed
+        group2 = new ButtonGroup();
+        createMenuRadioButtons(group2, menu, titelsGroup2);
+        // Create and add a group of radio button menu items for number of rectangles
+        group3 = new ButtonGroup();
+        createMenuRadioButtons(group3, menu, titelsGroup3);
+        // Create and add a group of radio button menu items for way the rectangles are generated
+        group4 = new ButtonGroup();
+        createMenuRadioButtons(group4, menu, titelsGroup4);
         
         menuBar.add(menu);
     }
-}
+    
+    public static void createMenuRadioButtons(ButtonGroup group, JMenu menu, String[] titelsGroup){
+        menu.addSeparator();
+        JRadioButtonMenuItem rbMenuItem;
+        for(String s: titelsGroup){
+            rbMenuItem = new JRadioButtonMenuItem(s);
+            rbMenuItem.setSelected(true);
+            group.add(rbMenuItem);
+            menu.add(rbMenuItem);
+        }
+    }
 
+    // Simple actionListener for button so that test file is created
+    static class GenerateTestFile implements ActionListener{
+        AbstractTestFileGenerator createFile;
+        public GenerateTestFile(){
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String containerType; 
+            int containerHeight = 4; // TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+            boolean rotationsAllowed; 
+            int numRectangles;
+            // Get type from radiobuttons
+            containerType = getSelected(group1);
+            System.out.println(containerType);
+            // Get container heigth
+            System.out.println("containerHeight" + containerHeight);
+            // Get rotations
+            rotationsAllowed = getSelected(group2).equalsIgnoreCase(titelsGroup2[1]);
+            System.out.println("rotations: " + rotationsAllowed);
+            numRectangles = Integer.parseInt(getSelected(group3));
+            System.out.println("numOfRect: " + numRectangles);
+            //  Generate a new test file
+            generateTestFile(containerType, containerHeight, rotationsAllowed, 
+                    numRectangles, getSelected(group4));
+        }
+
+        private String getSelected(ButtonGroup group) {
+           String result = "";
+           for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+                AbstractButton button = buttons.nextElement();
+
+                if (button.isSelected()) {
+                    result = button.getText();
+                }
+            }
+           return result;
+        }
+
+        private void generateTestFile(String containerType, int containerHeight, 
+                boolean rotationsAllowed, int numRectangles, String selected) {
+            switch(selected) {
+              case "Random generation":
+                createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
+                break;
+              default:
+                // code block
+            }
+            
+        }
+    }
+}

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tester;
 
 /**
@@ -17,9 +12,13 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     
     @Override
     public int[][] generateRectangles(){
-        System.out.print("TO DO: random generation of rectangles");
-        int[][] simple = {{1, 1}};
-        return simple;
+        int[][] rectangles = new int[data.getNumRectangles()][2];
+        for (int[] rectangle : rectangles) {
+            rectangle[0] = 1;
+            rectangle[1] = 1;
+        }
+        System.out.println("rectangles length: " + rectangles.length);
+        return rectangles;
     }
     
 }
