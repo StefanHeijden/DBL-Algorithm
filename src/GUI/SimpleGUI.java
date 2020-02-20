@@ -160,9 +160,8 @@ public class SimpleGUI {
         
         @Override
         public void actionPerformed(ActionEvent e){
-            System.out.println("add action");
-            //PackingSolver packingSolver = new PackingSolver();
-            //packingSolver.main(args);
+            PackingSolver packingSolver = new PackingSolver();
+            PackingSolver.main(null);
     }
 
     }

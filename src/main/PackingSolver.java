@@ -24,16 +24,16 @@ public class PackingSolver {
     private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
     // Name of the file you want to test
-    private static final String fileName = "0003_r6-h80-ry.in";
+    private static final String fileName = "0000_r4-h20-rn.in";
     //choose you path
-    private static final String path = pathLeigthon;
+    private static final String path = pathJodi;
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // read inputs from file
-        AbstractReader input = new MomotorReader(path + fileName);
+        AbstractReader input = new TestReader(path + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
