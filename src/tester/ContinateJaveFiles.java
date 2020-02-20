@@ -51,7 +51,6 @@ public class ContinateJaveFiles {
         "GlobalData.java",
         "Grid.java",
         "MomotorReader.java",
-        "TestReader.java",
         "Writer.java"
     };
     static final String[] PACKAGES = {"main/",
@@ -60,7 +59,6 @@ public class ContinateJaveFiles {
         "algorithms/",
         "algorithms/",
         //logic
-        "logic/",
         "logic/",
         "logic/",
         "logic/",

@@ -19,25 +19,26 @@ public class TestingAlgorithm extends AbstractAlgorithm{
     
     
     private int x = 0; 
-    private int y = 0; 
-    public int[] bottomleft = new int[2];
+//    private int y = 0; //not used anymore
+//    public int[] bottomleft = new int[2];
     
+    //THIS FUNCTION IS NOT USED ANYMORE
     // computation of bottomleft corner in case (containerType == "free")
-    public int[] computeBottomleftFree(int width, int height) {
-        x += width; 
-        y += height;
-        int[] returnCoordinates = new int[2];
-        returnCoordinates[0] = x;
-        returnCoordinates[1] = y;
-        return returnCoordinates;
-    }
+//    public int[] computeBottomleftFree(int width, int height) {
+//        x += width; 
+//        y += height;
+//        int[] returnCoordinates = new int[2];
+//        returnCoordinates[0] = x;
+//        returnCoordinates[1] = y;
+//        return returnCoordinates;
+//    }
     
     // computation of bottomleft corner in case (containerType == "fixed")
     public int[] computeBottomleftFixed(int width) {
-        x += width; 
         int[] returnCoordinates = new int[2];
         returnCoordinates[0] = x;
-        returnCoordinates[1] = y;
+        returnCoordinates[1] = 0;
+        x += width;
         return returnCoordinates;
     }
     
@@ -51,24 +52,24 @@ public class TestingAlgorithm extends AbstractAlgorithm{
         
         for (int i = 0; i < rectangle.length; i++) { 
             int rectWidth = rectangle[i][0]; 
-            int rectHeight = rectangle[i][1];
+            //int rectHeight = rectangle[i][1]; //not used anymore
             
             // Series of if-statements that compute bottomleft differently
             // Computation based on vars containerType and rotationsAllowed
             // Very ugly implementation, purely meant for simple testing
             if (global.getType().equals("free") && 
                     !global.getRA() ) {
-                placement[i] = computeBottomleftFree(rectWidth, rectHeight); 
+                placement[i] = computeBottomleftFixed(rectWidth); 
             } else if (global.getType().equals("free") && 
                     global.getRA() ) {
-                placement[i] = computeBottomleftFree(rectHeight, rectWidth);
+                placement[i] = computeBottomleftFixed(rectWidth);
                 grid.setRotationsIndexI(true, i);
             } else if (global.getType().equals("fixed") && 
                     !global.getRA() ) {
                 placement[i] = computeBottomleftFixed(rectWidth);
             } else if (global.getType().equals("fixed") && 
                     global.getRA() ) {
-                placement[i] = computeBottomleftFixed(rectHeight);
+                placement[i] = computeBottomleftFixed(rectWidth);
                 grid.setRotationsIndexI(true, i);
             }
         }

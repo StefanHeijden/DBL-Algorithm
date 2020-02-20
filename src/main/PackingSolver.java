@@ -23,14 +23,14 @@ public class PackingSolver {
     private static final String pathJodi = "";
     
     // Name of the file you want to test
-    private static final String fileName = "0000_r4-h20-rn.in";
+    private static final String fileName = "0001_r4-hf-rn.in";
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // read inputs from file
-        AbstractReader input = new MomotorReader(pathLeigthon + fileName);
+        AbstractReader input = new TestReader(pathLeigthon + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?
