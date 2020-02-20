@@ -31,7 +31,7 @@ public class PackingSolver {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws AbstractReader.NotAStringException {
+    public static void main(String[] args) {
         // read inputs from file
         AbstractReader input = new MomotorReader(path + fileName);
         // read inputs from reader

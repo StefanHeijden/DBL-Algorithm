@@ -35,7 +35,7 @@ public class PackingSolver {
     private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
     // Name of the file you want to test
-    private static final String fileName = "0002_r6-hf-ry.in";
+    private static final String fileName = "0003_r6-h80-ry.in";
     //choose you path
     private static final String path = pathLeigthon;
     
@@ -349,7 +349,6 @@ public class PackingSolver {
     }
     
     
-    
     /** reads input and returns it as GlobalData object */
     public GlobalData read() {
         GlobalData data;
@@ -386,6 +385,11 @@ public class PackingSolver {
                 j++;
             }
             String yCoordinate = currentRectangleString.substring(j+1);
+            
+//            if (! (yCoordinate instanceof String)) {
+//                throw new NotAStringException("This is not a string: " + 
+//                        yCoordinate);
+//            }
             
             int[] currentRectangle = {
                     Integer.parseInt(xCoordinate),
