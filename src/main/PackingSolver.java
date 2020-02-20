@@ -24,7 +24,7 @@ public class PackingSolver {
     private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
     // Name of the file you want to test
-    private static final String fileName = "0001_r4-hf-rn.in";
+    private static final String fileName = "0002_r6-hf-ry.in";
     //choose you path
     private static final String path = pathLeigthon;
     
@@ -33,7 +33,7 @@ public class PackingSolver {
      */
     public static void main(String[] args) {
         // read inputs from file
-        AbstractReader input = new MomotorReader(path + fileName);
+        AbstractReader input = new TestReader(path + fileName);
         // read inputs from reader
         GlobalData data = input.read();
         // Start GUI?

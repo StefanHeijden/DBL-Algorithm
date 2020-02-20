@@ -26,11 +26,7 @@ public class Writer {
         
         // Then write the placement of the rectangles
         int[][] placement = grid.getPlacement();
-        System.out.println("placement of rectangles");
-        
-        
-        System.out.println(placement[0][1]);
-        
+        System.out.println("placement of rectangles");        
         
         // If it is without rotation
         if (!data.getRA()) {

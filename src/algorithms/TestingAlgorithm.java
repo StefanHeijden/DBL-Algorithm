@@ -73,6 +73,7 @@ public class TestingAlgorithm extends AbstractAlgorithm{
                 grid.setRotationsIndexI(false, i);
             }
         }
+        
         grid.storePlacement(placement);
     }
     
