@@ -17,17 +17,23 @@ public class PackingSolver {
     // You can add you file path here 
     private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/";
-    private static final String pathStefan = "./../testfiles";
+    private static final String pathStefan = "C:/Users/stefa/Documents/DBL-Algorithm/testfiles/";
     private static final String pathEzra = "";
     private static final String pathYana = "C:/Users/yana/Documents/"
             +"DBL-Algorithm/testcases/";
     private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
     // Name of the file you want to test
-    private static final String fileName = "0000_r4-h20-rn.in";
+    private static String fileName = "0000_r4-h20-rn.in";
     //choose you path
-    private static final String path = pathJodi;
+    private static final String path = pathStefan;
     
+    // THIS METOD IS USED IN THE GUI
+    // NOT IN MOMOTOR!!!
+    public PackingSolver(String fileName){
+        PackingSolver.fileName = fileName;
+        System.out.println("GUI RUN");
+    }
     /**
      * @param args the command line arguments
      */

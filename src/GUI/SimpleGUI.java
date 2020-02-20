@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
@@ -10,10 +11,15 @@ import main.PackingSolver;
 
 /**
  *
- * GUI class
+ * GUI class, not simple anymore btw
+ * Used for testing PackingSolver
  */
 public class SimpleGUI {
-    int testInt = 0;
+    static final int FRAMEHEIGHT = 800;
+    static final int FRAMEWIDTH = 1200;
+    static final int BUTTONHEIGHT = 50;
+    static final int BUTTONWIDTH = 200;
+    static final int TEXTAREAHEIGHT = 200;
     // These are the groups and input neeeded for TestFileGenerator menu
     static ButtonGroup group1;
     static ButtonGroup group2;
@@ -28,31 +34,66 @@ public class SimpleGUI {
     };// TitelGroup4 has to be added manually to the switch in generateTestFile()
       // in the class GenerateTestFile inside the class GUI!!
 
+        // You can add you file path here 
+    private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
+                + "DBL algorithms/testcases/";
+    private static final String pathStefan = "./../testfiles";
+    private static final String pathEzra = "";
+    private static final String pathYana = "C:/Users/yana/Documents/"
+            +"DBL-Algorithm/testcases/";
+    private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
+    
+    // Name of the file you want to test
+    private static String fileName = "0000_r4-h20-rn.in";
+    
     /**
-     * // This main method can now just be used for testing, but can later be implemented in MAIN
+     * // This main method can be used for testing
      */
     public static void main(String[] args) {
-        // Use scanner to ask for what kind of input the user wants
-        JFrame frame = new JFrame("Simple GUI");
+        // Create frame
+        JFrame frame = new JFrame("GUI for PackingSolver");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200,800);
+        frame.setSize(FRAMEWIDTH, FRAMEHEIGHT);
+        frame.setLayout(null);
         
         // Create menu
         JMenuBar menuBar = new JMenuBar();
         addTestGeneratorMenu(frame, menuBar);
-        System.out.println("TO DO: addway to insert height");
-         
-        // Create buttons for generating 
+        
+        // Create buttons
+        // Create button for generating test files
         JButton generateFileButton = new JButton("Generate");
         generateFileButton.addActionListener(new GenerateTestFile());
+        generateFileButton.setBounds(FRAMEWIDTH - BUTTONWIDTH, 10, 
+                BUTTONWIDTH, BUTTONHEIGHT);
         
-        JButton buttonPackingSolver = new JButton ("running Packing Solver");
+        // Create button for running test files
+        JButton buttonPackingSolver = new JButton ("Run PackingSolver");
         buttonPackingSolver.addActionListener(new RunPackingSolver());  
+        buttonPackingSolver.setBounds(FRAMEWIDTH - BUTTONWIDTH, 15 + BUTTONHEIGHT, 
+                BUTTONWIDTH, BUTTONHEIGHT);
         
-        // Add button and menu to frame
+        // Create pannel for rectangles to be drawn on
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(200, 200, 200));  
+        panel.setBounds(0, 0, FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT);
+        
+        // Create text field with info
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
+                BUTTONWIDTH, TEXTAREAHEIGHT);
+        textArea.setText("file: " + fileName + "\n" +
+                        "container height: \n" +
+                        "rotations allowed: \n" +
+                        "number of rectangles: \n" +
+                        "maybe more? \ndoesn't work yet btw");
+        textArea.setEditable(false);
+        // Add all components to frame
         frame.setJMenuBar(menuBar);
-        frame.getContentPane().add(generateFileButton); // Adds Button to content pane of frame
-        frame.getContentPane().add(buttonPackingSolver);
+        frame.add(generateFileButton);
+        frame.add(buttonPackingSolver);
+        frame.add(panel);
+        frame.add(textArea);
         frame.setVisible(true);
     }
     
@@ -160,8 +201,10 @@ public class SimpleGUI {
         
         @Override
         public void actionPerformed(ActionEvent e){
-            PackingSolver packingSolver = new PackingSolver();
+            PackingSolver packingSolver = new PackingSolver(fileName);
             PackingSolver.main(null);
+            // set Text Area
+            // Obtain rectangles and location
     }
 
     }
