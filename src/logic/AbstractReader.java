@@ -76,11 +76,13 @@ public class AbstractReader {
         for (int i  = 3; i < textData.length; i++) { //loop through all rectan.
             String currentRectangleString = textData[i];
             int j = 0;
-            String xCoordinate = "";
+            //String xCoordinate = "";
             while (! Character.toString(currentRectangleString.charAt(j)).equals(" ")) {
-                xCoordinate += Character.toString(currentRectangleString.charAt(j));
+                //xCoordinate += Character.toString(currentRectangleString.charAt(j));
                 j++;
+                //xCoordinate = currentRectangleString.substring(0, j);
             }
+            String xCoordinate = currentRectangleString.substring(0, j);
             String yCoordinate = currentRectangleString.substring(j+1);
             
             if (! (yCoordinate instanceof String)) {
