@@ -85,6 +85,12 @@ public class SimpleGUI {
         buttonPackingSolver.addActionListener(new RunPackingSolver());  
         buttonPackingSolver.setBounds(FRAMEWIDTH - BUTTONWIDTH, 15 + BUTTONHEIGHT, 
                 BUTTONWIDTH, BUTTONHEIGHT);
+
+        // Create repaint button
+        JButton repaintButton = new JButton ("Repaint");
+        repaintButton.addActionListener(new Repaint());  
+        repaintButton.setBounds(FRAMEWIDTH - BUTTONWIDTH, 20 + 2 * BUTTONHEIGHT, 
+                BUTTONWIDTH, BUTTONHEIGHT);
         
         // Create pannel for rectangles to be drawn on
         panel = new DrawPanel();
@@ -104,6 +110,7 @@ public class SimpleGUI {
         frame.setJMenuBar(menuBar);
         frame.add(generateFileButton);
         frame.add(buttonPackingSolver);
+        frame.add(repaintButton);
         frame.add(panel);
         frame.add(textArea);
         frame.setVisible(true);
@@ -282,6 +289,17 @@ public class SimpleGUI {
             return weight;
         }
     
+    }
+    
+    static class Repaint implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(panel.getRectangles() != null && panel.getRectangles().size() > 0){
+                panel.specialRepaint();
+            }
+        }
+        
     }
     
     private static String getSelected(ButtonGroup group) {

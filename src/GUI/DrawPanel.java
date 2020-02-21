@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  * @author stefa
  */
 public class DrawPanel extends JPanel{
-    List<BetterRectangle> rectangles;
+    private List<BetterRectangle> rectangles;
     int scale = 1; // Increase to increase size of the rectangles
               
     public DrawPanel(){
@@ -45,6 +45,11 @@ public class DrawPanel extends JPanel{
         this.rectangles = rectangles;
     }
     
+    
+   public List<BetterRectangle> getRectangles(){
+        return rectangles;
+    }
+   
     public void setScale(int scale){
         this.scale = scale;
     }
