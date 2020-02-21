@@ -208,10 +208,8 @@ public class SimpleGUI {
             packingSolver.run(fileName);
             
             // Obtain rectangles and location
-            System.out.println("done with run");
             int[][] rectangles = packingSolver.getRectangles();
             int[][] placement = packingSolver.getPlacement();
-            System.out.println("r length: " + rectangles.length );
             // Create rectangle list to draw rectangles
             List<BetterRectangle> dRectangles = new ArrayList<>();
             
@@ -230,7 +228,6 @@ public class SimpleGUI {
             }
             // Make sure the panel contains the rectangles and draws them
             panel.setRectangles(dRectangles);
-            System.out.println("repaint");
             panel.specialRepaint();
         }
 
