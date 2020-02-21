@@ -39,7 +39,7 @@ public class PackingSolver {
     
     public static void run(String fileName) {
         // read inputs from file
-        AbstractReader input = new TestReader(path + fileName);
+        AbstractReader input = new MomotorReader(path + fileName);
         // read inputs from reader
         data = input.read();
         // Start GUI?

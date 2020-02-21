@@ -52,7 +52,7 @@ public class Writer {
         // Print First line
         System.out.print("container height: ");
         System.out.print(data.getType());
-        if(data.getType() == null ? data.FIXED == null : data.getType().equals(data.FIXED)){
+        if(data.getType().equals(data.FIXED)){
             System.out.print(" " + data.getHeight());
         }
         System.out.println();

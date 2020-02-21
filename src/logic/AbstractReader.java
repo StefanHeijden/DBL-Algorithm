@@ -9,7 +9,7 @@ package logic;
  *
  *  This class turns the current solution into output that is accepted by
  *  momoter
- * @author Stefan setup of class, implementation reader Leighton
+ * @author Stefan setup of class, implementation reader Leighton & Stefan
  */
 public class AbstractReader {
     
@@ -50,7 +50,7 @@ public class AbstractReader {
         if (containerHeightTypeString.equals("free")) {
             containerType = "free";
         } else {
-            containerType = containerHeightTypeString.substring(0,5);
+            containerType = containerHeightTypeString.substring(0,5); //"fixed"
             try {
                 containerHeight = Integer.parseInt(
                         containerHeightTypeString.substring(6));
@@ -60,11 +60,12 @@ public class AbstractReader {
             }
         }
         
+        //if rotations yes set to true otherwise to false
         rotationsAllowed = textData[1].substring(19).equals("yes");
         
         numRectangles = Integer.parseInt(textData[2].substring(22));
         
-        rectangles = new int[numRectangles][2];
+        rectangles = new int[numRectangles][2]; //used to store rectangles
         
         for (int i  = 3; i < textData.length; i++) { //loop through all rectan.
             String currentRectangleString = textData[i];
