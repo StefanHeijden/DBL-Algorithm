@@ -18,7 +18,7 @@ import logic.Grid;
  */
 public class BruteForceAlgorithmFree extends AbstractAlgorithm{
     
-    BruteForceAlgorithmFree(Grid grid, GlobalData data) {
+    public BruteForceAlgorithmFree(Grid grid, GlobalData data) {
         super(grid, data);
     }
     

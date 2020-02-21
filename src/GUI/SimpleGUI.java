@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Stream;
@@ -25,11 +26,12 @@ public class SimpleGUI {
     static JFrame frame;
     static DrawPanel panel;
     static JTextArea textArea;
+    static JScrollPane areaScrollPane;
     static final int FRAMEHEIGHT = 1000;
     static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
     static final int BUTTONWIDTH = 200;
-    static final int TEXTAREAHEIGHT = 200;
+    static final int TEXTAREAHEIGHT = 600;
     // These are the groups and input neeeded for TestFileGenerator menu
     static ButtonGroup group1;
     static ButtonGroup group2;
@@ -75,7 +77,7 @@ public class SimpleGUI {
         
         // Create buttons
         // Create button for generating test files
-        JButton generateFileButton = new JButton("Generate");
+        JButton generateFileButton = new JButton("Generate test file");
         generateFileButton.addActionListener(new GenerateTestFile());
         generateFileButton.setBounds(FRAMEWIDTH - BUTTONWIDTH, 10, 
                 BUTTONWIDTH, BUTTONHEIGHT);
@@ -97,17 +99,20 @@ public class SimpleGUI {
         panel.setBackground(new Color(200, 200, 200));  
         panel.setBounds(0, 0, FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT);
         
-        // Create text field with info
+        // Create text field with info and add scrolling to it
         textArea = new JTextArea();
         textArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
                 BUTTONWIDTH, TEXTAREAHEIGHT);
-        textArea.setText("container height: \n" +
+        textArea.setText("Processing time: \n" +
+                "Algorithm used: \n" +
+                "Analyzing result: ??\n" +
+                "container height: \n" +
                         "rotations allowed: \n" +
                         "number of rectangles: \n");
         textArea.setEditable(false);
-        JScrollPane areaScrollPane = new JScrollPane(textArea);
-        areaScrollPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        areaScrollPane = new JScrollPane(textArea);
+        //areaScrollPane.setVerticalScrollBarPolicy(
+        //        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         areaScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
                 BUTTONWIDTH, TEXTAREAHEIGHT);
         
@@ -125,7 +130,7 @@ public class SimpleGUI {
     public static void addTestGeneratorMenu(JMenuBar menuBar){
 
         //Build the first menu.
-        JMenu menu = new JMenu("Generate test file");
+        JMenu menu = new JMenu("Test file settings");
         menu.getAccessibleContext().setAccessibleDescription(
                 "This menu can be used to generate test files");
 
@@ -225,7 +230,6 @@ public class SimpleGUI {
                  String heigth = JOptionPane.showInputDialog("Please input heigth: ");
                  containerHeight = Integer.parseInt(heigth);
             }
-            System.out.println("containerHeight" + containerHeight);
             // Get rotations
             rotationsAllowed = getSelected(group2).equalsIgnoreCase(titelsGroup2[1]);
             numRectangles = Integer.parseInt(getSelected(group3));
@@ -269,7 +273,13 @@ public class SimpleGUI {
                     "Run file: " + getSelected(pathGroup) + 
                     " -----------------------------------------");
             packingSolver = new PackingSolver();
+            // Get current time before running Packing Solver
+            Date d1 = new Date();
             packingSolver.runFromGUI(path + getSelected(pathGroup));
+            // Get current time after running Packing Solver
+            Date d2 = new Date();
+            // Compare the two so that we know runtime
+            long seconds = (d2.getTime()-d1.getTime());
             
             // Put result on screen
             // Obtain rectangles and location (result)
@@ -296,7 +306,9 @@ public class SimpleGUI {
             panel.setRectangles(dRectangles);
             panel.scale();
             panel.specialRepaint();
-            updateTextArea(packingSolver.getGlobalData());
+            // Then update the textArea with info from data in Packing Solver
+            updateTextArea(packingSolver.getGlobalData(), seconds, 
+                                packingSolver.getAlgorithmName() );
         }
 
         // Calculate the maxWeight for coloring
@@ -310,11 +322,22 @@ public class SimpleGUI {
             return weight;
         }
 
-        private void updateTextArea(String[] text) {
+        private void updateTextArea(String[] text, long seconds
+        , String algorithmName) {
+            //Clear textArea
             textArea.setText("");
+            // Add the runtime of the Packing Solver
+            textArea.append("Processing time: " + seconds + "\n");
+            // Add the algorithm used
+            textArea.append("Algorithm used: " + algorithmName + "\n");
+            // Add the info of the anylisis
+            textArea.append("Analyzing result: ??\n");
+            // Add the info of the Global Data
             for(String s: text){
                 textArea.append(s);
             }
+            // Scroll to top
+            textArea.setCaretPosition(0);
         }
     
     }
