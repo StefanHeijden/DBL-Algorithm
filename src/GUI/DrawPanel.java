@@ -22,13 +22,15 @@ public class DrawPanel extends JPanel{
     @Override
     public void paintComponents(Graphics g){
         super.paintComponent(g);
-        System.out.println("DRAW");
+            System.out.println("----------------------------------------- " +
+                    "DRAW" + 
+                    " -----------------------------------------");
         rectangles.forEach((r) -> {
-            System.out.println("DRAW RECTANGLE: \nx: " + r.x + "\ny: " + r.y + 
-                    "\nwidth: " +  r.width + "\nheight: " +  r.height);
-            System.out.println("Color(" + r.getColor().getRed() + ", " 
-                    + r.getColor().getGreen() + ", " 
-                    + r.getColor().getBlue() + ")");
+            //System.out.println("DRAW RECTANGLE: \nx: " + r.x + "\ny: " + r.y + 
+                    //"\nwidth: " +  r.width + "\nheight: " +  r.height);
+            //System.out.println("Color(" + r.getColor().getRed() + ", " 
+                    //+ r.getColor().getGreen() + ", " 
+                    //+ r.getColor().getBlue() + ")");
             if(r.x * scale + r.width * scale < this.getWidth() &&
                     r.y * scale + r.height * scale < this.getHeight()){
                 g.setColor(r.getColor());

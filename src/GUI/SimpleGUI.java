@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 import tester.AbstractTestFileGenerator;
@@ -194,7 +193,13 @@ public class SimpleGUI {
         menuBar.add(menu);
     }
 
-    // Simple actionListener for button so that test file is created
+
+    /*
+     * This class is used for the action of the run GenerateTestFile button
+     * It generates a new testfile in destination path, based on the selected
+     * radio buttons in the menu
+     *
+    */
     static class GenerateTestFile implements ActionListener{
         AbstractTestFileGenerator createFile;
         public GenerateTestFile(){
@@ -242,17 +247,26 @@ public class SimpleGUI {
             
         }
     }
-    
+
+    /*
+     * This class is used for the action of the run PackingSolver button
+     * This runs the selected file in the menubar in PackingSolver
+     * and puts the result on screen
+    */
     static class RunPackingSolver implements ActionListener {
         PackingSolver packingSolver;
         
         @Override
         public void actionPerformed(ActionEvent e){
             // Run PackingSolver
+            System.out.println("----------------------------------------- " +
+                    "Run file: " + getSelected(pathGroup) + 
+                    " -----------------------------------------");
             packingSolver = new PackingSolver();
             packingSolver.runFromGUI(path + getSelected(pathGroup));
             
-            // Obtain rectangles and location
+            // Put result on screen
+            // Obtain rectangles and location (result)
             int[][] rectangles = packingSolver.getRectangles();
             int[][] placement = packingSolver.getPlacement();
             // Create rectangle list to draw rectangles
@@ -268,7 +282,7 @@ public class SimpleGUI {
             for(int i = 0; (i < rectangles.length) && (i < placement.length); i++){
                 // Also add index and weight to color it
                 dRectangles.add(new BetterRectangle(rectangles[i][0], 
-                        rectangles[i][0], i, maxWeight));
+                        rectangles[i][1], i, maxWeight));
                 // then move the rectangle to its placed spot
                 dRectangles.get(i).move(placement[i][0], placement[i][1]);
             }
@@ -278,6 +292,7 @@ public class SimpleGUI {
             panel.specialRepaint();
         }
 
+        // Calculate the maxWeight for coloring
         private int calcMaxweigth(int[][] rectangles) {
             int weight = 0;
             for(int[] r: rectangles){
@@ -285,12 +300,15 @@ public class SimpleGUI {
                     weight = r[0] * r[1];
                 }
             }
-            System.out.println("max weight: " + weight);
             return weight;
         }
     
     }
     
+    /*
+     * This class is used for the action of the repaint button
+     *
+    */
     static class Repaint implements ActionListener {
 
         @Override
