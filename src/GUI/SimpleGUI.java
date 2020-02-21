@@ -3,9 +3,15 @@ package GUI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.*;
 import tester.AbstractTestFileGenerator;
 import tester.RandomTestFileGenerator;
@@ -29,6 +35,7 @@ public class SimpleGUI {
     static ButtonGroup group2;
     static ButtonGroup group3;
     static ButtonGroup group4;
+    static ButtonGroup pathGroup;
     static String[] titelsGroup1 = {"free", "fixed"};
     static String[] titelsGroup2 = {"no rotation", "rotation"};
     static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
@@ -50,8 +57,6 @@ public class SimpleGUI {
     
     //choose you path
     private static final String path = pathStefan;
-    // Name of the file you want to test
-    private static String fileName = "0000_r4-h20-rn.in";
     
     /**
      * // This main method can be used for testing
@@ -66,6 +71,7 @@ public class SimpleGUI {
         // Create menu
         JMenuBar menuBar = new JMenuBar();
         addTestGeneratorMenu(menuBar);
+        addFileMenu(menuBar);
         
         // Create buttons
         // Create button for generating test files
@@ -89,8 +95,7 @@ public class SimpleGUI {
         JTextArea textArea = new JTextArea();
         textArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
                 BUTTONWIDTH, TEXTAREAHEIGHT);
-        textArea.setText("file: " + fileName + "\n" +
-                        "container height: \n" +
+        textArea.setText("container height: \n" +
                         "rotations allowed: \n" +
                         "number of rectangles: \n" +
                         "maybe more? \ndoesn't work yet btw");
@@ -111,7 +116,6 @@ public class SimpleGUI {
         JMenu menu = new JMenu("Generate test file");
         menu.getAccessibleContext().setAccessibleDescription(
                 "This menu can be used to generate test files");
-        menuBar.add(menu);
 
         // Create and add a group of radio button menu items for selecting free or fixed
         group1 = new ButtonGroup();
@@ -138,6 +142,49 @@ public class SimpleGUI {
             group.add(rbMenuItem);
             menu.add(rbMenuItem);
         }
+    }
+        
+    public static void addFileMenu(JMenuBar menuBar){
+        // Obtain all the file paths from the path folder
+        List<String> files = new ArrayList<>();
+        try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+            paths.forEach((p) -> {
+                files.add(p.toString());
+            });
+        }catch(IOException e){
+            System.out.println("Getting files failed");
+        }
+        
+        // Remove the empty path(s) from the arrayList
+        boolean done = false;
+        while(!done){
+            done = true;
+            String remove = "";
+            for(String s: files){
+                if(s.length() <= path.length()){
+                    remove = s;
+                    System.out.println(s);
+                    done = false;
+                }
+            }
+            files.remove(remove);
+        }
+        
+        // Obtain the file names from the Arraylist and add them into a String[]
+        String[] file = new String[files.size()];
+        for(int i = 0; i < file.length; i++){
+            file[i] = (files.get(i).substring(path.length()));
+        }
+        
+        //Build the second menu.
+        JMenu menu = new JMenu("Select File");
+        menu.getAccessibleContext().setAccessibleDescription(
+                "This menu can be used to test files");
+        pathGroup = new ButtonGroup();
+        createMenuRadioButtons(pathGroup, menu, file);
+        
+        // Add the menu to the menubar
+        menuBar.add(menu);
     }
 
     // Simple actionListener for button so that test file is created
@@ -169,18 +216,6 @@ public class SimpleGUI {
                     numRectangles, getSelected(group4));
         }
 
-        private String getSelected(ButtonGroup group) {
-           String result = "";
-           for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
-                AbstractButton button = buttons.nextElement();
-
-                if (button.isSelected()) {
-                    result = button.getText();
-                }
-            }
-           return result;
-        }
-
         private void generateTestFile(String containerType, int containerHeight, 
                 boolean rotationsAllowed, int numRectangles, String selected) {
             switch(selected) {
@@ -208,7 +243,7 @@ public class SimpleGUI {
         public void actionPerformed(ActionEvent e){
             // Run PackingSolver
             packingSolver = new PackingSolver();
-            packingSolver.runFromGUI(path + fileName);
+            packingSolver.runFromGUI(path + getSelected(pathGroup));
             
             // Obtain rectangles and location
             int[][] rectangles = packingSolver.getRectangles();
@@ -249,5 +284,16 @@ public class SimpleGUI {
     
     }
     
+    private static String getSelected(ButtonGroup group) {
+       String result = "";
+       for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                result = button.getText();
+            }
+        }
+       return result;
+    }
 }
     
