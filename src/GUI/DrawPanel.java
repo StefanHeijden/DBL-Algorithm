@@ -160,7 +160,9 @@ public class DrawPanel extends JPanel{
             System.out.println("CHECK IN SCALING makeSmaller failed");
         }
     }
+
+    public double getScaling() {
+        return scale;
+    }
     
-    
- 
 }

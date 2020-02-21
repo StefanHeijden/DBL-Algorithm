@@ -110,6 +110,7 @@ public class SimpleGUI {
         textArea.setText("Processing time: \n" +
                 "Algorithm used: \n" +
                 "Analyzing result: ??\n" +
+                "Scaling: \n" +
                 "container height: \n" +
                         "rotations allowed: \n" +
                         "number of rectangles: \n");
@@ -357,8 +358,10 @@ public class SimpleGUI {
             textArea.append("Processing time: " + seconds + "\n");
             // Add the algorithm used
             textArea.append("Algorithm used: " + algorithmName + "\n");
-            // Add the info of the anylisis
+            // Add the info of the analysis
             textArea.append("Analyzing result: ??\n");
+            // Add the scaling
+            textArea.append("Scaling: " + panel.getScaling() + "\n");
             // Add the info of the Global Data
             for(String s: text){
                 textArea.append(s);
