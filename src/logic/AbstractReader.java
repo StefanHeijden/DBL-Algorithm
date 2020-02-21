@@ -9,7 +9,7 @@ package logic;
  *
  *  This class turns the current solution into output that is accepted by
  *  momoter
- * @author Stefan setup of class, implementation reader Leighton
+ * @author Stefan setup of class, implementation reader Leighton & Stefan
  */
 public class AbstractReader {
     
