@@ -23,29 +23,29 @@ public class PackingSolver {
             +"DBL-Algorithm/testcases/";
     private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
-    // Name of the file you want to test
-    private static String fileName = "0000_r4-h20-rn.in";
     //choose you path
     private static final String path = pathStefan;
+    private static GlobalData data;
+    public static Grid grid;
     
-    // THIS METOD IS USED IN THE GUI
-    // NOT IN MOMOTOR!!!
-    public PackingSolver(String fileName){
-        PackingSolver.fileName = fileName;
-        System.out.println("GUI RUN");
-    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // Name of the file you want to test
+        String fileName = "0000_r4-h20-rn.in";
+        run(fileName);
+    }
+    
+    public static void run(String fileName) {
         // read inputs from file
         AbstractReader input = new MomotorReader(path + fileName);
         // read inputs from reader
-        GlobalData data = input.read();
+        data = input.read();
         // Start GUI?
         
         // Use inputs to determine what algorithm to run
-        Grid grid = new Grid();
+        grid = new Grid();
         AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
         algorithm.run();
         
@@ -54,4 +54,11 @@ public class PackingSolver {
         output.writeOutput();
     }
     
+    public int[][] getRectangles(){
+        return data.getRectangles();
+    }
+    
+    public int[][] getPlacement(){
+        return data.getRectangles();
+    }
 }
