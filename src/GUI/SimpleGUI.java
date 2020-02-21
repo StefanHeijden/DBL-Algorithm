@@ -105,13 +105,19 @@ public class SimpleGUI {
                         "rotations allowed: \n" +
                         "number of rectangles: \n");
         textArea.setEditable(false);
+        JScrollPane areaScrollPane = new JScrollPane(textArea);
+        areaScrollPane.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        areaScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
+                BUTTONWIDTH, TEXTAREAHEIGHT);
+        
         // Add all components to frame
         frame.setJMenuBar(menuBar);
         frame.add(generateFileButton);
         frame.add(buttonPackingSolver);
         frame.add(repaintButton);
         frame.add(panel);
-        frame.add(textArea);
+        frame.add(areaScrollPane);
         frame.setVisible(true);
     }
     
