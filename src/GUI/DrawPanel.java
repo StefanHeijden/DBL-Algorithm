@@ -10,8 +10,8 @@ import javax.swing.JPanel;
  */
 public class DrawPanel extends JPanel{
     List<BetterRectangle> rectangles;
-    private boolean specialUpdate = false;
-    
+    int scale = 1; // Increase to increase size of the rectangles
+              
     public DrawPanel(){
         super();
         //Graphics gb = new;
@@ -23,11 +23,15 @@ public class DrawPanel extends JPanel{
         super.paintComponent(g);
         System.out.println("DRAW");
         rectangles.forEach((r) -> {
-            System.out.println("DRAW RECTANGLE: \nx:" + r.x + "\ny" + r.y + 
-                    "\nwidth" +  r.width + "\nheight" +  r.height);
-            if(r.x + r.width < this.getWidth() &&
-                    r.y + r.height < this.getHeight()){
-                g.drawRect(r.x, r.y, r.width, r.height);
+            g.setColor(r.getColor());
+            System.out.println("DRAW RECTANGLE: \nx: " + r.x + "\ny: " + r.y + 
+                    "\nwidth: " +  r.width + "\nheight: " +  r.height);
+            System.out.println("Color(" + r.getColor().getRed() + ", " 
+                    + r.getColor().getGreen() + ", " 
+                    + r.getColor().getBlue() + ")");
+            if(r.x * scale + r.width * scale < this.getWidth() &&
+                    r.y * scale + r.height * scale < this.getHeight()){
+                g.fillRect(r.x * scale, r.y * scale, r.width * scale, r.height * scale);
             }else{
                 System.out.println("DIDNT DRAW RECTANGLE");
             }
@@ -36,6 +40,10 @@ public class DrawPanel extends JPanel{
     
     public void setRectangles(List<BetterRectangle> rectangles){
         this.rectangles = rectangles;
+    }
+    
+    public void setScale(int scale){
+        this.scale = scale;
     }
     
     public void specialRepaint(){

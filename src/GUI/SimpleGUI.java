@@ -19,8 +19,8 @@ import main.PackingSolver;
 public class SimpleGUI {
     static JFrame frame;
     static DrawPanel panel;
-    static final int FRAMEHEIGHT = 800;
-    static final int FRAMEWIDTH = 1200;
+    static final int FRAMEHEIGHT = 1000;
+    static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
     static final int BUTTONWIDTH = 200;
     static final int TEXTAREAHEIGHT = 200;
@@ -41,12 +41,15 @@ public class SimpleGUI {
         // You can add you file path here 
     private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/";
-    private static final String pathStefan = "./../testfiles";
+    private static final String pathStefan = "C:/Users/stefa/Documents/DBL-Algorithm/testfiles/";
     private static final String pathEzra = "";
     private static final String pathYana = "C:/Users/yana/Documents/"
             +"DBL-Algorithm/testcases/";
     private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
     
+    
+    //choose you path
+    private static final String path = pathStefan;
     // Name of the file you want to test
     private static String fileName = "0000_r4-h20-rn.in";
     
@@ -205,7 +208,7 @@ public class SimpleGUI {
         public void actionPerformed(ActionEvent e){
             // Run PackingSolver
             packingSolver = new PackingSolver();
-            packingSolver.run(fileName);
+            packingSolver.runFromGUI(path + fileName);
             
             // Obtain rectangles and location
             int[][] rectangles = packingSolver.getRectangles();
@@ -219,15 +222,17 @@ public class SimpleGUI {
             }
             
             // Create new rectangle to be drawn from the rectangles
+            int maxWeight = calcMaxweigth(rectangles);
             for(int i = 0; (i < rectangles.length) && (i < placement.length); i++){
                 // Also add index and weight to color it
                 dRectangles.add(new BetterRectangle(rectangles[i][0], 
-                        rectangles[i][0], i, calcMaxweigth(rectangles)));
+                        rectangles[i][0], i, maxWeight));
                 // then move the rectangle to its placed spot
                 dRectangles.get(i).move(placement[i][0], placement[i][1]);
             }
             // Make sure the panel contains the rectangles and draws them
             panel.setRectangles(dRectangles);
+            panel.setScale(1);
             panel.specialRepaint();
         }
 
@@ -238,6 +243,7 @@ public class SimpleGUI {
                     weight = r[0] * r[1];
                 }
             }
+            System.out.println("max weight: " + weight);
             return weight;
         }
     

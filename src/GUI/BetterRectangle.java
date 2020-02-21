@@ -8,7 +8,7 @@ import java.awt.Rectangle;
  * Used to draw the rectangles in the GUI
  */
 public class BetterRectangle extends Rectangle{
-    Color color;// Color of the rectangle
+    private Color color;// Color of the rectangle
     private int weight;// Is larger when rectangle is larger
     private final int MAXWEIGHT;// Is determined by largest rectangle
     
@@ -50,6 +50,10 @@ public class BetterRectangle extends Rectangle{
             return MAXWEIGHT;
         }
         return width * height;
+    }
+
+    Color getColor() {
+        return color;
     }
     
 }
