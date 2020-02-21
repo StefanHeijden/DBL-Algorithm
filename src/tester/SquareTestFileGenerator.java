@@ -2,12 +2,12 @@ package tester;
 
 /**
  *
- * Creates file with random generated rectangles based with max of MAXIMUMSIZE
+ * Creates file with random generated squares based with max of MAXIMUMSIZE
  * based on some GlobalData from GUI
  */
-public class RandomTestFileGenerator extends AbstractTestFileGenerator{
+public class SquareTestFileGenerator extends AbstractTestFileGenerator{
     
-    public RandomTestFileGenerator(String containerType, int containerHeight, 
+    public SquareTestFileGenerator(String containerType, int containerHeight, 
             boolean rotationsAllowed, int numRectangles, String path) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, path);
     }
@@ -15,7 +15,7 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Random");
+        addToFileName("Square");
         // Ini the rectangles array
         int[][] rectangles = new int[data.getNumRectangles()][2];
         int maxSizeX;
@@ -31,7 +31,7 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
         // Then create the random rectangles
         for (int[] rectangle : rectangles) {
             rectangle[0] = (int) Math.round((maxSizeX - 1) * Math.random() + 1);
-            rectangle[1] = (int) Math.round((MAXIMUMSIZE - 1) * Math.random() + 1);
+            rectangle[1] = rectangle[0];
         }
         return rectangles;
     }

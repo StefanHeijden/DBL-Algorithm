@@ -17,8 +17,8 @@ import java.io.OutputStream;
  */
 public class ContinateJaveFiles {
     // Path variables for Stefan:
-    static final String PSTEFAN = "C:/Users/stefa/Documents/"; // Location of DBL-Algorithm folder
-    static final String DSTEFAN = "C:/Users/stefa/Downloads/"; // Location where you want the files to be
+    static final String PSTEFAN = "C:/Users/stefa/Documents/";
+    static final String DSTEFAN = "C:/Users/stefa/Downloads/";
     // ADD YOURS HERE:
     // Path variables for Leighton
     static final String PLEIGHTON = "E:/TUe/PT/Courses/Y3/DBL algorithms/";
@@ -108,7 +108,8 @@ public class ContinateJaveFiles {
         String line;
         for (String NAMES1 : NAMES) {
             try {
-                BufferedReader file = new BufferedReader(new FileReader(DESTINATION + NAMES1));
+                BufferedReader file = new BufferedReader(
+                        new FileReader(DESTINATION + NAMES1));
                 while ((line = file.readLine()) != null) {
                     // Check whether it is an import
                     if(line.contains("import")){
@@ -116,7 +117,7 @@ public class ContinateJaveFiles {
                         importBuffer.append(line);
                         importBuffer.append('\n');
                     }else{
-                        // If not then its a class and it can be added to classbuffer
+                        // If not then its a class and it can be added to buffer
                         // But also make sure each class is private
                         if((line.contains("public class") || 
                                 line.contains("public static class") ||
@@ -137,7 +138,8 @@ public class ContinateJaveFiles {
         }
         try {
             // write the new string with the replaced line OVER the same file
-            FileOutputStream fileOut = new FileOutputStream(DESTINATION + "PackingSolver2.java");
+            FileOutputStream fileOut = new FileOutputStream(DESTINATION + 
+                    "PackingSolver2.java");
             fileOut.write(importBuffer.toString().getBytes());
             fileOut.write(classBuffer.toString().getBytes());
             fileOut.close();

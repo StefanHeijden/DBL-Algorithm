@@ -13,7 +13,8 @@ public class GlobalData {
     public final String FREE = "free";
     public final String FIXED = "fixed";
 
-    public GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
+    public GlobalData(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
         this.containerType = containerType;
         this.containerHeight = containerHeight;
         this.rotationsAllowed = rotationsAllowed;
@@ -46,7 +47,6 @@ public class GlobalData {
     }
     
     public String[] dataToString(){
-        //String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles
         // Add first Line
         String[] result = new String[3 + numRectangles];
         result[0] = "container height: " + containerType;

@@ -13,8 +13,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.*;
-import tester.AbstractTestFileGenerator;
-import tester.RandomTestFileGenerator;
+import tester.*;
 import main.PackingSolver;
 
 /**
@@ -27,6 +26,9 @@ public class SimpleGUI {
     static DrawPanel panel;
     static JTextArea textArea;
     static JScrollPane areaScrollPane;
+    static JMenuBar menuBar;
+    static JMenu generateTestFilemenu;
+    static JMenu fileMenu;
     static final int FRAMEHEIGHT = 1000;
     static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
@@ -50,11 +52,13 @@ public class SimpleGUI {
         // You can add you file path here 
     private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/";
-    private static final String pathStefan = "C:/Users/stefa/Documents/DBL-Algorithm/testfiles/";
+    private static final String pathStefan = "C:/Users/stefa/Documents/"
+            + "DBL-Algorithm/testfiles/";
     private static final String pathEzra = "";
     private static final String pathYana = "C:/Users/yana/Documents/"
             +"DBL-Algorithm/testcases/";
-    private static final String pathJodi = "C:/Users/s165698/Documents/DBL Algorithms/";
+    private static final String pathJodi = "C:/Users/s165698/Documents/"
+            + "DBL Algorithms/";
     
     
     //choose you path
@@ -71,9 +75,9 @@ public class SimpleGUI {
         frame.setLayout(null);
         
         // Create menu
-        JMenuBar menuBar = new JMenuBar();
-        addTestGeneratorMenu(menuBar);
-        addFileMenu(menuBar);
+        menuBar = new JMenuBar();
+        addTestGeneratorMenu();
+        addFileMenu();
         
         // Create buttons
         // Create button for generating test files
@@ -113,8 +117,8 @@ public class SimpleGUI {
         areaScrollPane = new JScrollPane(textArea);
         //areaScrollPane.setVerticalScrollBarPolicy(
         //        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        areaScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
-                BUTTONWIDTH, TEXTAREAHEIGHT);
+        areaScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - 
+                TEXTAREAHEIGHT, BUTTONWIDTH, TEXTAREAHEIGHT);
         
         // Add all components to frame
         frame.setJMenuBar(menuBar);
@@ -127,30 +131,35 @@ public class SimpleGUI {
     }
     
     // This method adds a menu that can be used for generating test files
-    public static void addTestGeneratorMenu(JMenuBar menuBar){
+    public static void addTestGeneratorMenu(){
 
         //Build the first menu.
-        JMenu menu = new JMenu("Test file settings");
-        menu.getAccessibleContext().setAccessibleDescription(
+        generateTestFilemenu = new JMenu("Test file settings");
+        generateTestFilemenu.getAccessibleContext().setAccessibleDescription(
                 "This menu can be used to generate test files");
 
-        // Create and add a group of radio button menu items for selecting free or fixed
+        // Create and add a group of radio button menu items for selecting 
+        // free or fixed
         group1 = new ButtonGroup();
-        createMenuRadioButtons(group1, menu, titelsGroup1);
-        // Create and add a group of radio button menu items for rotation allowed
+        createMenuRadioButtons(group1, generateTestFilemenu, titelsGroup1);
+        // Create and add a group of radio button menu items for 
+        // rotation allowed
         group2 = new ButtonGroup();
-        createMenuRadioButtons(group2, menu, titelsGroup2);
-        // Create and add a group of radio button menu items for number of rectangles
+        createMenuRadioButtons(group2, generateTestFilemenu, titelsGroup2);
+        // Create and add a group of radio button menu items for 
+        // number of rectangles
         group3 = new ButtonGroup();
-        createMenuRadioButtons(group3, menu, titelsGroup3);
-        // Create and add a group of radio button menu items for way the rectangles are generated
+        createMenuRadioButtons(group3, generateTestFilemenu, titelsGroup3);
+        // Create and add a group of radio button menu items for way 
+        // the rectangles are generated
         group4 = new ButtonGroup();
-        createMenuRadioButtons(group4, menu, titelsGroup4);
+        createMenuRadioButtons(group4, generateTestFilemenu, titelsGroup4);
         
-        menuBar.add(menu);
+        menuBar.add(generateTestFilemenu);
     }
     
-    public static void createMenuRadioButtons(ButtonGroup group, JMenu menu, String[] titelsGroup){
+    public static void createMenuRadioButtons(ButtonGroup group, JMenu menu, 
+            String[] titelsGroup){
         menu.addSeparator();
         JRadioButtonMenuItem rbMenuItem;
         for(String s: titelsGroup){
@@ -161,7 +170,20 @@ public class SimpleGUI {
         }
     }
         
-    public static void addFileMenu(JMenuBar menuBar){
+    public static void addFileMenu(){
+        
+        //Build the second menu.
+        fileMenu = new JMenu("Select File");
+        fileMenu.getAccessibleContext().setAccessibleDescription(
+                "This menu can be used to test files");
+        pathGroup = new ButtonGroup();
+        createMenuRadioButtons(pathGroup, fileMenu, getFiles());
+        
+        // Add the menu to the menubar
+        menuBar.add(fileMenu);
+    }
+    
+    public static String[] getFiles(){
         // Obtain all the file paths from the path folder
         List<String> files = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
@@ -193,15 +215,7 @@ public class SimpleGUI {
             file[i] = (files.get(i).substring(path.length()));
         }
         
-        //Build the second menu.
-        JMenu menu = new JMenu("Select File");
-        menu.getAccessibleContext().setAccessibleDescription(
-                "This menu can be used to test files");
-        pathGroup = new ButtonGroup();
-        createMenuRadioButtons(pathGroup, menu, file);
-        
-        // Add the menu to the menubar
-        menuBar.add(menu);
+        return file;
     }
 
 
@@ -227,34 +241,46 @@ public class SimpleGUI {
             containerType = getSelected(group1);
             // Get container heigth
             if(containerType.equalsIgnoreCase("fixed")){
-                 String heigth = JOptionPane.showInputDialog("Please input heigth: ");
+                 String heigth = JOptionPane.showInputDialog(
+                         "Please input heigth: ");
                  containerHeight = Integer.parseInt(heigth);
             }
             // Get rotations
-            rotationsAllowed = getSelected(group2).equalsIgnoreCase(titelsGroup2[1]);
+            rotationsAllowed = getSelected(group2).equalsIgnoreCase(
+                    titelsGroup2[1]);
             numRectangles = Integer.parseInt(getSelected(group3));
             //  Generate a new test file
-            generateTestFile(containerType, containerHeight, rotationsAllowed, 
+            String testFileName = generateTestFile(containerType, containerHeight, rotationsAllowed, 
                     numRectangles, getSelected(group4));
+            
+            // Update file menu
+            JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(testFileName);
+            pathGroup.add(rbMenuItem);
+            fileMenu.add(rbMenuItem);
+            addFileMenu();
+            frame.repaint();
         }
 
-        private void generateTestFile(String containerType, int containerHeight, 
+        private String generateTestFile(String containerType, int containerHeight, 
                 boolean rotationsAllowed, int numRectangles, String selected) {
             switch(selected) {
               case "Random generation":
-                createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
+                createFile = new RandomTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, path);
                 break;
               case "Random generation with bounds":
                   
-                //createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
+                createFile = new BoundedTestFileGenerator(containerType, 
+                  containerHeight, rotationsAllowed, numRectangles, path);
                 break;
               case "Squares only":
-                //createFile = new RandomTestFileGenerator(containerType, containerHeight, rotationsAllowed, numRectangles);
+                createFile = new SquareTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, path);
                 break;
               default:
                 // code block
             }
-            
+            return createFile.getFileName();
         }
     }
 
@@ -290,12 +316,13 @@ public class SimpleGUI {
             
             // Make sure the rectangles.length equals the placement.length
             if(rectangles.length != placement.length){
-                System.out.println("ERROR: rectangles.length != placement.length ");
+                System.out.println("ERROR: rectangles.length != placement.length");
             }
             
             // Create new rectangle to be drawn from the rectangles
             int maxWeight = calcMaxweigth(rectangles);
-            for(int i = 0; (i < rectangles.length) && (i < placement.length); i++){
+            for(int i = 0; (i < rectangles.length) && 
+                    (i < placement.length); i++){
                 // Also add index and weight to color it
                 dRectangles.add(new BetterRectangle(rectangles[i][0], 
                         rectangles[i][1], i, maxWeight));
@@ -359,7 +386,8 @@ public class SimpleGUI {
     
     private static String getSelected(ButtonGroup group) {
        String result = "";
-       for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+       for (Enumeration<AbstractButton> buttons = group.getElements(); 
+               buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {

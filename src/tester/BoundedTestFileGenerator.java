@@ -1,13 +1,15 @@
 package tester;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * Creates file with random generated rectangles based with max of MAXIMUMSIZE
- * based on some GlobalData from GUI
+ * based on some GlobalData from GUI and the bounds asked for is 2 JPop-ups
  */
-public class RandomTestFileGenerator extends AbstractTestFileGenerator{
+public class BoundedTestFileGenerator extends AbstractTestFileGenerator{
     
-    public RandomTestFileGenerator(String containerType, int containerHeight, 
+    public BoundedTestFileGenerator(String containerType, int containerHeight, 
             boolean rotationsAllowed, int numRectangles, String path) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, path);
     }
@@ -15,7 +17,21 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Random");
+        addToFileName("Bounded");
+        int max;
+        String input = JOptionPane.showInputDialog("Please input max: ");
+        max = Integer.parseInt(input);
+        if(max < 1){
+            max = 1;
+        }
+        
+        int min;
+        input = JOptionPane.showInputDialog("Please input min: ");
+        min = Integer.parseInt(input);
+        if(min > max){
+            min = max;
+        }
+        
         // Ini the rectangles array
         int[][] rectangles = new int[data.getNumRectangles()][2];
         int maxSizeX;
@@ -28,12 +44,17 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
             // Or just because they then become to big to draw
             maxSizeX = MAXIMUMSIZE;
         }
+        
+        if(max > maxSizeX){
+           max = maxSizeX;
+        }
         // Then create the random rectangles
         for (int[] rectangle : rectangles) {
-            rectangle[0] = (int) Math.round((maxSizeX - 1) * Math.random() + 1);
-            rectangle[1] = (int) Math.round((MAXIMUMSIZE - 1) * Math.random() + 1);
+            rectangle[0] = (int) Math.round((max - min) * Math.random() + min);
+            rectangle[1] = (int) Math.round((max - min) * Math.random() + min);
         }
         return rectangles;
     }
     
 }
+

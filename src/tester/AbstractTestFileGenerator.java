@@ -14,35 +14,37 @@ import logic.GlobalData;
 public class AbstractTestFileGenerator {
     public GlobalData data;
     public final int MAXIMUMSIZE = 25;
-    private final String PATH = "C:/Users/stefa/Downloads/";
+    private final String PATH;
     StringBuffer inputBuffer;
+    private String fileName;
     
     // Standard, mostly used in GUI to create random input files
     public AbstractTestFileGenerator(String containerType, int containerHeight, 
-            boolean rotationsAllowed, int numRectangles) {
+            boolean rotationsAllowed, int numRectangles, String path) {
         int[][] simple = {{1, 1}};
         data = new GlobalData(containerType, containerHeight, rotationsAllowed, 
                 simple, numRectangles);
         generateFile();
+        PATH = path;
     }
     
     // Can also be init from global data object
-    public AbstractTestFileGenerator(GlobalData data){
+    public AbstractTestFileGenerator(GlobalData data, String path){
         int[][] simple = {{1, 1}};
         this.data = new GlobalData(data.getType(), data.getHeight(), 
                 data.getRA(), simple, data.getNumRectangles());
         generateFile();
+        PATH = path;
     }
     
     // Generate a new file 
     public void generateFile(){
         // Create new filename
-        String filename;
         if(data.getType().equalsIgnoreCase(data.FREE)){
-            filename = data.getType() + data.getRA() + 
+            fileName = data.getType() + data.getRA() + 
                 data.getNumRectangles() + ".java";
         }else{
-            filename = data.getType() + data.getHeight() + data.getRA() + 
+            fileName = data.getType() + data.getHeight() + data.getRA() + 
                     data.getNumRectangles() + ".java";
         }
         
@@ -57,7 +59,7 @@ public class AbstractTestFileGenerator {
         
         // Wite input buffer into the file and then close file
         try{
-            FileOutputStream fileOut = new FileOutputStream(PATH + filename);
+            FileOutputStream fileOut = new FileOutputStream(PATH + fileName);
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
         }catch(IOException e){
@@ -86,7 +88,8 @@ public class AbstractTestFileGenerator {
     }
     
     // This method writes a string to the file and places a space at the end
-    public void writeToFileWithoutNewlineAndWithSpace( String textLine ) throws IOException {
+    public void writeToFileWithoutNewlineAndWithSpace( String textLine ) 
+            throws IOException {
         FileWriter write = new FileWriter("" , false);
         PrintWriter print_line = new PrintWriter(write);
         
@@ -99,5 +102,13 @@ public class AbstractTestFileGenerator {
         for(String line : lines){
             inputBuffer.append(line);
         }
+    }
+    
+    public void addToFileName(String ext){
+        fileName = ext + fileName;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

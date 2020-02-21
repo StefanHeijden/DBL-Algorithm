@@ -142,7 +142,7 @@ public class DrawPanel extends JPanel{
         }
     }
 
-     // Keep making the scaling smaller until we find a one that fits or is too small
+     // Keep making the scaling smaller until we find one that fits
     private void makeSmaller() {
         boolean done = false;
          // Try in case of ArithmeticException
