@@ -38,8 +38,8 @@ public class ContinateJaveFiles {
     
     
     // Specify which path and destination to use
-    static final String PATH1 = PSTEFAN; 
-    static final String DESTINATION = DSTEFAN;
+    static final String PATH1 = PLEIGHTON; 
+    static final String DESTINATION = DLEIGHTON;
     // Standard variables
     static final String PATH2 = "DBL-Algorithm/src/";
     static final String PATH = PATH1 + PATH2;
