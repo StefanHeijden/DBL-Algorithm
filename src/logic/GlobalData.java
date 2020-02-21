@@ -51,7 +51,7 @@ public class GlobalData {
         String[] result = new String[3 + numRectangles];
         result[0] = "container height: " + containerType;
         if(containerType.equals(FIXED)){
-            result[0] = result[0] + containerHeight;
+            result[0] = result[0] + " " + containerHeight;
         }
         result[0] = result[0] + '\n';
         

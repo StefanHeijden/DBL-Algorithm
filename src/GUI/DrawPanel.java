@@ -56,11 +56,14 @@ public class DrawPanel extends JPanel{
    
     // Determines wether the rectangle can be painted on the screen
     public boolean canPaint(){
+        // Check each rectangle
         for(BetterRectangle r: rectangles){
+            // Scale the rectangles
             int x = (int) (r.x * scale);
             int y = (int) (r.y * scale);
             int width = (int) (r.width * scale);
             int height = (int) (r.height * scale);
+            // Check whether the rectangles fits on the screen
             if(!(x + width < this.getWidth() &&
                     y + height < this.getHeight() - heightFix)){
                 return false;

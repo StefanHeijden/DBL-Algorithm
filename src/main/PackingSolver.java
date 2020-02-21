@@ -47,6 +47,10 @@ public class PackingSolver {
         return data.getRectangles();
     }
     
+    public String[] getGlobalData(){
+        return data.dataToString();
+    }
+    
     public int[][] getPlacement(){
         return grid.getPlacement();
     }

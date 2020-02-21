@@ -24,6 +24,7 @@ import main.PackingSolver;
 public class SimpleGUI {
     static JFrame frame;
     static DrawPanel panel;
+    static JTextArea textArea;
     static final int FRAMEHEIGHT = 1000;
     static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
@@ -97,13 +98,12 @@ public class SimpleGUI {
         panel.setBounds(0, 0, FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT);
         
         // Create text field with info
-        JTextArea textArea = new JTextArea();
+        textArea = new JTextArea();
         textArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
                 BUTTONWIDTH, TEXTAREAHEIGHT);
         textArea.setText("container height: \n" +
                         "rotations allowed: \n" +
-                        "number of rectangles: \n" +
-                        "maybe more? \ndoesn't work yet btw");
+                        "number of rectangles: \n");
         textArea.setEditable(false);
         // Add all components to frame
         frame.setJMenuBar(menuBar);
@@ -290,6 +290,7 @@ public class SimpleGUI {
             panel.setRectangles(dRectangles);
             panel.scale();
             panel.specialRepaint();
+            updateTextArea(packingSolver.getGlobalData());
         }
 
         // Calculate the maxWeight for coloring
@@ -301,6 +302,13 @@ public class SimpleGUI {
                 }
             }
             return weight;
+        }
+
+        private void updateTextArea(String[] text) {
+            textArea.setText("");
+            for(String s: text){
+                textArea.append(s);
+            }
         }
     
     }
