@@ -288,7 +288,7 @@ public class SimpleGUI {
             }
             // Make sure the panel contains the rectangles and draws them
             panel.setRectangles(dRectangles);
-            panel.setScale(1);
+            panel.scale();
             panel.specialRepaint();
         }
 
@@ -313,7 +313,7 @@ public class SimpleGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(panel.getRectangles() != null && panel.getRectangles().size() > 0){
+            if(panel.canRepaint()){
                 panel.specialRepaint();
             }
         }

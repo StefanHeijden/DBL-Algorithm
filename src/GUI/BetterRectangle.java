@@ -27,9 +27,11 @@ public class BetterRectangle extends Rectangle{
     // Give the rectangle a color based on how big it is
     private void setColorBasedOnWeight() {
         // The larger the rectangle, the redder is will become
-        int red = (int) Math.round( 250.0 * ((double) getWeight() / (double) MAXWEIGHT));
+        int red = (int) Math.round( 250.0 * ((double) getWeight() 
+                / (double) MAXWEIGHT));
         // The smaller the rectangle, the greener is will become
-        int green = 250 - (int) Math.round( 250.0 * ((double) getWeight() / (double) MAXWEIGHT));
+        int green = 250 - (int) Math.round( 250.0 * ((double) getWeight() 
+                / (double) MAXWEIGHT));
         // Change the color
         setColor(new Color(red, green, 0));
     }

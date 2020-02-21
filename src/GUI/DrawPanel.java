@@ -7,11 +7,13 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author stefa
+ * Panel used in GUI to draw the rectangles
  */
 public class DrawPanel extends JPanel{
-    private List<BetterRectangle> rectangles;
+    private List<BetterRectangle> rectangles; // Rectangles to be drawn
     double scale = 1.0; // Increase to increase size of the rectangles
+    // For some reason the panel height is warped and is about
+    // 70 units smaller
     int heightFix = 70;
     
     public DrawPanel(){
@@ -22,25 +24,23 @@ public class DrawPanel extends JPanel{
     @Override
     public void paintComponents(Graphics g){
         super.paintComponent(g);
+        // Loop to draw each rectangle
         rectangles.forEach((r) -> {
-            //System.out.println("DRAW RECTANGLE: \nx: " + r.x + "\ny: " + r.y + 
-                    //"\nwidth: " +  r.width + "\nheight: " +  r.height);
-            //System.out.println("Color(" + r.getColor().getRed() + ", " 
-                    //+ r.getColor().getGreen() + ", " 
-                    //+ r.getColor().getBlue() + ")");
+            // Scale the rectangles
             int x = (int) (r.x * scale);
             int y = (int) (r.y * scale);
             int width = (int) (r.width * scale);
             int height = (int) (r.height * scale);
-            if(canPaint(x, y, width, height)){
-                g.setColor(r.getColor());
-                System.out.println(this.getHeight());
-                g.fillRect(x, this.getHeight() - heightFix - y - height, width , height);
-                g.setColor(Color.BLACK);
-                g.drawRect(x, this.getHeight() - heightFix - y - height, width, height);
-            }else{
-                System.out.println("DIDNT DRAW RECTANGLE");
-            }
+            // Set drawing color to red/green for rectangle
+            g.setColor(r.getColor());
+            // Then make filled rectangle with that color
+            g.fillRect(x, this.getHeight() - heightFix - y - height, 
+                    width , height);
+            // Set to color black for edges around rectangles
+            g.setColor(Color.BLACK);
+            // Draw a rectanles , basicly just 4 black lines
+            g.drawRect(x, this.getHeight() - heightFix - y - height, 
+                    width, height);
         });
     }
     
@@ -54,15 +54,26 @@ public class DrawPanel extends JPanel{
     }
    
     // Determines wether the rectangle can be painted on the screen
-    public boolean canPaint(int x, int y, int width, int height){
-        return (x + width < this.getWidth() &&
-                    y + height < this.getHeight() - heightFix);
+    public boolean canPaint(){
+        for(BetterRectangle r: rectangles){
+            int x = (int) (r.x * scale);
+            int y = (int) (r.y * scale);
+            int width = (int) (r.width * scale);
+            int height = (int) (r.height * scale);
+            if(!(x + width < this.getWidth() &&
+                    y + height < this.getHeight() - heightFix)){
+                return false;
+            }
+        }
+        return true;
     }
        
+    // Used in GUI to make sure repaint isn't used when there are no rectangles
     public boolean canRepaint(){
         return (getRectangles() != null && getRectangles().size() > 0);
     }
    
+    // Change the scale of the rectangles
     public void setScale(double scale){
         this.scale = scale;
     }
@@ -83,6 +94,8 @@ public class DrawPanel extends JPanel{
             }else{ if(scale >= 0.01){
                 scale = scale + 0.01;
             }else{ throw new ArithmeticException();}}} // Possibly unreachable
+        }else{
+             throw new ArithmeticException();
         }
     }
     
@@ -98,5 +111,58 @@ public class DrawPanel extends JPanel{
             scale = scale - 0.01;
         }else{ throw new ArithmeticException();}}} // Scaling cannot be to small
     }
+    
+    // Scale the rectangles such that they fit on screen
+    public void scale(){
+        // Make scaling larger if the rectangles fit
+        if(canPaint()){
+            makeLarger();
+        }else{ // else make them smaller
+            makeSmaller();
+        }
+    }
+
+    // Keep making the scaling larger until we find a one that is too large
+    private void makeLarger() {
+        boolean done = false;
+        // Try in case of ArithmeticException
+        try{
+            // Keep incrementing the scale untill one doesn't fit
+            while(!done){
+                // Incrementing the scale
+                incrementScale();
+                done = !canPaint();
+            }
+            // Then make one smaller, this one should just fit
+            decrementScale();
+            // but make sure it does
+            if(!canPaint()){
+                System.out.print("CHECK IN SCALING makeLarger failed");
+            }
+        }catch(ArithmeticException e){
+            System.out.print("ERROR IN SCALING makeLarger");
+        }
+    }
+
+     // Keep making the scaling smaller until we find a one that fits or is too small
+    private void makeSmaller() {
+        boolean done = false;
+         // Try in case of ArithmeticException
+        try{
+            // Keep decrementing the scale untill one fits
+            while(!done){
+                decrementScale();
+                done = canPaint();
+            }
+        }catch(ArithmeticException e){
+            System.out.print("ERROR IN SCALING makeSmaller");
+        }
+        // Make sure it fits
+        if(!canPaint()){
+            System.out.print("CHECK IN SCALING makeSmaller failed");
+        }
+    }
+    
+    
  
 }
