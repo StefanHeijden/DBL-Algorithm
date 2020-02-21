@@ -46,6 +46,7 @@ public class DrawPanel extends JPanel{
     
     public void setRectangles(List<BetterRectangle> rectangles){
         this.rectangles = rectangles;
+        scale = 1; // also reset scaling
     }
     
     
@@ -84,16 +85,13 @@ public class DrawPanel extends JPanel{
     
     // Increment the scaling with one step based on what the scaling is
     public void incrementScale() throws ArithmeticException{
-        if (scale <= 10){ // Scaling cannot be to big
-            if(scale >= 1){
-                scale = scale + 1;
-
-            }else{ if(scale >= 0.1){
+        if (scale <= 20){ // Scaling cannot be to big
+            if(scale >= 0.1){
                 scale = scale + 0.1;
 
-            }else{ if(scale >= 0.01){
-                scale = scale + 0.01;
-            }else{ throw new ArithmeticException();}}} // Possibly unreachable
+            }else{ if(scale >= 0.005){
+                scale = scale + 0.005;
+            }else{ throw new ArithmeticException();}} // Possibly unreachable
         }else{
              throw new ArithmeticException();
         }
@@ -101,15 +99,12 @@ public class DrawPanel extends JPanel{
     
     // Increment the scaling with one step based on what the scaling is
     public void decrementScale() throws ArithmeticException{
-        if(scale >= 2){
-            scale = scale - 1;
-            
-        }else{ if(scale >= 0.2){
+        if(scale >= 0.2){
             scale = scale - 0.1;
             
-        }else{ if(scale >= 0.02){
-            scale = scale - 0.01;
-        }else{ throw new ArithmeticException();}}} // Scaling cannot be to small
+        }else{ if(scale >= 0.01){
+            scale = scale - 0.005;
+        }else{ throw new ArithmeticException();}} // Scaling cannot be to small
     }
     
     // Scale the rectangles such that they fit on screen
@@ -137,10 +132,10 @@ public class DrawPanel extends JPanel{
             decrementScale();
             // but make sure it does
             if(!canPaint()){
-                System.out.print("CHECK IN SCALING makeLarger failed");
+                System.out.println("CHECK IN SCALING makeLarger failed");
             }
         }catch(ArithmeticException e){
-            System.out.print("ERROR IN SCALING makeLarger");
+            System.out.println("ERROR IN SCALING makeLarger");
         }
     }
 
@@ -155,11 +150,11 @@ public class DrawPanel extends JPanel{
                 done = canPaint();
             }
         }catch(ArithmeticException e){
-            System.out.print("ERROR IN SCALING makeSmaller");
+            System.out.println("ERROR IN SCALING makeSmaller");
         }
         // Make sure it fits
         if(!canPaint()){
-            System.out.print("CHECK IN SCALING makeSmaller failed");
+            System.out.println("CHECK IN SCALING makeSmaller failed");
         }
     }
     
