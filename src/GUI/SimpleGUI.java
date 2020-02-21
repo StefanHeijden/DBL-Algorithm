@@ -3,7 +3,9 @@ package GUI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import javax.swing.*;
 import tester.AbstractTestFileGenerator;
 import tester.RandomTestFileGenerator;
@@ -15,6 +17,8 @@ import main.PackingSolver;
  * Used for testing PackingSolver
  */
 public class SimpleGUI {
+    static JFrame frame;
+    static DrawPanel panel;
     static final int FRAMEHEIGHT = 800;
     static final int FRAMEWIDTH = 1200;
     static final int BUTTONHEIGHT = 50;
@@ -51,14 +55,14 @@ public class SimpleGUI {
      */
     public static void main(String[] args) {
         // Create frame
-        JFrame frame = new JFrame("GUI for PackingSolver");
+        frame = new JFrame("GUI for PackingSolver");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(FRAMEWIDTH, FRAMEHEIGHT);
         frame.setLayout(null);
         
         // Create menu
         JMenuBar menuBar = new JMenuBar();
-        addTestGeneratorMenu(frame, menuBar);
+        addTestGeneratorMenu(menuBar);
         
         // Create buttons
         // Create button for generating test files
@@ -74,7 +78,7 @@ public class SimpleGUI {
                 BUTTONWIDTH, BUTTONHEIGHT);
         
         // Create pannel for rectangles to be drawn on
-        JPanel panel = new JPanel();
+        panel = new DrawPanel();
         panel.setBackground(new Color(200, 200, 200));  
         panel.setBounds(0, 0, FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT);
         
@@ -98,7 +102,7 @@ public class SimpleGUI {
     }
     
     // This method adds a menu that can be used for generating test files
-    public static void addTestGeneratorMenu(JFrame frame, JMenuBar menuBar){
+    public static void addTestGeneratorMenu(JMenuBar menuBar){
 
         //Build the first menu.
         JMenu menu = new JMenu("Generate test file");
@@ -195,19 +199,52 @@ public class SimpleGUI {
     }
     
     static class RunPackingSolver implements ActionListener {
-        //public RunPackingSolver(){
-        
-        //}
+        PackingSolver packingSolver;
         
         @Override
         public void actionPerformed(ActionEvent e){
-            PackingSolver packingSolver = new PackingSolver(fileName);
-            PackingSolver.main(null);
-            // set Text Area
+            // Run PackingSolver
+            packingSolver = new PackingSolver();
+            packingSolver.run(fileName);
+            
             // Obtain rectangles and location
-    }
+            System.out.println("done with run");
+            int[][] rectangles = packingSolver.getRectangles();
+            int[][] placement = packingSolver.getPlacement();
+            System.out.println("r length: " + rectangles.length );
+            // Create rectangle list to draw rectangles
+            List<BetterRectangle> dRectangles = new ArrayList<>();
+            
+            // Make sure the rectangles.length equals the placement.length
+            if(rectangles.length != placement.length){
+                System.out.println("ERROR: rectangles.length != placement.length ");
+            }
+            
+            // Create new rectangle to be drawn from the rectangles
+            for(int i = 0; (i < rectangles.length) && (i < placement.length); i++){
+                // Also add index and weight to color it
+                dRectangles.add(new BetterRectangle(rectangles[i][0], 
+                        rectangles[i][0], i, calcMaxweigth(rectangles)));
+                // then move the rectangle to its placed spot
+                dRectangles.get(i).move(placement[i][0], placement[i][1]);
+            }
+            // Make sure the panel contains the rectangles and draws them
+            panel.setRectangles(dRectangles);
+            System.out.println("repaint");
+            panel.specialRepaint();
+        }
 
-    }
+        private int calcMaxweigth(int[][] rectangles) {
+            int weight = 0;
+            for(int[] r: rectangles){
+                if(weight < r[0] * r[1]){
+                    weight = r[0] * r[1];
+                }
+            }
+            return weight;
+        }
     
+    }
     
 }
+    
