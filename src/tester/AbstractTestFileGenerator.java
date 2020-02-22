@@ -24,8 +24,8 @@ public class AbstractTestFileGenerator {
         int[][] simple = {{1, 1}};
         data = new GlobalData(containerType, containerHeight, rotationsAllowed, 
                 simple, numRectangles);
-        generateFile();
         PATH = path;
+        generateFile();
     }
     
     // Can also be init from global data object
@@ -33,8 +33,8 @@ public class AbstractTestFileGenerator {
         int[][] simple = {{1, 1}};
         this.data = new GlobalData(data.getType(), data.getHeight(), 
                 data.getRA(), simple, data.getNumRectangles());
-        generateFile();
         PATH = path;
+        generateFile();
     }
     
     // Generate a new file 

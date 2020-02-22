@@ -203,7 +203,6 @@ public class SimpleGUI {
             for(String s: files){
                 if(s.length() <= path.length()){
                     remove = s;
-                    System.out.println(s);
                     done = false;
                 }
             }
