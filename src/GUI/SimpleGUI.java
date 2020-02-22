@@ -50,6 +50,7 @@ public class SimpleGUI {
       // in the class GenerateTestFile inside the class GUI!!
 
         // You can add you file path here 
+    /*
     private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
                 + "DBL algorithms/testcases/";
     private static final String pathStefan = "C:/Users/stefa/Documents/"
@@ -59,10 +60,12 @@ public class SimpleGUI {
             +"DBL-Algorithm/testcases/";
     private static final String pathJodi = "C:/Users/s165698/Documents/"
             + "DBL Algorithms/";
+    */
     
     
-    //choose you path
-    private static final String path = pathStefan;
+    // Path is now in file testfiles in the DBL-Algorithm files, 
+    // if not there yet make folder testfiles and place your testfiles there 
+    private static final String PATH = "./../DBL-Algorithm/testfiles/";
     
     /**
      * // This main method can be used for testing
@@ -187,7 +190,7 @@ public class SimpleGUI {
     public static String[] getFiles(){
         // Obtain all the file paths from the path folder
         List<String> files = new ArrayList<>();
-        try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+        try (Stream<Path> paths = Files.walk(Paths.get(PATH))) {
             paths.forEach((p) -> {
                 files.add(p.toString());
             });
@@ -201,7 +204,7 @@ public class SimpleGUI {
             done = true;
             String remove = "";
             for(String s: files){
-                if(s.length() <= path.length()){
+                if(s.length() <= PATH.length()){
                     remove = s;
                     done = false;
                 }
@@ -212,7 +215,7 @@ public class SimpleGUI {
         // Obtain the file names from the Arraylist and add them into a String[]
         String[] file = new String[files.size()];
         for(int i = 0; i < file.length; i++){
-            file[i] = (files.get(i).substring(path.length()));
+            file[i] = (files.get(i).substring(PATH.length()));
         }
         
         return file;
@@ -266,16 +269,16 @@ public class SimpleGUI {
             switch(selected) {
               case "Random generation":
                 createFile = new RandomTestFileGenerator(containerType, 
-                        containerHeight, rotationsAllowed, numRectangles, path);
+                        containerHeight, rotationsAllowed, numRectangles, PATH);
                 break;
               case "Random generation with bounds":
                   
                 createFile = new BoundedTestFileGenerator(containerType, 
-                  containerHeight, rotationsAllowed, numRectangles, path);
+                  containerHeight, rotationsAllowed, numRectangles, PATH);
                 break;
               case "Squares only":
                 createFile = new SquareTestFileGenerator(containerType, 
-                        containerHeight, rotationsAllowed, numRectangles, path);
+                        containerHeight, rotationsAllowed, numRectangles, PATH);
                 break;
               default:
                 // code block
@@ -301,7 +304,7 @@ public class SimpleGUI {
             packingSolver = new PackingSolver();
             // Get current time before running Packing Solver
             Date d1 = new Date();
-            packingSolver.runFromGUI(path + getSelected(pathGroup));
+            packingSolver.runFromGUI(PATH + getSelected(pathGroup));
             // Get current time after running Packing Solver
             Date d2 = new Date();
             // Compare the two so that we know runtime
