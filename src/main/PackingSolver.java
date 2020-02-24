@@ -17,8 +17,7 @@ public class PackingSolver {
     private final static int BRUTEFORCETHRESHOLD = 6;
     
     // Use the next variables to determine what algorithm to run FOR TESTING!
-    private final static boolean TESTING = true;
-    private final static String TESTINGALGORITHM = "Testing";
+    private static String testingAlgorithm = "standard";
     /**
      * @param args the command line arguments
      */
@@ -28,9 +27,10 @@ public class PackingSolver {
         run();
     }
     
-    public static void runFromGUI(String file) {
+    public static void runFromGUI(String file, String algorithm) {
         // read inputs from file
         input = new TestReader(file);
+        testingAlgorithm = algorithm;
         run();
         
     }
@@ -68,14 +68,17 @@ public class PackingSolver {
     // Determines what algorithm to use based on the input data
     // Used certain variables which we can change in order to get best results
     public static String getAlgorithmName(){
-        // When testing we can use algorithm directly
-        if(TESTING){
-            return TESTINGALGORITHM;
+        // When testing we can use algorithm directly, or if we choose standard
+        // way of choosing algorithm
+        if(!testingAlgorithm.equals("standard")){
+            return testingAlgorithm;
         }
         // Else determine the algorithm based on some variables
         // If number of rectangles is small, use Brute Force
         if(data.getNumRectangles() < BRUTEFORCETHRESHOLD){
-            return "BruteForceFree";
+            if(data.getType().equalsIgnoreCase(data.FREE)){
+                return "BruteForceFree";
+            }
         }
         return "Testing";
     }
@@ -93,6 +96,7 @@ public class PackingSolver {
             return new TestingAlgorithm(grid, data);
         }
         // If nothing is found
+        System.out.println("Algorithm not found: " + testingAlgorithm);
         return new TestingAlgorithm(grid, data);
     }
     

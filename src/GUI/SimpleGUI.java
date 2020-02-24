@@ -29,6 +29,7 @@ public class SimpleGUI {
     static JMenuBar menuBar;
     static JMenu generateTestFilemenu;
     static JMenu fileMenu;
+    static JMenu algorithmMenu;
     static final int FRAMEHEIGHT = 1000;
     static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
@@ -40,6 +41,7 @@ public class SimpleGUI {
     static ButtonGroup group3;
     static ButtonGroup group4;
     static ButtonGroup pathGroup;
+    static ButtonGroup algorithmGroup;
     static String[] titelsGroup1 = {"free", "fixed"};
     static String[] titelsGroup2 = {"no rotation", "rotation"};
     static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
@@ -48,21 +50,11 @@ public class SimpleGUI {
                                     "Squares only"
     };// TitelGroup4 has to be added manually to the switch in generateTestFile()
       // in the class GenerateTestFile inside the class GUI!!
-
-        // You can add you file path here 
-    /*
-    private static final String pathLeigthon = "E:/TUe/PT/Courses/Y3/"
-                + "DBL algorithms/testcases/";
-    private static final String pathStefan = "C:/Users/stefa/Documents/"
-            + "DBL-Algorithm/testfiles/";
-    private static final String pathEzra = "";
-    private static final String pathYana = "C:/Users/yana/Documents/"
-            +"DBL-Algorithm/testcases/";
-    private static final String pathJodi = "C:/Users/s165698/Documents/"
-            + "DBL Algorithms/";
-    */
     
-    
+    // Names of the algorithms, standard is used to let the PackingSolver
+    // decide what algorithm to use based on the data
+    static final String[] ALGORITHMS = {"standard", "BruteForcFree", "LevelPacking", "Testing"};
+     
     // Path is now in file testfiles in the DBL-Algorithm files, 
     // if not there yet make folder testfiles and place your testfiles there 
     private static final String PATH = "./../DBL-Algorithm/testfiles/";
@@ -81,6 +73,7 @@ public class SimpleGUI {
         menuBar = new JMenuBar();
         addTestGeneratorMenu();
         addFileMenu();
+        addAlgorithmMenu();
         
         // Create buttons
         // Create button for generating test files
@@ -172,6 +165,18 @@ public class SimpleGUI {
             group.add(rbMenuItem);
             menu.add(rbMenuItem);
         }
+    }
+    
+    public static void addAlgorithmMenu(){
+        //Build the third menu.
+        algorithmMenu = new JMenu("Select Algorithm");
+        algorithmMenu.getAccessibleContext().setAccessibleDescription(
+                "This menu can be used to select the algorithm to use");
+        algorithmGroup = new ButtonGroup();
+        createMenuRadioButtons(algorithmGroup, algorithmMenu, ALGORITHMS);
+        
+        // Add the menu to the menubar
+        menuBar.add(algorithmMenu);
     }
         
     public static void addFileMenu(){
@@ -304,7 +309,7 @@ public class SimpleGUI {
             packingSolver = new PackingSolver();
             // Get current time before running Packing Solver
             Date d1 = new Date();
-            packingSolver.runFromGUI(PATH + getSelected(pathGroup));
+            packingSolver.runFromGUI(PATH + getSelected(pathGroup), getSelected(algorithmGroup));
             // Get current time after running Packing Solver
             Date d2 = new Date();
             // Compare the two so that we know runtime
@@ -389,13 +394,18 @@ public class SimpleGUI {
         
     }
     
+    // Loops over the buttons in the group and returns the titel
+    // of the selected on
     private static String getSelected(ButtonGroup group) {
        String result = "";
+       // Loops over the buttons in the group
        for (Enumeration<AbstractButton> buttons = group.getElements(); 
                buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
+            // If it is the one that is selected
             if (button.isSelected()) {
+                // Safe the titel
                 result = button.getText();
             }
         }
