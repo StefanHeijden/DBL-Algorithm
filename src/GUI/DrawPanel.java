@@ -9,7 +9,7 @@ import javax.swing.JPanel;
  *
  * Panel used in GUI to draw the rectangles
  */
-public class DrawPanel extends JPanel{
+public class DrawPanel extends JPanel {
     private List<BetterRectangle> rectangles; // Rectangles to be drawn
     double scale = 1.0; // Increase to increase size of the rectangles
     // For some reason the panel height is warped and is about
@@ -26,27 +26,25 @@ public class DrawPanel extends JPanel{
         super.paintComponent(g);
         // Loop to draw each rectangle
         rectangles.forEach((r) -> {
-            // Scale the rectangles
-            int x = (int) (r.x * scale);
-            int y = (int) (r.y * scale);
-            int width = (int) (r.width * scale);
-            int height = (int) (r.height * scale);
             // Set drawing color to red/green for rectangle
             g.setColor(r.getColor());
             // Then make filled rectangle with that color
-            g.fillRect(x, this.getHeight() - heightFix - y - height, 
-                    width , height);
+            g.fillRect(r.scaledX, this.getHeight() - heightFix - r.scaledY - 
+                    r.scaledHeight, r.scaledWidth , r.scaledHeight);
             // Set to color black for edges around rectangles
             g.setColor(Color.BLACK);
             // Draw a rectanles , basicly just 4 black lines
-            g.drawRect(x, this.getHeight() - heightFix - y - height, 
-                    width, height);
+            g.drawRect(r.scaledX, this.getHeight() - heightFix - r.scaledY - 
+                    r.scaledHeight, r.scaledWidth, r.scaledHeight);
         });
     }
     
     public void setRectangles(List<BetterRectangle> rectangles){
         this.rectangles = rectangles;
         scale = 1; // also reset scaling
+        if(!isLegal()){
+            System.out.println("Some rectangles overlap!");
+        }
     }
     
     
@@ -59,13 +57,13 @@ public class DrawPanel extends JPanel{
         // Check each rectangle
         for(BetterRectangle r: rectangles){
             // Scale the rectangles
-            int x = (int) (r.x * scale);
-            int y = (int) (r.y * scale);
-            int width = (int) (r.width * scale);
-            int height = (int) (r.height * scale);
+            r.scaledX = (int) (r.x * scale);
+            r.scaledY = (int) (r.y * scale);
+            r.scaledWidth = (int) (r.width * scale);
+            r.scaledHeight = (int) (r.height * scale);
             // Check whether the rectangles fits on the screen
-            if(!(x + width < this.getWidth() &&
-                    y + height < this.getHeight() - heightFix)){
+            if(!(r.scaledX + r.scaledWidth < this.getWidth() &&
+                    r.scaledY + r.scaledHeight < this.getHeight() - heightFix)){
                 return false;
             }
         }
@@ -165,4 +163,41 @@ public class DrawPanel extends JPanel{
         return scale;
     }
     
+    public boolean isLegal(){
+        for(BetterRectangle r1: rectangles){
+            for(BetterRectangle r2: rectangles){
+                if(r1 != r2){
+                    if(r1.intersects(r2)){
+                        r1.setColor(new Color(255, 0, 0));
+                        r2.setColor(new Color(255, 0, 0));
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    String[] getRectangleAt(int x, int y) {
+        y = this.getHeight() - y - 10;
+        x = x - 8;
+        String[] info = new String[5];
+        info[0] = "Rectangle: ";
+        info[1] = "x: ";
+        info[2] = "y: ";
+        info[3] = "width: " ;
+        info[4] = "height: ";
+        if(canRepaint()){ 
+            for(BetterRectangle r1: rectangles){
+               if(r1.scaledInside(x, y)){
+                    info[0] = "Rectangle: " + r1.index;
+                    info[1] = "x: " + r1.x;
+                    info[2] = "y: " + r1.y;
+                    info[3] = "width: " + r1.width;
+                    info[4] = "height: " + r1.height;
+               }
+            }
+        }
+        return info;
+    }
 }

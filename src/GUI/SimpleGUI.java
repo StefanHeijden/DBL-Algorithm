@@ -1,8 +1,11 @@
 package GUI;
 
 import java.awt.Color;
+import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +29,8 @@ public class SimpleGUI {
     static DrawPanel panel;
     static JTextArea textArea;
     static JScrollPane areaScrollPane;
+    static JTextArea infoArea;
+    static JScrollPane infoScrollPane;
     static JMenuBar menuBar;
     static JMenu generateTestFilemenu;
     static JMenu fileMenu;
@@ -35,6 +40,7 @@ public class SimpleGUI {
     static final int BUTTONHEIGHT = 50;
     static final int BUTTONWIDTH = 200;
     static final int TEXTAREAHEIGHT = 600;
+    static final int INFOHEIGHT = 100;
     // These are the groups and input neeeded for TestFileGenerator menu
     static ButtonGroup group1;
     static ButtonGroup group2;
@@ -59,16 +65,19 @@ public class SimpleGUI {
     // if not there yet make folder testfiles and place your testfiles there 
     private static final String PATH = "./../DBL-Algorithm/testfiles/";
     
-    /**
-     * // This main method can be used for testing
-     */
-    public static void main(String[] args) {
+    public SimpleGUI(){
         // Create frame
         frame = new JFrame("GUI for PackingSolver");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(FRAMEWIDTH, FRAMEHEIGHT);
         frame.setLayout(null);
-        
+        frame.addMouseListener(new Mouse());
+    }
+    
+    /**
+     * // This main method can be used for testing
+     */
+    public static void run() {
         // Create menu
         menuBar = new JMenuBar();
         addTestGeneratorMenu();
@@ -99,6 +108,23 @@ public class SimpleGUI {
         panel.setBackground(new Color(200, 200, 200));  
         panel.setBounds(0, 0, FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT);
         
+        // Create info field with info of the selected rectangle 
+        // and add scrolling to it
+        infoArea = new JTextArea();
+        infoArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT 
+                - INFOHEIGHT - 5, BUTTONWIDTH, INFOHEIGHT);
+        infoArea.setText("Rectangle: \n" +
+                "x: \n" +
+                "y: \n" +
+                "width: \n" +
+                "height: \n");
+        infoArea.setEditable(false);
+        infoScrollPane = new JScrollPane(infoArea);
+        //areaScrollPane.setVerticalScrollBarPolicy(
+        //        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        infoScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT 
+                - INFOHEIGHT - 5, BUTTONWIDTH, INFOHEIGHT);
+        
         // Create text field with info and add scrolling to it
         textArea = new JTextArea();
         textArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT, 
@@ -123,6 +149,7 @@ public class SimpleGUI {
         frame.add(buttonPackingSolver);
         frame.add(repaintButton);
         frame.add(panel);
+        frame.add(infoScrollPane);
         frame.add(areaScrollPane);
         frame.setVisible(true);
     }
@@ -410,6 +437,45 @@ public class SimpleGUI {
             }
         }
        return result;
+    }
+    
+    /*
+     * This class is used for mouse actions
+    */
+    static class Mouse implements MouseListener{
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = (int) MouseInfo.getPointerInfo().getLocation().getX();
+            int y = (int) MouseInfo.getPointerInfo().getLocation().getY();
+            String[] info = panel.getRectangleAt(x, y);
+
+            //Clear textArea
+            infoArea.setText("");
+
+            // Add the info of the rectangle
+            for (String s : info) {
+                infoArea.append(s);
+                infoArea.append("\n");
+            }
+            // Scroll to top
+            infoArea.setCaretPosition(0);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }
     
