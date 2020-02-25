@@ -443,10 +443,16 @@ public class SimpleGUI {
      * This class is used for mouse actions
     */
     static class Mouse implements MouseListener{
+        
+        // Show information of the rectangle at the mouse position when
+        // clicked
         @Override
         public void mouseClicked(MouseEvent e) {
+            // Get the mouse position
             int x = (int) MouseInfo.getPointerInfo().getLocation().getX();
             int y = (int) MouseInfo.getPointerInfo().getLocation().getY();
+            
+            // Then check what rectangle is add the mouse position
             String[] info = panel.getRectangleAt(x, y);
 
             //Clear textArea
