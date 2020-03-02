@@ -24,7 +24,7 @@ public class Grid {
                 GlobalData data) {
         //first compute sum of rectangle area because is used in both variants
         double areaRectangles = 0; //used to store sum of area of all rectangles
-        for (int[] rectangle: placement) { //loop through all rectangles
+        for (int[] rectangle : data.getRectangles()) { //loop through all rectangles
             double areaCurrentRectangle = rectangle[0] * rectangle[1];
             areaRectangles += areaCurrentRectangle;
         }
@@ -32,8 +32,6 @@ public class Grid {
         // computation different for strip packing vs bounding box variants   
         if (containerType.equals(data.FREE)) { //if free
             //density = (\sum (area rectangles)) / ((\max xCoor) * (\max yCoor))
-            
-            //first compute max yCoor and max xCoor
             double maxXCoor = 0; //stores max x coordinate
             double maxYCoor = 0; //stores max y coordinate
             
@@ -51,10 +49,35 @@ public class Grid {
                 }
             }
             
+            System.out.println("areaRectangles: " + areaRectangles);
+            System.out.println("maxXCoor: " + maxXCoor);
+            System.out.println("maxYCoor: " + maxYCoor);
+            
             density = areaRectangles / (maxXCoor * maxYCoor); //set density
+            
+            System.out.println("density: " + density);
             
         } else if (containerType.equals(data.FIXED)) { //if fixed
             //density = (\sum (area rectangles)) / ((\max xCoor) * (containerHeight))
+            double maxXCoor = 0; //stores max x coordinate
+            double maxYCoor = data.getHeight(); //stores max y coordinate
+            
+            for (int i = 0; i < data.getNumRectangles(); i++) {
+                // currentMaxXCoor = current placement x + width of rectangle
+                double currentMaxXCoor = placement[i][0] + data.getRectangles()[i][0];
+                
+                if (currentMaxXCoor > maxXCoor) { // if needed update maxXCoor
+                    maxXCoor = currentMaxXCoor;
+                }
+            }
+            
+            System.out.println("areaRectangles: " + areaRectangles);
+            System.out.println("maxXCoor: " + maxXCoor);
+            System.out.println("maxYCoor: " + maxYCoor);
+            
+            density = areaRectangles / (maxXCoor * maxYCoor); //set density
+            
+            System.out.println("density: " + density);
         }
     }
     
