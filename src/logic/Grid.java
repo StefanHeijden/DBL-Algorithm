@@ -20,6 +20,7 @@ public class Grid {
     }
     
     //computes density of final placement, only call if placement is full
+    //density is set to the percentage the bounding box or strip is filled
     public void computeFinalDensity(String containerType, int containerHeight,
                 GlobalData data) {
         //first compute sum of rectangle area because is used in both variants
@@ -49,14 +50,8 @@ public class Grid {
                 }
             }
             
-            System.out.println("areaRectangles: " + areaRectangles);
-            System.out.println("maxXCoor: " + maxXCoor);
-            System.out.println("maxYCoor: " + maxYCoor);
-            
-            density = areaRectangles / (maxXCoor * maxYCoor); //set density
-            
-            System.out.println("density: " + density);
-            
+            density = 100 * (areaRectangles / (maxXCoor * maxYCoor)); //set density
+                        
         } else if (containerType.equals(data.FIXED)) { //if fixed
             //density = (\sum (area rectangles)) / ((\max xCoor) * (containerHeight))
             double maxXCoor = 0; //stores max x coordinate
@@ -71,13 +66,8 @@ public class Grid {
                 }
             }
             
-            System.out.println("areaRectangles: " + areaRectangles);
-            System.out.println("maxXCoor: " + maxXCoor);
-            System.out.println("maxYCoor: " + maxYCoor);
+            density = 100 * (areaRectangles / (maxXCoor * maxYCoor)); //set density
             
-            density = areaRectangles / (maxXCoor * maxYCoor); //set density
-            
-            System.out.println("density: " + density);
         }
     }
     

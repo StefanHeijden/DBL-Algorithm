@@ -73,7 +73,7 @@ public class TestingAlgorithm extends AbstractAlgorithm{
             }
         }
         
-        grid.storePlacement(placement);
+        grid.storePlacement(placement); //store placement
     }
     
 }
