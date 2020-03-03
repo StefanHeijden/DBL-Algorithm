@@ -44,30 +44,45 @@ public class Writer {
     }
     
     public void writeGlobalData(){
+        //err stream is used to print to momotor output to debug
+        System.err.println("Test Instance used, for momotor testing");
+        
         // Print First line
         System.out.print("container height: ");
+        System.err.print("container height: ");// to show feedback in momotor
         System.out.print(data.getType());
+        System.err.print(data.getType());// to show feedback in momotor
         if(data.getType().equals(data.FIXED)){
             System.out.print(" " + data.getHeight());
+            System.err.print(" " + data.getHeight());//to show feedback in momotor
         }
         System.out.println();
+        System.err.println(); //to show feedback in momotor
         
         // Print Second Line
         System.out.print("rotations allowed: ");
+        System.err.print("rotations allowed: "); //to show feedback in momotor
         if(data.getRA()){
             System.out.println("yes");
+            System.err.println("yes");//to show feedback in momotor
         }else{
             System.out.println("no");
+            System.err.println("no");//to show feedback in momotor
         }
         
         // Print Third line
         System.out.print("number of rectangles: ");
+        System.err.print("number of rectangles: ");//to show feedback in momotor
         System.out.println(data.getNumRectangles());
+        System.err.println(data.getNumRectangles());//to show feedback in momotor
         
         // Print Rectangles Input
         int[][] rectangles = data.getRectangles();
-        for (int[] i: rectangles) {
-            System.out.println(i[0] + " " + i[1]);
+        for (int i = 0; i < data.getNumRectangles(); i++) {
+            System.err.println("Rectangle " + i + ": " + 
+                    rectangles[i][0] + ", " + rectangles[i][1]); //for debugging
+            //the above line shows the input instances on momotor
+            System.out.println(rectangles[i][0] + " " + rectangles[i][1]);
         }
     }
 }
