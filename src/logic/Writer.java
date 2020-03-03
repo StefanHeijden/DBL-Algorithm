@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logic;
 
 /**
@@ -26,11 +21,7 @@ public class Writer {
         
         // Then write the placement of the rectangles
         int[][] placement = grid.getPlacement();
-        System.out.println("placement of rectangles");
-        
-        
-        System.out.println(placement[0][1]);
-        
+        System.out.println("placement of rectangles");        
         
         // If it is without rotation
         if (!data.getRA()) {
@@ -56,7 +47,7 @@ public class Writer {
         // Print First line
         System.out.print("container height: ");
         System.out.print(data.getType());
-        if(data.getType() == null ? data.FIXED == null : data.getType().equals(data.FIXED)){
+        if(data.getType().equals(data.FIXED)){
             System.out.print(" " + data.getHeight());
         }
         System.out.println();

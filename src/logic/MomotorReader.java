@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logic;
 
 import java.util.Scanner;
@@ -32,7 +27,8 @@ public class MomotorReader extends AbstractReader{
         }
         //counts number of rectangles
         int numRectangles = Integer.parseInt(firstThreeLines[2].substring(22));
-        int ArraySize = numRectangles + 3; //because there are three lines in front of rectangles
+        //because there are three lines in front of rectangles
+        int ArraySize = numRectangles + 3;
         String[] textData = new String[ArraySize];//array to store input in
         for (int i = 0; i < 3; i++) {
             textData[i] = firstThreeLines[i]; //copy first three lines

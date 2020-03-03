@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logic;
 
 /**
@@ -18,7 +13,8 @@ public class GlobalData {
     public final String FREE = "free";
     public final String FIXED = "fixed";
 
-    public GlobalData(String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
+    public GlobalData(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int[][] rectangles, int numRectangles) {
         this.containerType = containerType;
         this.containerHeight = containerHeight;
         this.rotationsAllowed = rotationsAllowed;
@@ -51,12 +47,11 @@ public class GlobalData {
     }
     
     public String[] dataToString(){
-        //String containerType, int containerHeight, boolean rotationsAllowed, int[][] rectangles, int numRectangles
         // Add first Line
         String[] result = new String[3 + numRectangles];
         result[0] = "container height: " + containerType;
         if(containerType.equals(FIXED)){
-            result[0] = result[0] + containerHeight;
+            result[0] = result[0] + " " + containerHeight;
         }
         result[0] = result[0] + '\n';
         

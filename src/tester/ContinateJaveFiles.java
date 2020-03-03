@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tester;
 
 import java.io.BufferedReader;
@@ -22,10 +17,12 @@ import java.io.OutputStream;
  */
 public class ContinateJaveFiles {
     // Path variables for Stefan:
-    static final String PSTEFAN = "C:/Users/stefa/Documents/"; // Location of DBL-Algorithm folder
-    static final String DSTEFAN = "C:/Users/stefa/Downloads/"; // Location where you want the files to be
+    static final String PSTEFAN = "C:/Users/stefa/Documents/";
+    static final String DSTEFAN = "C:/Users/stefa/Downloads/";
     // ADD YOURS HERE:
     // Path variables for Leighton
+    static final String PLEIGHTON = "E:/TUe/PT/Courses/Y3/DBL algorithms/";
+    static final String DLEIGHTON = "C:/Users/20167014/Downloads/";
     
     // Path variables for Ezra:
     
@@ -36,8 +33,8 @@ public class ContinateJaveFiles {
     
     
     // Specify which path and destination to use
-    static final String PATH1 = PSTEFAN; 
-    static final String DESTINATION = DSTEFAN;
+    static final String PATH1 = PLEIGHTON; 
+    static final String DESTINATION = DLEIGHTON;
     // Standard variables
     static final String PATH2 = "DBL-Algorithm/src/";
     static final String PATH = PATH1 + PATH2;
@@ -46,16 +43,20 @@ public class ContinateJaveFiles {
         "AbstractAlgorithm.java",
         "SimpleAlgorithm.java",
         "TestingAlgorithm.java",
+        "LevelPackingAlgorithm.java",
+        "BruteForceAlgorithmFree.java",
         //logic
         "AbstractReader.java",
         "GlobalData.java",
         "Grid.java",
         "MomotorReader.java",
-        "TestReader.java",
-        "Writer.java"
+        "Writer.java",
+        "TestReader.java"
     };
     static final String[] PACKAGES = {"main/",
         //algorithms
+        "algorithms/",
+        "algorithms/",
         "algorithms/",
         "algorithms/",
         "algorithms/",
@@ -111,7 +112,8 @@ public class ContinateJaveFiles {
         String line;
         for (String NAMES1 : NAMES) {
             try {
-                BufferedReader file = new BufferedReader(new FileReader(DESTINATION + NAMES1));
+                BufferedReader file = new BufferedReader(
+                        new FileReader(DESTINATION + NAMES1));
                 while ((line = file.readLine()) != null) {
                     // Check whether it is an import
                     if(line.contains("import")){
@@ -119,7 +121,7 @@ public class ContinateJaveFiles {
                         importBuffer.append(line);
                         importBuffer.append('\n');
                     }else{
-                        // If not then its a class and it can be added to classbuffer
+                        // If not then its a class and it can be added to buffer
                         // But also make sure each class is private
                         if((line.contains("public class") || 
                                 line.contains("public static class") ||
@@ -140,7 +142,8 @@ public class ContinateJaveFiles {
         }
         try {
             // write the new string with the replaced line OVER the same file
-            FileOutputStream fileOut = new FileOutputStream(DESTINATION + "PackingSolver2.java");
+            FileOutputStream fileOut = new FileOutputStream(DESTINATION + 
+                    "PackingSolver2.java");
             fileOut.write(importBuffer.toString().getBytes());
             fileOut.write(classBuffer.toString().getBytes());
             fileOut.close();

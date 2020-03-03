@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tester;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,32 +13,40 @@ import logic.GlobalData;
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
-    private final String PATH = "./../testfiles";
+    public final int MAXIMUMSIZE = 25;
+    private final String PATH;
     StringBuffer inputBuffer;
+    private String fileName;
     
     // Standard, mostly used in GUI to create random input files
     public AbstractTestFileGenerator(String containerType, int containerHeight, 
-            boolean rotationsAllowed, int numRectangles) {
+            boolean rotationsAllowed, int numRectangles, String path) {
         int[][] simple = {{1, 1}};
         data = new GlobalData(containerType, containerHeight, rotationsAllowed, 
                 simple, numRectangles);
+        PATH = path;
         generateFile();
     }
     
     // Can also be init from global data object
-    public AbstractTestFileGenerator(GlobalData data){
+    public AbstractTestFileGenerator(GlobalData data, String path){
         int[][] simple = {{1, 1}};
         this.data = new GlobalData(data.getType(), data.getHeight(), 
                 data.getRA(), simple, data.getNumRectangles());
+        PATH = path;
         generateFile();
     }
     
     // Generate a new file 
     public void generateFile(){
         // Create new filename
-        String filename = data.getType() + data.getHeight() + data.getRA() + 
+        if(data.getType().equalsIgnoreCase(data.FREE)){
+            fileName = data.getType() + data.getRA() + 
                 data.getNumRectangles() + ".java";
-        System.out.print(filename);
+        }else{
+            fileName = data.getType() + data.getHeight() + data.getRA() + 
+                    data.getNumRectangles() + ".java";
+        }
         
         // Generate rectangles
         int[][] rectangles = generateRectangles();
@@ -57,7 +59,7 @@ public class AbstractTestFileGenerator {
         
         // Wite input buffer into the file and then close file
         try{
-            FileOutputStream fileOut = new FileOutputStream(PATH + filename);
+            FileOutputStream fileOut = new FileOutputStream(PATH + fileName);
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
         }catch(IOException e){
@@ -67,9 +69,13 @@ public class AbstractTestFileGenerator {
     
     // Generate the rectangles
     public int[][] generateRectangles(){
-        int[][] simple = {{1, 1}};
         System.out.print("Extend this method for implementation");
-        return simple;
+        int[][] rectangles = new int[data.getHeight()][2];
+        for (int[] rectangle : rectangles) {
+            rectangle[0] = 1;
+            rectangle[1] = 1;
+        }
+        return rectangles;
     }
     
     
@@ -82,7 +88,8 @@ public class AbstractTestFileGenerator {
     }
     
     // This method writes a string to the file and places a space at the end
-    public void writeToFileWithoutNewlineAndWithSpace( String textLine ) throws IOException {
+    public void writeToFileWithoutNewlineAndWithSpace( String textLine ) 
+            throws IOException {
         FileWriter write = new FileWriter("" , false);
         PrintWriter print_line = new PrintWriter(write);
         
@@ -90,9 +97,18 @@ public class AbstractTestFileGenerator {
     }
     
     public void writeGlobalData(){
+        inputBuffer = new StringBuffer();
         String[] lines = data.dataToString();
         for(String line : lines){
             inputBuffer.append(line);
         }
+    }
+    
+    public void addToFileName(String ext){
+        fileName = ext + fileName;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }
