@@ -131,6 +131,8 @@ public class SimpleGUI {
                 BUTTONWIDTH, TEXTAREAHEIGHT);
         textArea.setText("Processing time: \n" +
                 "Algorithm used: \n" +
+                "Width: \n" +
+                "Height: \n" +
                 "Analyzing result: ??\n" +
                 "Scaling: \n" +
                 "container height: \n" +
@@ -390,6 +392,10 @@ public class SimpleGUI {
             textArea.setText("");
             // Add the runtime of the Packing Solver
             textArea.append("Processing time: " + seconds + "\n");
+            // Add the runtime of the Packing Solver
+            textArea.append("Width: " + panel.getMaxWidth() + "\n");
+            // Add the runtime of the Packing Solver
+            textArea.append("Height: " + panel.getMaxHeight() + "\n");
             // Add the algorithm used
             textArea.append("Algorithm used: " + algorithmName + "\n");
             // Add the info of the analysis
