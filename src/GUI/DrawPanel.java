@@ -200,4 +200,24 @@ public class DrawPanel extends JPanel {
         }
         return info;
     }
+    
+    public int getMaxWidth(){
+        int maxWidth = 0;
+        for(BetterRectangle r1: rectangles){
+            if(r1.width + r1.x > maxWidth){
+                maxWidth = r1.width + r1.x;
+            }
+        }
+        return maxWidth;
+    }
+    
+    public int getMaxHeight(){
+        int maxHeight = 0;
+        for(BetterRectangle r1: rectangles){
+            if(r1.height + r1.y > maxHeight){
+                maxHeight = r1.height + r1.y;
+            }
+        }
+        return maxHeight;
+    }
 }
