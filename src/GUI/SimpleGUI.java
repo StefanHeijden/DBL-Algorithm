@@ -263,6 +263,15 @@ public class SimpleGUI {
 
 
     /*
+     *
+     * From here one we create new classes for the actions for the buttons and
+     * mouse
+     *
+     *
+     *
+    */
+    
+    /*
      * This class is used for the action of the run GenerateTestFile button
      * It generates a new testfile in destination path, based on the selected
      * radio buttons in the menu
@@ -472,8 +481,12 @@ public class SimpleGUI {
             int y = (int) MouseInfo.getPointerInfo().getLocation().getY();
             
             // Then check what rectangle is add the mouse position
+            // Get the information of that rectangle
             String[] info = panel.getRectangleAt(x, y);
-
+            // And give it a color
+            panel.selectRectangleAt(x, y);
+            panel.specialRepaint();
+            
             //Clear textArea
             infoArea.setText("");
 

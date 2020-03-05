@@ -17,6 +17,7 @@ public class DrawPanel extends JPanel {
     int heightFix = 70;
     BetterRectangle boundingBox = new BetterRectangle(1, 1, 1, 1);
     Color boundingBoxColor = new Color(255,255,0);
+    BetterRectangle selected;
     
     public DrawPanel(){
         super();
@@ -221,6 +222,23 @@ public class DrawPanel extends JPanel {
             }
         }
         return info;
+    }
+    
+    public void selectRectangleAt(int x, int y){
+        y = this.getHeight() - y - 10;
+        x = x - 8;
+        if(selected != null){
+            selected.changeColor();
+        }
+        selected = null;
+        if(canRepaint()){ 
+            for(BetterRectangle r1: rectangles){
+               if(r1.scaledInside(x, y)){
+                   r1.changeColor();
+                   selected = r1;
+               }
+            }
+        }
     }
     
     public int getMaxWidth(){
