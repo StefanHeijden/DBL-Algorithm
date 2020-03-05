@@ -16,38 +16,38 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     List<Integer> result;
     double bestValue = 0;
     int[][] bestResult;
+    int numberOfCalculations = 0;
+    
     public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
+        // Initialize lists
+        result = new ArrayList();
+        positions = new ArrayList();
+        
+        // Initialize the position list with integers
+        for(int i = 0; i < global.getRectangles().length; i++){
+            positions.add(i);
+        }
     }
 
     @Override
     public void run() {
-        System.err.println("Start algorithm");
-        result = new ArrayList();
-        positions = new ArrayList();
-        for(int i = 0; i < global.getRectangles().length; i++){
-            System.err.println(i);
-            positions.add(i);
-        }
-        
+        // Calculate the lists
         calcLB(0);
         
         // Set best placement in Grid
         grid.storePlacement(bestResult);
-        System.err.println("Done with algorithm");
+        
+        // Show the number of calculation that are made
+        System.err.println("Number Of Calculations: " + numberOfCalculations);
     }
     
     public void calcLB(int depth){
         // If we have a full list of placements
         // then use LB and return the value of that placement
         if(depth >= positions.size()){
-            // Use LB -------------------------------------------------------TO DO
-             // Calc score of the solution
-            grid.computeFinalDensity(global);
-            if(grid.getDensity() > bestValue){
-                bestValue = grid.getDensity();
-                bestResult = toArray(grid.getPlacement());
-            }
+            // Run the Left Bottom heuristic
+            useLB();
         }
         // If not then recursivly add remaining placement to the old one
         int counter = 0;
@@ -58,14 +58,15 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
             }
             result.add(i);
             positions.set(counter, -1);
-            calcLB(depth + 1);
+            doLoop(depth + 1);
             positions.set(counter, i);
             result.remove(result.size() - 1);
             counter++;
         }
     }
 
-    private int[][] toArray(int[][] result) {
+    // Returns a copy of the array given
+    public int[][] toArray(int[][] result) {
         int[][] array = new int[result.length][2];
         int counter = 0;
         for(int[] i: result){
@@ -74,6 +75,25 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
             counter++;
         }
         return array;
+    }
+    
+    // Recurse over the list of positions
+    public void doLoop(int depth){
+        calcLB(depth);
+    }
+    
+    // Run the Left Bottom heuristic
+    public void useLB(){
+        // Run lb
+        // Count the number of calculation that are made
+        numberOfCalculations++;
+        // TODO -----------------------------------------------------------------
+        // Calc score of the solution
+//        grid.computeFinalDensity(global);
+//        if(grid.getDensity() > bestValue){
+//            bestValue = grid.getDensity();
+//            bestResult = toArray(grid.getPlacement());
+//        }
     }
     
 }

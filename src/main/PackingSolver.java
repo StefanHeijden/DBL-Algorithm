@@ -100,6 +100,8 @@ public class PackingSolver {
             return new BruteForceAlgorithmFree(grid, data);
         case "BruteForceLeftBottom":
             return new BruteForceLeftBottomAlgorithm(grid, data);
+        case "BruteForceLeftBottomWithRotation":
+            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data);
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":
