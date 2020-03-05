@@ -21,8 +21,7 @@ public class Grid {
     
     //computes density of final placement, only call if placement is full
     //density is set to the percentage the bounding box or strip is filled
-    public void computeFinalDensity(String containerType, int containerHeight,
-                GlobalData data) {
+    public void computeFinalDensity(GlobalData data) {
         //first compute sum of rectangle area because is used in both variants
         double areaRectangles = 0; //used to store sum of area of all rectangles
         for (int[] rectangle : data.getRectangles()) { //loop through all rectangles
@@ -31,7 +30,7 @@ public class Grid {
         }
             
         // computation different for strip packing vs bounding box variants   
-        if (containerType.equals(data.FREE)) { //if free
+        if (data.getType().equals(data.FREE)) { //if free
             //density = (\sum (area rectangles)) / ((\max xCoor) * (\max yCoor))
             double maxXCoor = 0; //stores max x coordinate
             double maxYCoor = 0; //stores max y coordinate
@@ -52,7 +51,7 @@ public class Grid {
             
             density = 100 * (areaRectangles / (maxXCoor * maxYCoor)); //set density
                         
-        } else if (containerType.equals(data.FIXED)) { //if fixed
+        } else if (data.getType().equals(data.FIXED)) { //if fixed
             //density = (\sum (area rectangles)) / ((\max xCoor) * (containerHeight))
             double maxXCoor = 0; //stores max x coordinate
             double maxYCoor = data.getHeight(); //stores max y coordinate

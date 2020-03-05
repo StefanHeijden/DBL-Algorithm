@@ -7,15 +7,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.*;
+import logic.GlobalData;
+import logic.Grid;
 import tester.*;
 import main.PackingSolver;
 
@@ -59,11 +63,15 @@ public class SimpleGUI {
     
     // Names of the algorithms, standard is used to let the PackingSolver
     // decide what algorithm to use based on the data
-    static final String[] ALGORITHMS = {"standard", "BruteForcFree", "LevelPacking", "Testing"};
+    static final String[] ALGORITHMS = {"standard", "BruteForcFree", "LevelPacking", 
+        "Testing", "BruteForceLeftBottom", "BruteForceLeftBottomWithRotation"};
      
     // Path is now in file testfiles in the DBL-Algorithm files, 
     // if not there yet make folder testfiles and place your testfiles there 
     private static final String PATH = "./../DBL-Algorithm/testfiles/";
+    private static Grid grid;
+    private static GlobalData data;
+    private static int numberOfFiles;
     
     public SimpleGUI(){
         // Create frame
@@ -81,8 +89,8 @@ public class SimpleGUI {
         // Create menu
         menuBar = new JMenuBar();
         addTestGeneratorMenu();
-        addFileMenu();
         addAlgorithmMenu();
+        addFileMenu();
         
         // Create buttons
         // Create button for generating test files
@@ -131,7 +139,9 @@ public class SimpleGUI {
                 BUTTONWIDTH, TEXTAREAHEIGHT);
         textArea.setText("Processing time: \n" +
                 "Algorithm used: \n" +
-                "Analyzing result: ??\n" +
+                "Width: \n" +
+                "Height: \n" +
+                "Analyzing result: \n" +
                 "Scaling: \n" +
                 "container height: \n" +
                         "rotations allowed: \n" +
@@ -245,15 +255,25 @@ public class SimpleGUI {
         }
         
         // Obtain the file names from the Arraylist and add them into a String[]
+        numberOfFiles = 0;
         String[] file = new String[files.size()];
         for(int i = 0; i < file.length; i++){
+            numberOfFiles++;
             file[i] = (files.get(i).substring(PATH.length()));
         }
-        
         return file;
     }
 
 
+    /*
+     *
+     * From here on we create new classes for the actions for the buttons and
+     * mouse
+     *
+     *
+     *
+    */
+    
     /*
      * This class is used for the action of the run GenerateTestFile button
      * It generates a new testfile in destination path, based on the selected
@@ -285,37 +305,32 @@ public class SimpleGUI {
                     titelsGroup2[1]);
             numRectangles = Integer.parseInt(getSelected(group3));
             //  Generate a new test file
-            String testFileName = generateTestFile(containerType, containerHeight, rotationsAllowed, 
+            generateTestFile(containerType, containerHeight, rotationsAllowed, 
                     numRectangles, getSelected(group4));
             
-            // Update file menu
-            JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(testFileName);
-            pathGroup.add(rbMenuItem);
-            fileMenu.add(rbMenuItem);
-            addFileMenu();
-            frame.repaint();
+            // Update file menu by rerunning GUI
+            run();
         }
 
-        private String generateTestFile(String containerType, int containerHeight, 
+        private void generateTestFile(String containerType, int containerHeight, 
                 boolean rotationsAllowed, int numRectangles, String selected) {
             switch(selected) {
               case "Random generation":
                 createFile = new RandomTestFileGenerator(containerType, 
-                        containerHeight, rotationsAllowed, numRectangles, PATH);
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               case "Random generation with bounds":
                   
                 createFile = new BoundedTestFileGenerator(containerType, 
-                  containerHeight, rotationsAllowed, numRectangles, PATH);
+                  containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               case "Squares only":
                 createFile = new SquareTestFileGenerator(containerType, 
-                        containerHeight, rotationsAllowed, numRectangles, PATH);
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               default:
                 // code block
             }
-            return createFile.getFileName();
         }
     }
 
@@ -344,8 +359,10 @@ public class SimpleGUI {
             
             // Put result on screen
             // Obtain rectangles and location (result)
+            data = packingSolver.getData();
             int[][] rectangles = packingSolver.getRectangles();
-            int[][] placement = packingSolver.getPlacement();
+            grid = packingSolver.getGrid();
+            int[][] placement = grid.getPlacement();
             // Create rectangle list to draw rectangles
             List<BetterRectangle> dRectangles = new ArrayList<>();
             
@@ -365,7 +382,7 @@ public class SimpleGUI {
                 dRectangles.get(i).move(placement[i][0], placement[i][1]);
             }
             // Make sure the panel contains the rectangles and draws them
-            panel.setRectangles(dRectangles);
+            panel.setRectangles(dRectangles, data.getHeight());
             panel.scale();
             panel.specialRepaint();
             // Then update the textArea with info from data in Packing Solver
@@ -390,12 +407,25 @@ public class SimpleGUI {
             textArea.setText("");
             // Add the runtime of the Packing Solver
             textArea.append("Processing time: " + seconds + "\n");
+            // Add the runtime of the Packing Solver
+            textArea.append("Width: " + panel.getMaxWidth() + "\n");
+            // Add the runtime of the Packing Solver
+            textArea.append("Height: " + panel.getMaxHeight() + "\n");
             // Add the algorithm used
             textArea.append("Algorithm used: " + algorithmName + "\n");
             // Add the info of the analysis
-            textArea.append("Analyzing result: ??\n");
-            // Add the scaling
-            textArea.append("Scaling: " + panel.getScaling() + "\n");
+            if(grid != null){
+                grid.computeFinalDensity(data);
+            }
+            double percentage = grid.getDensity();
+            double scaling = panel.getScaling();
+            // Round the percentage and scaling to 3 decimals
+            DecimalFormat df = new DecimalFormat("#.####");
+            df.setRoundingMode(RoundingMode.CEILING);
+            // Add the percentage to the textArea
+            textArea.append("Analyzing result: " + df.format(percentage) + "\n");
+            // Add the scaling to the textArea
+            textArea.append("Scaling: " +  df.format(scaling) + "\n");
             // Add the info of the Global Data
             for(String s: text){
                 textArea.append(s);
@@ -453,8 +483,14 @@ public class SimpleGUI {
             int y = (int) MouseInfo.getPointerInfo().getLocation().getY();
             
             // Then check what rectangle is add the mouse position
+            // Get the information of that rectangle
             String[] info = panel.getRectangleAt(x, y);
-
+            // And give it a color
+            panel.selectRectangleAt(x, y);
+            if(panel.canRepaint()){
+                panel.specialRepaint();
+            }
+            
             //Clear textArea
             infoArea.setText("");
 
