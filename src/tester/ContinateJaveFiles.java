@@ -27,14 +27,15 @@ public class ContinateJaveFiles {
     // Path variables for Ezra:
     
     // Path variables for Jodi
-    
+    static final String PJODI = "C:/Users/s165698/Documents/";
+    static final String DJODI = "C:/Users/s165698/Downloads/";
     // Path variables for Yana
     
     
     
     // Specify which path and destination to use
-    static final String PATH1 = PLEIGHTON; 
-    static final String DESTINATION = DLEIGHTON;
+    static final String PATH1 = PJODI; 
+    static final String DESTINATION = DJODI;
     // Standard variables
     static final String PATH2 = "DBL-Algorithm/src/";
     static final String PATH = PATH1 + PATH2;
@@ -45,6 +46,7 @@ public class ContinateJaveFiles {
         "TestingAlgorithm.java",
         "LevelPackingAlgorithm.java",
         "BruteForceAlgorithmFree.java",
+        "BestFitAlgorithm.java",
         //logic
         "AbstractReader.java",
         "GlobalData.java",
@@ -55,6 +57,7 @@ public class ContinateJaveFiles {
     };
     static final String[] PACKAGES = {"main/",
         //algorithms
+        "algorithms/",
         "algorithms/",
         "algorithms/",
         "algorithms/",
