@@ -60,6 +60,14 @@ public class PackingSolver {
         return grid.getPlacement();
     }
     
+    public Grid getGrid(){
+        return grid;
+    }
+    
+    public GlobalData getData(){
+        return data;
+    }
+    
     // Used in GUI for setting textArea, returns string of input data
     public String[] getGlobalData(){
         return data.dataToString();

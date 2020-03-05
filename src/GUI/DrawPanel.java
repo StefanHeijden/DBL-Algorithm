@@ -15,6 +15,8 @@ public class DrawPanel extends JPanel {
     // For some reason the panel height is warped and is about
     // 70 units smaller
     int heightFix = 70;
+    BetterRectangle boundingBox = new BetterRectangle(1, 1, 1, 1);
+    Color boundingBoxColor = new Color(255,255,0);
     
     public DrawPanel(){
         super();
@@ -24,6 +26,16 @@ public class DrawPanel extends JPanel {
     @Override
     public void paintComponents(Graphics g){
         super.paintComponent(g);
+        
+        // First draw the boundingBox
+        g.setColor(boundingBoxColor);
+        System.out.println("panel height: " + (this.getHeight() - heightFix));
+        System.out.println("heightB: " + boundingBox.height);
+        System.out.println("heightBScaled: " + boundingBox.scaledHeight);
+        g.fillRect(boundingBox.scaledX, this.getHeight() - heightFix - boundingBox.scaledHeight, 
+                boundingBox.scaledWidth, 
+                boundingBox.scaledHeight);
+        
         // Loop to draw each rectangle
         rectangles.forEach((r) -> {
             // Set drawing color to red/green for rectangle
@@ -39,9 +51,15 @@ public class DrawPanel extends JPanel {
         });
     }
     
-    public void setRectangles(List<BetterRectangle> rectangles){
+    public void setRectangles(List<BetterRectangle> rectangles, int height){
         this.rectangles = rectangles;
         scale = 1; // also reset scaling
+        int width = getMaxWidth();
+        System.out.println("height: " + height);
+        if(height <= 0){
+            height = getMaxHeight();
+        }
+        boundingBox = new BetterRectangle(width, height, 1, 1);
         if(!isLegal()){
             System.out.println("Some rectangles overlap!");
         }
@@ -67,6 +85,10 @@ public class DrawPanel extends JPanel {
                 return false;
             }
         }
+        boundingBox.scaledX = (int) (boundingBox.x * scale);
+        boundingBox.scaledY = (int) (boundingBox.y * scale);
+        boundingBox.scaledWidth = (int) (boundingBox.width * scale);
+        boundingBox.scaledHeight = (int) (boundingBox.height * scale);
         return true;
     }
        

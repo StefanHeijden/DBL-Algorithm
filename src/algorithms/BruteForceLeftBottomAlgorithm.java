@@ -34,7 +34,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
             // Use LB -------------------------TO DO
             System.out.println(result);
              // Calc score of the solution
-            grid.computeFinalDensity(global.getType(), global.getHeight(), global);
+            grid.computeFinalDensity(global);
             if(grid.getDensity() > bestValue){
                 bestValue = grid.getDensity();
                 bestResult = toArray(grid.getPlacement());

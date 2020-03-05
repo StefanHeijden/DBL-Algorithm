@@ -7,15 +7,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.*;
+import logic.GlobalData;
+import logic.Grid;
 import tester.*;
 import main.PackingSolver;
 
@@ -64,6 +68,8 @@ public class SimpleGUI {
     // Path is now in file testfiles in the DBL-Algorithm files, 
     // if not there yet make folder testfiles and place your testfiles there 
     private static final String PATH = "./../DBL-Algorithm/testfiles/";
+    private static Grid grid;
+    private static GlobalData data;
     
     public SimpleGUI(){
         // Create frame
@@ -346,8 +352,10 @@ public class SimpleGUI {
             
             // Put result on screen
             // Obtain rectangles and location (result)
+            data = packingSolver.getData();
             int[][] rectangles = packingSolver.getRectangles();
-            int[][] placement = packingSolver.getPlacement();
+            grid = packingSolver.getGrid();
+            int[][] placement = grid.getPlacement();
             // Create rectangle list to draw rectangles
             List<BetterRectangle> dRectangles = new ArrayList<>();
             
@@ -367,7 +375,7 @@ public class SimpleGUI {
                 dRectangles.get(i).move(placement[i][0], placement[i][1]);
             }
             // Make sure the panel contains the rectangles and draws them
-            panel.setRectangles(dRectangles);
+            panel.setRectangles(dRectangles, data.getHeight());
             panel.scale();
             panel.specialRepaint();
             // Then update the textArea with info from data in Packing Solver
@@ -399,9 +407,18 @@ public class SimpleGUI {
             // Add the algorithm used
             textArea.append("Algorithm used: " + algorithmName + "\n");
             // Add the info of the analysis
-            textArea.append("Analyzing result: ??\n");
-            // Add the scaling
-            textArea.append("Scaling: " + panel.getScaling() + "\n");
+            if(grid != null){
+                grid.computeFinalDensity(data);
+            }
+            double percentage = grid.getDensity();
+            double scaling = panel.getScaling();
+            // Round the percentage and scaling to 3 decimals
+            DecimalFormat df = new DecimalFormat("#.####");
+            df.setRoundingMode(RoundingMode.CEILING);
+            // Add the percentage to the textArea
+            textArea.append("Analyzing result: " + df.format(percentage) + "\n");
+            // Add the scaling to the textArea
+            textArea.append("Scaling: " +  df.format(scaling) + "\n");
             // Add the info of the Global Data
             for(String s: text){
                 textArea.append(s);
