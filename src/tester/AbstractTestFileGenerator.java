@@ -17,14 +17,16 @@ public class AbstractTestFileGenerator {
     private final String PATH;
     StringBuffer inputBuffer;
     private String fileName;
+    int numberOfFiles;
     
     // Standard, mostly used in GUI to create random input files
     public AbstractTestFileGenerator(String containerType, int containerHeight, 
-            boolean rotationsAllowed, int numRectangles, String path) {
+            boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         int[][] simple = {{1, 1}};
         data = new GlobalData(containerType, containerHeight, rotationsAllowed, 
                 simple, numRectangles);
         PATH = path;
+        this.numberOfFiles = numberOfFiles;
         generateFile();
     }
     
@@ -58,6 +60,18 @@ public class AbstractTestFileGenerator {
         writeGlobalData();
         
         // Wite input buffer into the file and then close file
+        String zeros = "";
+        if( numberOfFiles < 1000){
+            zeros = zeros + "0";
+            if( numberOfFiles < 100){
+                zeros = zeros + "0";
+                if(numberOfFiles < 10){
+                    zeros = zeros + "0";
+                }
+                
+            }
+        }
+        fileName = zeros + numberOfFiles +  "_" + fileName;
         try{
             FileOutputStream fileOut = new FileOutputStream(PATH + fileName);
             fileOut.write(inputBuffer.toString().getBytes());

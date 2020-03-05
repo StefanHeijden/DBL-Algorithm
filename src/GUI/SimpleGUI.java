@@ -71,6 +71,7 @@ public class SimpleGUI {
     private static final String PATH = "./../DBL-Algorithm/testfiles/";
     private static Grid grid;
     private static GlobalData data;
+    private static int numberOfFiles;
     
     public SimpleGUI(){
         // Create frame
@@ -254,18 +255,19 @@ public class SimpleGUI {
         }
         
         // Obtain the file names from the Arraylist and add them into a String[]
+        numberOfFiles = 0;
         String[] file = new String[files.size()];
         for(int i = 0; i < file.length; i++){
+            numberOfFiles++;
             file[i] = (files.get(i).substring(PATH.length()));
         }
-        
         return file;
     }
 
 
     /*
      *
-     * From here one we create new classes for the actions for the buttons and
+     * From here on we create new classes for the actions for the buttons and
      * mouse
      *
      *
@@ -310,26 +312,25 @@ public class SimpleGUI {
             run();
         }
 
-        private String generateTestFile(String containerType, int containerHeight, 
+        private void generateTestFile(String containerType, int containerHeight, 
                 boolean rotationsAllowed, int numRectangles, String selected) {
             switch(selected) {
               case "Random generation":
                 createFile = new RandomTestFileGenerator(containerType, 
-                        containerHeight, rotationsAllowed, numRectangles, PATH);
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               case "Random generation with bounds":
                   
                 createFile = new BoundedTestFileGenerator(containerType, 
-                  containerHeight, rotationsAllowed, numRectangles, PATH);
+                  containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               case "Squares only":
                 createFile = new SquareTestFileGenerator(containerType, 
-                        containerHeight, rotationsAllowed, numRectangles, PATH);
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               default:
                 // code block
             }
-            return createFile.getFileName();
         }
     }
 

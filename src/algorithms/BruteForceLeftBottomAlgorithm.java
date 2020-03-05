@@ -7,7 +7,9 @@ import logic.Grid;
 
 /**
  *
- * @author stefa
+ * This algorithm calculates all possible position the rectangles can be in
+ * and on each list of positions it then uses the LB algorithm and remembers
+ * the best solution
  */
 public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     ArrayList<Integer> positions;
@@ -39,7 +41,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // If we have a full list of placements
         // then use LB and return the value of that placement
         if(depth >= positions.size()){
-            // Use LB -------------------------TO DO
+            // Use LB -------------------------------------------------------TO DO
              // Calc score of the solution
             grid.computeFinalDensity(global);
             if(grid.getDensity() > bestValue){
