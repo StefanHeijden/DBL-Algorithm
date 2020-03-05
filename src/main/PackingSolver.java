@@ -98,6 +98,8 @@ public class PackingSolver {
         switch(algorithmName) {
         case "BruteForcFree":
             return new BruteForceAlgorithmFree(grid, data);
+        case "BruteForceLeftBottom":
+            return new BruteForceLeftBottomAlgorithm(grid, data);
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":

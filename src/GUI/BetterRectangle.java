@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 public class BetterRectangle extends Rectangle{
     public int index;
     private Color color;// Color of the rectangle
-    private Color selectedColor = new Color(255, 100, 255);
+    private final Color selectedColor = new Color(255, 100, 255);
     private boolean selected = false;
     private int weight;// Is larger when rectangle is larger
     private final int MAXWEIGHT;// Is determined by largest rectangle

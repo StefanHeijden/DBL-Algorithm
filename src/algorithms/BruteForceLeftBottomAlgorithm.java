@@ -10,7 +10,7 @@ import logic.Grid;
  * @author stefa
  */
 public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
-    int[] positions;
+    ArrayList<Integer> positions;
     List<Integer> result;
     double bestValue = 0;
     int[][] bestResult;
@@ -20,19 +20,26 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
 
     @Override
     public void run() {
+        System.err.println("Start algorithm");
         result = new ArrayList();
-        calcLB(new ArrayList(), 0);
+        positions = new ArrayList();
+        for(int i = 0; i < global.getRectangles().length; i++){
+            System.err.println(i);
+            positions.add(i);
+        }
+        
+        calcLB(0);
         
         // Set best placement in Grid
         grid.storePlacement(bestResult);
+        System.err.println("Done with algorithm");
     }
     
-    public void calcLB(ArrayList<Integer> remaining, int depth){
+    public void calcLB(int depth){
         // If we have a full list of placements
         // then use LB and return the value of that placement
-        if(depth >= positions.length){
+        if(depth >= positions.size()){
             // Use LB -------------------------TO DO
-            System.out.println(result);
              // Calc score of the solution
             grid.computeFinalDensity(global);
             if(grid.getDensity() > bestValue){
@@ -42,14 +49,15 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         }
         // If not then recursivly add remaining placement to the old one
         int counter = 0;
-        for(int i: remaining){
+        for(int i: positions){
             if(i < 0){
+                counter++;
                 continue;
             }
             result.add(i);
-            remaining.set(counter, -1);
-            calcLB(remaining, depth + 1);
-            remaining.set(counter, i);
+            positions.set(counter, -1);
+            calcLB(depth + 1);
+            positions.set(counter, i);
             result.remove(result.size() - 1);
             counter++;
         }
