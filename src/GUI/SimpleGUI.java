@@ -87,8 +87,8 @@ public class SimpleGUI {
         // Create menu
         menuBar = new JMenuBar();
         addTestGeneratorMenu();
-        addFileMenu();
         addAlgorithmMenu();
+        addFileMenu();
         
         // Create buttons
         // Create button for generating test files
@@ -139,7 +139,7 @@ public class SimpleGUI {
                 "Algorithm used: \n" +
                 "Width: \n" +
                 "Height: \n" +
-                "Analyzing result: ??\n" +
+                "Analyzing result: \n" +
                 "Scaling: \n" +
                 "container height: \n" +
                         "rotations allowed: \n" +
@@ -293,15 +293,11 @@ public class SimpleGUI {
                     titelsGroup2[1]);
             numRectangles = Integer.parseInt(getSelected(group3));
             //  Generate a new test file
-            String testFileName = generateTestFile(containerType, containerHeight, rotationsAllowed, 
+            generateTestFile(containerType, containerHeight, rotationsAllowed, 
                     numRectangles, getSelected(group4));
             
-            // Update file menu
-            JRadioButtonMenuItem rbMenuItem = new JRadioButtonMenuItem(testFileName);
-            pathGroup.add(rbMenuItem);
-            fileMenu.add(rbMenuItem);
-            addFileMenu();
-            frame.repaint();
+            // Update file menu by rerunning GUI
+            run();
         }
 
         private String generateTestFile(String containerType, int containerHeight, 
