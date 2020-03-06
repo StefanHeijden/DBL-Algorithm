@@ -34,6 +34,8 @@ public class SimpleGUI {
     static JTextArea textArea;
     static JScrollPane areaScrollPane;
     static JTextArea infoArea;
+    static JTextArea inputInfoArea;
+    static JScrollPane inputInfoScrollPane;
     static JScrollPane infoScrollPane;
     static JMenuBar menuBar;
     static JMenu generateTestFilemenu;
@@ -43,8 +45,9 @@ public class SimpleGUI {
     static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
     static final int BUTTONWIDTH = 200;
-    static final int TEXTAREAHEIGHT = 600;
+    static final int TEXTAREAHEIGHT = 525;
     static final int INFOHEIGHT = 100;
+    static final int INPUTINFOHEIGHT = 200;
     // These are the groups and input neeeded for TestFileGenerator menu
     static ButtonGroup group1;
     static ButtonGroup group2;
@@ -72,6 +75,7 @@ public class SimpleGUI {
     private static Grid grid;
     private static GlobalData data;
     private static int numberOfFiles;
+    private static InputInfo inputInfo;
     
     public SimpleGUI(){
         // Create frame
@@ -120,18 +124,31 @@ public class SimpleGUI {
         // and add scrolling to it
         infoArea = new JTextArea();
         infoArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT 
-                - INFOHEIGHT - 5, BUTTONWIDTH, INFOHEIGHT);
+                - INPUTINFOHEIGHT - INFOHEIGHT, BUTTONWIDTH, INFOHEIGHT);
         infoArea.setText("Rectangle: \n" +
                 "x: \n" +
                 "y: \n" +
                 "width: \n" +
-                "height: \n");
+                "height: \n" + 
+                "type: ");
         infoArea.setEditable(false);
         infoScrollPane = new JScrollPane(infoArea);
         //areaScrollPane.setVerticalScrollBarPolicy(
         //        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         infoScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT 
-                - INFOHEIGHT - 5, BUTTONWIDTH, INFOHEIGHT);
+                - INPUTINFOHEIGHT - INFOHEIGHT, BUTTONWIDTH, INFOHEIGHT);
+        
+        // Create text field for inputInfoArea
+        inputInfoArea = new JTextArea();
+        inputInfoArea.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT 
+                - INPUTINFOHEIGHT, BUTTONWIDTH, INPUTINFOHEIGHT);
+        inputInfoArea.setText("Info will appear when \n PackingSolver is run");
+        inputInfoArea.setEditable(false);
+        inputInfoScrollPane = new JScrollPane(inputInfoArea);
+        //areaScrollPane.setVerticalScrollBarPolicy(
+        //        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        inputInfoScrollPane.setBounds(FRAMEWIDTH - BUTTONWIDTH, FRAMEHEIGHT - TEXTAREAHEIGHT 
+                - INPUTINFOHEIGHT, BUTTONWIDTH, INPUTINFOHEIGHT);
         
         // Create text field with info and add scrolling to it
         textArea = new JTextArea();
@@ -160,6 +177,7 @@ public class SimpleGUI {
         frame.add(repaintButton);
         frame.add(panel);
         frame.add(infoScrollPane);
+        frame.add(inputInfoScrollPane);
         frame.add(areaScrollPane);
         frame.setVisible(true);
     }
@@ -388,6 +406,9 @@ public class SimpleGUI {
             // Then update the textArea with info from data in Packing Solver
             updateTextArea(packingSolver.getGlobalData(), seconds, 
                                 packingSolver.getAlgorithmName() );
+            // Then update the input info text area
+            inputInfo = new InputInfo(data);
+            inputInfoArea.setText(inputInfo.toText());
         }
 
         // Calculate the maxWeight for coloring
@@ -498,6 +519,11 @@ public class SimpleGUI {
             for (String s : info) {
                 infoArea.append(s);
                 infoArea.append("\n");
+            }
+            infoArea.append("type: ");
+            if(inputInfo != null){
+                infoArea.append(inputInfo.getTypeRectangleAt(
+                        panel.getRectangleIndexAt(x,y)));
             }
             // Scroll to top
             infoArea.setCaretPosition(0);

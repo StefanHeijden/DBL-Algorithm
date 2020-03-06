@@ -21,7 +21,6 @@ public class DrawPanel extends JPanel {
     
     public DrawPanel(){
         super();
-        
     }
     
     @Override
@@ -222,6 +221,19 @@ public class DrawPanel extends JPanel {
             }
         }
         return info;
+    }
+    
+    int getRectangleIndexAt(int x, int y) {
+        y = this.getHeight() - y - 10;
+        x = x - 8;
+        if(canRepaint()){ 
+            for(BetterRectangle r1: rectangles){
+                if(r1.scaledInside(x, y)){
+                    return r1.index;
+                }
+            }
+        }
+        return -1;
     }
     
     public void selectRectangleAt(int x, int y){
