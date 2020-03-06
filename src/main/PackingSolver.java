@@ -96,6 +96,8 @@ public class PackingSolver {
         String algorithmName = getAlgorithmName();
         // Return the algorithm based on the string used
         switch(algorithmName) {
+        case "BestFit":
+            return new BestFitAlgorithm(grid, data);
         case "BruteForcFree":
             return new BruteForceAlgorithmFree(grid, data);
         case "BruteForceLeftBottom":
