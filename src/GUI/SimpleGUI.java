@@ -45,9 +45,9 @@ public class SimpleGUI {
     static final int FRAMEWIDTH = 1600;
     static final int BUTTONHEIGHT = 50;
     static final int BUTTONWIDTH = 200;
-    static final int TEXTAREAHEIGHT = 525;
-    static final int INFOHEIGHT = 100;
-    static final int INPUTINFOHEIGHT = 200;
+    static final int TEXTAREAHEIGHT = 450;
+    static final int INFOHEIGHT = 125;
+    static final int INPUTINFOHEIGHT = 250;
     // These are the groups and input neeeded for TestFileGenerator menu
     static ButtonGroup group1;
     static ButtonGroup group2;
@@ -499,6 +499,7 @@ public class SimpleGUI {
         // clicked
         @Override
         public void mouseClicked(MouseEvent e) {
+            // ------------------------------------------------------------------------------TODO Get Mouse position based on current location of screen!!!
             // Get the mouse position
             int x = (int) MouseInfo.getPointerInfo().getLocation().getX();
             int y = (int) MouseInfo.getPointerInfo().getLocation().getY();
@@ -520,11 +521,17 @@ public class SimpleGUI {
                 infoArea.append(s);
                 infoArea.append("\n");
             }
-            infoArea.append("type: ");
+            infoArea.append("size: ");
+            if(inputInfo != null){
+                infoArea.append(inputInfo.getSizeRectangleAt(
+                        panel.getRectangleIndexAt(x,y)));
+            }
+            infoArea.append("\ntype: ");
             if(inputInfo != null){
                 infoArea.append(inputInfo.getTypeRectangleAt(
                         panel.getRectangleIndexAt(x,y)));
             }
+            
             // Scroll to top
             infoArea.setCaretPosition(0);
         }

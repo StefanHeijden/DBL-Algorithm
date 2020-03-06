@@ -17,17 +17,25 @@ public final class InputInfo {
     double sd = 0;
     double sdX = 0;
     double sdY = 0;
-    String[] types;
+    final double FIX1 = 0.5;
+    final double FIX2 = 0.5;
+    String[] sizes;
     final String BIG = "big";
     int big;
-    final String WIDE = "wide";
-    int wide;
-    final String TALL = "tall";
-    int tall;
     final String AVERAGE = "average";
     int average;
     final String SMALL = "small";
     int small;
+    String[] types;
+    final String WIDE = "wide";
+    int wide;
+    final String TALL = "tall";
+    int tall;
+    final String SQUARE = "square";
+    int square;
+    final String SQUARISH = "squarish";
+    int squarish;
+    
     
     public InputInfo(GlobalData data){
         this.data = data;
@@ -82,57 +90,82 @@ public final class InputInfo {
     
     public void calcTypes(){
         types = new String[data.getRectangles().length];
+        sizes = new String[data.getRectangles().length];
         big = 0;
-        wide = 0;
-        tall = 0;
         average = 0;
         small = 0;
+        wide = 0;
+        tall = 0;
+        square = 0;
+        squarish =0;
+        
         // First calculate lower and upperbounds in order to determine 
-        // what type the retangle is
-        int upperboundX = (int) (meanX + sdX);
-        int lowerboundX = (int) (meanX - sdX);
-        int upperboundY = (int) (meanY + sdY);
-        int lowerboundY = (int) (meanY - sdY);
+        // what size the retangle is
+        int upperbound = (int) (mean + (sd * FIX1));
+        int lowerbound = (int) (mean - (sd * FIX1));
         
         int counter = 0;
-        // Based on the bounds determine the type
-        for(int[] r: data.getRectangles()){
-            // If the rectangle is larger then upperbounds then its a big rectangle
-            if(r[0] > upperboundX && r[1] > upperboundY){
-                types[counter] = BIG;
+        // Based on the bounds determine the type and size of each rectangle
+        for(int[] r: data.getRectangles()){   
+            // First determine the size
+            // If the rectangle is larger then upperbound then its a big rectangle
+            if(r[0] * r[1] > upperbound){
+                sizes[counter] = BIG;
                 big++;
             }
-            // If the rectangle is larger then upperbound of X and lower then 
-            // lowerbound of Y then its a wide rectangle
-            if(r[0] > upperboundX && r[1] < lowerboundY){
-                types[counter] = WIDE;
-                wide++;
-            }
-            // If the rectangle is larger then upperbound of Y and lower then 
-            // lowerbound of X then its a wide rectangle
-            if(r[0] < lowerboundX && r[1] > upperboundY){
-                types[counter] = TALL;
-                tall++;
-            }
-            // If the rectangle is smaller then lowerbounds then its a small rectangle
-            if(r[0] < lowerboundX && r[1] < lowerboundY){
-                types[counter] = SMALL;
+            // If the rectangle is smaller then lowerbound then its a small rectangle
+            if(r[0] * r[1] < lowerbound){
+                sizes[counter] = SMALL;
                 small++;
             }
-            // If not any of the above types, then it is average
-            if(types[counter] == null || types[counter].equalsIgnoreCase("")){
-                types[counter] = AVERAGE;
+            // If not any of the above sizes, then it is average
+            if(sizes[counter] == null || sizes[counter].equalsIgnoreCase("")){
+                sizes[counter] = AVERAGE;
                 average++;
             }
+            
+            // Then determine what type the rectangle is using its own bounds
+            double meanR = (r[0] + r[1] / 2) * FIX2;
+            int difference = Math.abs(r[0] - r[1]);
+            // If there is a significant difference between the width and height
+            if(difference > meanR){
+                // Then it is wide if width > height
+                if(r[0] > r[1]){
+                    sizes[counter] = WIDE;
+                    wide++;
+                }else{
+                    // or tall of height > width
+                    types[counter] = TALL;
+                    tall++;
+                }
+            }else{
+                // If there isn't much of a differnce then it is squarish
+                if(r[0] == r[1]){ // and a square if width = height
+                    types[counter] = SQUARE;
+                    square++;
+                }else{
+                    types[counter] = SQUARISH;
+                    squarish++;
+                }
+            }
+            
             // Next rectangle
-            System.out.println("Rectangle at i: " + counter + " is " + types[counter]);
             counter++;
         }
     }
     
     // Return the type of the rectangle at an certain index
+    public String getSizeRectangleAt(int index){
+        if(index >= 0 && index < sizes.length){
+            return sizes[index];
+        }else{
+            return "";
+        }
+    }
+    
+    // Return the type of the rectangle at an certain index
     public String getTypeRectangleAt(int index){
-        if(index > 0 && index < types.length){
+        if(index >= 0 && index < types.length){
             return types[index];
         }else{
             return "";
@@ -160,8 +193,11 @@ public final class InputInfo {
         text = text + "Variance of X: " + df.format(sdX) + "\n";
         text = text + "Mean of Y: " + df.format(meanY) + "\n";
         text = text + "Variance of Y: " + df.format(sdY) + "\n";
-        text = text + "Rectangle types " + "\n";
+        text = text + "Rectangle sizes " + "\n";
         text = text + "Big: " + big + "\n";
+        text = text + "Average: " + average + "\n";
+        text = text + "Small: " + small + "\n";
+        text = text + "Rectangle types " + "\n";
         // If we can rotate, wide and tall are the same
         if(data.getRA()){
             text = text + "Wide/Tall: " + (wide + tall) + "\n";
@@ -169,8 +205,8 @@ public final class InputInfo {
             text = text + "Wide: " + wide + "\n";
             text = text + "Tall: " + tall + "\n";
         }
-        text = text + "Average: " + average + "\n";
-        text = text + "Small: " + small;
+        text = text + "Squarish: " + squarish + "\n";
+        text = text + "Squares: " + square;
         return text;
     }
     

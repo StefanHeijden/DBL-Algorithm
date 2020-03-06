@@ -29,9 +29,6 @@ public class DrawPanel extends JPanel {
         
         // First draw the boundingBox
         g.setColor(boundingBoxColor);
-        System.out.println("panel height: " + (this.getHeight() - heightFix));
-        System.out.println("heightB: " + boundingBox.height);
-        System.out.println("heightBScaled: " + boundingBox.scaledHeight);
         g.fillRect(boundingBox.scaledX, this.getHeight() - heightFix - boundingBox.scaledHeight, 
                 boundingBox.scaledWidth, 
                 boundingBox.scaledHeight);
@@ -55,7 +52,6 @@ public class DrawPanel extends JPanel {
         this.rectangles = rectangles;
         scale = 1; // also reset scaling
         int width = getMaxWidth();
-        System.out.println("height: " + height);
         if(height <= 0){
             height = getMaxHeight();
         }
