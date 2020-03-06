@@ -197,8 +197,7 @@ public class DrawPanel extends JPanel {
     }
 
     String[] getRectangleAt(int x, int y) {
-        y = this.getHeight() - y - 10;
-        x = x - 8;
+        y = this.getHeight() - y;
         String[] info = new String[5];
         info[0] = "Rectangle: ";
         info[1] = "x: ";
@@ -220,8 +219,7 @@ public class DrawPanel extends JPanel {
     }
     
     int getRectangleIndexAt(int x, int y) {
-        y = this.getHeight() - y - 10;
-        x = x - 8;
+        y = this.getHeight() - y;
         if(canRepaint()){ 
             for(BetterRectangle r1: rectangles){
                 if(r1.scaledInside(x, y)){
@@ -233,8 +231,7 @@ public class DrawPanel extends JPanel {
     }
     
     public void selectRectangleAt(int x, int y){
-        y = this.getHeight() - y - 10;
-        x = x - 8;
+        y = this.getHeight() - y;
         if(selected != null){
             selected.changeColor();
         }
