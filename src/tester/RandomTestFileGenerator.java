@@ -8,8 +8,9 @@ package tester;
 public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     
     public RandomTestFileGenerator(String containerType, int containerHeight, 
-            boolean rotationsAllowed, int numRectangles, String path) {
-        super(containerType, containerHeight, rotationsAllowed, numRectangles, path);
+            boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
+        super(containerType, containerHeight, rotationsAllowed, numRectangles, 
+                path, numberOfFiles);
     }
     
     @Override

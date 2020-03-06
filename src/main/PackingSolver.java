@@ -60,6 +60,14 @@ public class PackingSolver {
         return grid.getPlacement();
     }
     
+    public Grid getGrid(){
+        return grid;
+    }
+    
+    public GlobalData getData(){
+        return data;
+    }
+    
     // Used in GUI for setting textArea, returns string of input data
     public String[] getGlobalData(){
         return data.dataToString();
@@ -88,8 +96,14 @@ public class PackingSolver {
         String algorithmName = getAlgorithmName();
         // Return the algorithm based on the string used
         switch(algorithmName) {
+        case "BestFit":
+            return new BestFitAlgorithm(grid, data);
         case "BruteForcFree":
             return new BruteForceAlgorithmFree(grid, data);
+        case "BruteForceLeftBottom":
+            return new BruteForceLeftBottomAlgorithm(grid, data);
+        case "BruteForceLeftBottomWithRotation":
+            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data);
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":

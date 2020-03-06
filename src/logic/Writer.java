@@ -45,7 +45,7 @@ public class Writer {
     
     public void writeGlobalData(){
         //err stream is used to print to momotor output to debug
-        System.err.println("Test Instance used, for momotor testing");
+        System.err.println("Start print Instance used, by momotor testing");
         
         // Print First line
         System.out.print("container height: ");
