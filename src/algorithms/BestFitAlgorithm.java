@@ -15,6 +15,8 @@ import logic.Grid;
 public class BestFitAlgorithm extends AbstractAlgorithm {
     int [][] rectangles;
     int gridHeight;
+    int gridWidth; 
+    
     public BestFitAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
         //gets the data and gives every rectangle a number
@@ -48,6 +50,12 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         
         int[][] notPlacedRectangles = rectangles;
         int[][] placedRectangles = new int[rectangles.length][3];
+        //determining the optimal height of the sheet
+        gridWidth = 0;
+        for (int i=0; i<notPlacedRectangles.length; i++){
+            gridWidth = gridWidth + notPlacedRectangles[i][1];
+        }
+        
         while (notPlacedRectangles.length > 1) {
             //checks if every rectangle can fit in a slot
             boolean canFit = true;
@@ -64,18 +72,32 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
             if (canFit){
                 //safe the highest score and the rectangle and place of the highest score
-                int highestScore;
+                double highestScore = -1000000000;
                 int[] allocationSlot;
-                int[] alloctationReclangle;
+                int[] allocationRectangle;
                 //check every allocation
                 for(int i=0; i<notPlacedRectangles.length; i++){
                     for(int j=0; j<slots.length; j++){
-                    //score = ;
-                    //if the score is better, safe the score, rectangle and place
-                    //if (score > highestScore){
-                        //higestScore = score;
-                        //allocationSlot = notPlacedRectangles[i];
-                        //allocatationRectangle = slots[j];
+                        //if rectangle fits in the slot;
+                        if(rectangles[i][1] < slots[j][3]){
+                            //possible values to compute the score with
+                            double W = notPlacedRectangles[i][0]; //width of the piece
+                            double H = notPlacedRectangles[i][1]; //height of the piece
+                            double A = W * H; //area of piece
+                            double SH = slots[j][0]; //sloth width, relative to base of sheet
+                            double SWL = slots[j][2] - notPlacedRectangles[i][1]; //difference between slot and piece heights
+                            double SHW = gridHeight; //height of sheet;
+                            double SHH = gridWidth * 1.5; //height of optimum solution multiplied by 1.5
+                            //double ERC = ; //ephemeral random constant (to be determined if necessarily);
+                                
+                            double score = (SWL / (SHW - W)) - (SH + H);
+                            //if the score is better, safe the score, rectangle and place
+                            if (score > highestScore){
+                                highestScore = score;
+                                allocationSlot = notPlacedRectangles[i];
+                                allocationRectangle = slots[j];
+                            }
+                        }
                     }
                 }
             }    
