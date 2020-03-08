@@ -13,7 +13,7 @@ import logic.Grid;
  * @author Jodi
  */
 public class BestFitAlgorithm extends AbstractAlgorithm {
-    int [][] rectangles;
+    int [][] rectangles; //with width and height
     int gridHeight;
     int gridWidth; 
     
@@ -44,12 +44,12 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         
         gridHeight = global.getHeight();
         //identify the slot at the beginning
-        int[][] slots = {{0,0,gridHeight}};
+        int[][] slots = {{0,0,gridHeight}}; //with x, y of lower left corner and heigth
         
         
-        int[][] notPlacedRectangles = rectangles;
-        int[][] placedRectangles = new int[rectangles.length][3];
-        int[][] places = new int[rectangles.length][2];
+        int[][] notPlacedRectangles = rectangles; //with width and height
+        int[][] placedRectangles = new int[rectangles.length][3]; //with width and height
+        int[][] places = new int[rectangles.length][2]; //with x and y of lower left corner
                 
         //determining the optimal height of the sheet
         gridWidth = 0;
@@ -82,8 +82,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 if (canFit){
                     //safe the highest score and the rectangle and place of the highest score
                     double highestScore = -1000000000;
-                    int[] allocationSlot = new int[3];
-                    int[] allocationRectangle = new int[2];
+                    int[] allocationSlot = new int[3]; //with x, y and height 
+                    int[] allocationRectangle = new int[2]; //with width and height
+                    int[] allocationPlace = new int[2]; //with width and height;
+                    int[][] boldBlackVertcalLines = new int[rectangles.length][3]; //with x, lowest y and highest y
                     //check every allocation
                     for(int i=0; i<notPlacedRectangles.length; i++){
                         for(int j=0; j<slots.length; j++){
@@ -107,10 +109,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     allocationRectangle = slots[j];
                                 }
                             }
-                            //computing the exact place of the rectangle and store it
+                            //computing the exact place of the allocation
                             if(policie == "lowerLeftCorner"){
-                                places[placedRectangles.length] = LowerLeftCorner(allocationSlot);
-                                placedRectangles[placedRectangles.length] = allocationRectangle;
+                                allocationPlace = LowerLeftCorner(allocationSlot);
                             }
                             //else if(policie == "tallestNeighboringPiece"){
                             // ;   
@@ -118,9 +119,36 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             //else if(policie == "smallestNeightboringPiece"){
                             // ;   
                             //}
+                            
+                            //storing the location and rectangle
+                            places[placedRectangles.length] = allocationPlace;
+                            placedRectangles[placedRectangles.length] = allocationRectangle;
                         }
                     }
+                //updating boldBlackVertcalLines
+                int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[0], allocationPlace[0]+allocationRectangle[1]}; //with x, lowest y and highest y
+                for(int i=0; i<boldBlackVertcalLines.length; i++){
+                    int lowestYBoldBlackVertcalLine = boldBlackVertcalLines[i][1];
+                    int highestYBoldBlackVertcalLine = boldBlackVertcalLines[i][2];
+                    
+                    if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                        //boldBlackVertcalLines.remove(boldBlackVertcalLines[i]);
+                    }
+                    else if(rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                        
+                    }
+                    else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                        
+                    }
                 }
+                
+                //updating slots
+                    
+                    
+                    
+                }
+                
+                
             }    
         }       
     }
