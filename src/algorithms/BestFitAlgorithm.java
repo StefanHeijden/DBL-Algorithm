@@ -8,6 +8,7 @@ package algorithms;
 import logic.GlobalData;
 import logic.Grid;
 
+
 /**
  *
  * @author Jodi
@@ -131,24 +132,57 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     int lowestYBoldBlackVertcalLine = boldBlackVertcalLines[i][1];
                     int highestYBoldBlackVertcalLine = boldBlackVertcalLines[i][2];
                     
-                    if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        //boldBlackVertcalLines.remove(boldBlackVertcalLines[i]);
+                    //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
+                    if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
+                            && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                        //delete line from list
+                        for(int k = 0; k < boldBlackVertcalLines.length; k++){
+                            if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
+                                // shifting elements
+                                for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
+                                    boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                                }
+                            }
+                        }
                     }
+                    //if upper part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
                     else if(rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        
+                        //only hold bottom part of line
+                        boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
                     }
+                    //if bottom part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
                     else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        
+                        //only hold upper part of line
+                        boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
+                    }
+                    //if middle part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                    else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
+                            && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                        //add under part of line to list
+                        boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
+                        boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
+                        //add upper part of line to list
+                        boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
+                        boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
+                        //delete line from list
+                        for(int k = 0; k < boldBlackVertcalLines.length; k++){
+                            if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
+                                // shifting elements
+                                for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
+                                    boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                                }
+                            }
+                        }
                     }
                 }
+                //adding right side of allocation rectangle to boldBlackVertcalLines
+                boldBlackVertcalLines[boldBlackVertcalLines.length] = rightSideOfAllocationRectangle;
                 
                 //updating slots
                     
                     
                     
-                }
-                
-                
+                } 
             }    
         }       
     }
