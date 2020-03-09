@@ -7,6 +7,8 @@ package algorithms;
 
 import logic.GlobalData;
 import logic.Grid;
+import java.util.Arrays.*;
+import java.util.ColumnComparator;
 
 
 /**
@@ -110,79 +112,93 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     allocationRectangle = slots[j];
                                 }
                             }
-                            //computing the exact place of the allocation
-                            if(policie == "lowerLeftCorner"){
-                                allocationPlace = LowerLeftCorner(allocationSlot);
-                            }
-                            //else if(policie == "tallestNeighboringPiece"){
-                            // ;   
-                            //}
-                            //else if(policie == "smallestNeightboringPiece"){
-                            // ;   
-                            //}
+                        }
+                    }
+                    //computing the exact place of the allocation
+                    if(policie == "lowerLeftCorner"){
+                        allocationPlace = LowerLeftCorner(allocationSlot);
+                    }
+                    //else if(policie == "tallestNeighboringPiece"){
+                    // ;   
+                    //}
+                    //else if(policie == "smallestNeightboringPiece"){
+                    // ;   
+                    //}
                             
-                            //storing the location and rectangle
-                            places[placedRectangles.length] = allocationPlace;
-                            placedRectangles[placedRectangles.length] = allocationRectangle;
-                        }
-                    }
-                //updating boldBlackVertcalLines
-                int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[0], allocationPlace[0]+allocationRectangle[1]}; //with x, lowest y and highest y
-                for(int i=0; i<boldBlackVertcalLines.length; i++){
-                    int lowestYBoldBlackVertcalLine = boldBlackVertcalLines[i][1];
-                    int highestYBoldBlackVertcalLine = boldBlackVertcalLines[i][2];
+                    //storing the location and rectangle
+                    places[placedRectangles.length] = allocationPlace;
+                    placedRectangles[placedRectangles.length] = allocationRectangle;
+                        
+                    //updating boldBlackVertcalLines
+                    int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[0], allocationPlace[0]+allocationRectangle[1]}; //with x, lowest y and highest y
+                    for(int i=0; i<boldBlackVertcalLines.length; i++){
+                        int lowestYBoldBlackVertcalLine = boldBlackVertcalLines[i][1];
+                        int highestYBoldBlackVertcalLine = boldBlackVertcalLines[i][2];
                     
-                    //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
-                    if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
-                            && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        //delete line from list
-                        for(int k = 0; k < boldBlackVertcalLines.length; k++){
-                            if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
-                                // shifting elements
-                                for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
-                                    boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                        //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
+                        if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
+                                && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //delete line from list
+                            for(int k = 0; k < boldBlackVertcalLines.length; k++){
+                                if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
+                                    // shifting elements
+                                    for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
+                                        boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                                    }
+                                }
+                            }
+                        }
+                        //if upper part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                        else if(rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //only hold bottom part of line
+                            boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
+                        }
+                        //if bottom part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                        else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //only hold upper part of line
+                            boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
+                        }
+                        //if middle part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                        else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
+                                && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //add under part of line to list
+                            boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
+                            boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
+                            //add upper part of line to list
+                            boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
+                            boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
+                            //delete line from list
+                            for(int k = 0; k < boldBlackVertcalLines.length; k++){
+                                if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
+                                    // shifting elements
+                                    for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
+                                        boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                                    }
                                 }
                             }
                         }
                     }
-                    //if upper part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
-                    else if(rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        //only hold bottom part of line
-                        boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
-                    }
-                    //if bottom part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
-                    else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        //only hold upper part of line
-                        boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
-                    }
-                    //if middle part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
-                    else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
-                            && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                        //add under part of line to list
-                        boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
-                        boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
-                        //add upper part of line to list
-                        boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
-                        boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
-                        //delete line from list
-                        for(int k = 0; k < boldBlackVertcalLines.length; k++){
-                            if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
-                                // shifting elements
-                                for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
-                                    boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
-                                }
+                    //adding right side of allocation rectangle to boldBlackVertcalLines
+                    boldBlackVertcalLines[boldBlackVertcalLines.length] = rightSideOfAllocationRectangle;
+                    
+                    //sorting boldBlackVertcalLines on first column in descending order
+                    boolean needToBeSwapped;
+                    do {
+                        needToBeSwapped = false;
+                        for (int i = 0; i < boldBlackVertcalLines.length - 1; i++) {
+                            //check if needed to swap
+                            if (boldBlackVertcalLines[i][0] < boldBlackVertcalLines[i + 1][0]) {
+                                 
+                                //swap
+                                int temp = boldBlackVertcalLines[i][0];
+                                boldBlackVertcalLines[i][0] = boldBlackVertcalLines[i + 1][0];
+                                boldBlackVertcalLines[i + 1][0] = temp;
+                       
+                                needToBeSwapped = true;
                             }
                         }
-                    }
+                    } while (needToBeSwapped);
                 }
-                //adding right side of allocation rectangle to boldBlackVertcalLines
-                boldBlackVertcalLines[boldBlackVertcalLines.length] = rightSideOfAllocationRectangle;
-                
-                //updating slots
-                    
-                    
-                    
-                } 
             }    
         }       
     }
