@@ -7,9 +7,6 @@ package algorithms;
 
 import logic.GlobalData;
 import logic.Grid;
-import java.util.Arrays.*;
-import java.util.ColumnComparator;
-
 
 /**
  *
@@ -69,16 +66,15 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         for(int p=0; p<policies.length; p++){
             String policie = policies[p];
             while (notPlacedRectangles.length > 1) {
-                //checks if every rectangle can fit in a slot
-                boolean canFit = true;
+                //checks if there is a rectangle which can fit in a slot
+                boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
                     for(int j=0; j<slots.length; j++){
                         if(rectangles[i][1] < slots[j][3]){
-
+                            canFit = true;
                         } 
                         else {
-                            canFit = false;
-                            break;
+                        
                         }
                     }
                 }
@@ -198,6 +194,15 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             }
                         }
                     } while (needToBeSwapped);
+                    
+                    //updating slots
+                    
+                    
+                    //not adding a slot if it is the same as a previous one
+                    if(1!=1){
+                        
+                    }
+                    
                 }
             }    
         }       
