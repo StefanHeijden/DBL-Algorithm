@@ -499,11 +499,11 @@ public class SimpleGUI {
         // clicked
         @Override
         public void mouseClicked(MouseEvent e) {
-            // ------------------------------------------------------------------------------TODO Get Mouse position based on current location of screen!!!
-            // Get the mouse position
-            int x = (int) MouseInfo.getPointerInfo().getLocation().getX();
-            int y = (int) MouseInfo.getPointerInfo().getLocation().getY();
-            
+            // Get Mouse position based on current location of screen
+            int x = (int) MouseInfo.getPointerInfo().getLocation().getX() - 
+                    (int) frame.getLocationOnScreen().getX();
+            int y = (int) MouseInfo.getPointerInfo().getLocation().getY() - 
+                    (int) frame.getLocationOnScreen().getY() + 10;
             // Then check what rectangle is add the mouse position
             // Get the information of that rectangle
             String[] info = panel.getRectangleAt(x, y);
