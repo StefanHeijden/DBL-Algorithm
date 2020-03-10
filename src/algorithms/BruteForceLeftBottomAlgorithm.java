@@ -1,7 +1,6 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.List;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -13,15 +12,17 @@ import logic.Grid;
  */
 public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     ArrayList<Integer> positions;
-    List<Integer> result;
+    int[][] rectangles;
     double bestValue = 0;
     int[][] bestResult;
     int numberOfCalculations = 0;
+    LevelPackingAlgorithm bottemLeftAgorithm;
     
     public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
+        bottemLeftAgorithm = new LevelPackingAlgorithm(grid, data);
         // Initialize lists
-        result = new ArrayList();
+        rectangles = new int[data.getNumRectangles()][2];
         positions = new ArrayList();
         
         // Initialize the position list with integers
@@ -56,11 +57,10 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
                 counter++;
                 continue;
             }
-            result.add(i);
+            rectangles[depth] = rectangles[i];
             positions.set(counter, -1);
             doLoop(depth + 1);
             positions.set(counter, i);
-            result.remove(result.size() - 1);
             counter++;
         }
     }
@@ -87,13 +87,13 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        // TODO -----------------------------------------------------------------
+        bottemLeftAgorithm.bottomLeft(rectangles, false);
         // Calc score of the solution
-//        grid.computeFinalDensity(global);
-//        if(grid.getDensity() > bestValue){
-//            bestValue = grid.getDensity();
-//            bestResult = toArray(grid.getPlacement());
-//        }
+        grid.computeFinalDensity(global);
+        if(grid.getDensity() > bestValue){
+            bestValue = grid.getDensity();
+            bestResult = toArray(grid.getPlacement());
+        }
     }
     
 }
