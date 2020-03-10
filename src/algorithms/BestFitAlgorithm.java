@@ -39,15 +39,28 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         return coordinate;
     }
     
+    //adds an item to an array
+    public int[][] AddingToArray (int[][] array, int length, int width,  int[] item){
+        int[][] newArray = new int[length + 1][];
+        
+        for (int i = 0; i < length; i++){
+            for (int j = 0; j < width; j++){
+                newArray[i][j] = array[i][j];
+                
+            }
+        }   
+  
+        newArray[length] = item; 
+        
+        return newArray;
+    } 
+    
     @Override
     public void run() {
         
         gridHeight = global.getHeight();
         //identify the slot at the beginning
-        int[][] slots = new int[rectangles.length][3]; //with x, y of lower left corner and heigth
-        slots[0][0] = 0; 
-        slots[0][1] = 0;
-        slots[0][2] = gridHeight;
+        int[][] slots = {{0, 0, gridHeight}}; //with x, y of lower left corner and heigth
         
         int[][] notPlacedRectangles = rectangles; //with width and height
         int[][] placedRectangles = new int[rectangles.length][3]; //with width and height
@@ -59,7 +72,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             gridWidth = gridWidth + notPlacedRectangles[i][1];
         }
         
-        //list with the placement policies
+        //array with the placement policies
         String[] policies = new String[3];
         policies[0] = "lowerLeftCorner";
         policies[1] = "tallestNeighboringPiece";
@@ -96,13 +109,13 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                 double W = notPlacedRectangles[i][0]; //width of the piece
                                 double H = notPlacedRectangles[i][1]; //height of the piece
                                 double A = W * H; //area of piece
-                                double SH = slots[j][0]; //sloth width, relative to base of sheet
-                                double SWL = slots[j][2] - notPlacedRectangles[i][1]; //difference between slot and piece heights
-                                double SHW = gridHeight; //height of sheet;
-                                double SHH = gridWidth * 1.5; //height of optimum solution multiplied by 1.5
+                                double SW = slots[j][0]; //sloth width, relative to base of sheet
+                                double SHL = slots[j][2] - notPlacedRectangles[i][1]; //difference between slot and piece heights
+                                double GH = gridHeight; //height of sheet;
+                                double GW = gridWidth * 1.5; //width of optimum solution multiplied by 1.5
                                 //double ERC = ; //ephemeral random constant (to be determined if necessarily);
 
-                                double score = (SWL / (SHW - W)) - (SH + H);
+                                double score = (SHL / (GW - W)) - (SW + H);
                                 //if the score is better, safe the score, rectangle and place
                                 if (score > highestScore){
                                     highestScore = score;
@@ -136,7 +149,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
                         if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
                                 && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                            //delete line from list
+                            //delete line from array
                             for(int k = 0; k < boldBlackVertcalLines.length; k++){
                                 if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
                                     // shifting elements
@@ -159,13 +172,13 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         //if middle part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
                         else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
                                 && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
-                            //add under part of line to list
+                            //add under part of line to array
                             boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
                             boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
-                            //add upper part of line to list
+                            //add upper part of line to array
                             boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
                             boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
-                            //delete line from list
+                            //delete line from array
                             for(int k = 0; k < boldBlackVertcalLines.length; k++){
                                 if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
                                     // shifting elements
@@ -197,7 +210,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     } while (needToBeSwapped);
                     
-                    //initializing a list with the dashed lines
+                    //initializing a array with the dashed lines
                     int[][] dashedLines = new int[rectangles.length][2]; //with lower y and higher y
                     dashedLines [0][0] = 0;
                     dashedLines [0][1] = gridHeight;
@@ -211,9 +224,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                 //same x and next to each other in y restults in same slot
                                 if((boldBlackVertcalLines[i][0] != boldBlackVertcalLines[i-1][0]) && (boldBlackVertcalLines[i][1] != boldBlackVertcalLines[i-1][2]) && (boldBlackVertcalLines[i][2] != boldBlackVertcalLines[i-1][1])){
                                     //add slot
-                                    slots[slots.length][0] = boldBlackVertcalLines[i][0];
-                                    slots[slots.length][1] = dashedLines[j][0];
-                                    slots[slots.length][2] = dashedLines[j][1] - dashedLines[j][0];
+                                    int [] element = {boldBlackVertcalLines[i][0], dashedLines[j][0], dashedLines[j][1],  dashedLines[j][0]};
+                                    AddingToArray (slots, slots.length, 3, element);
                                     
                                     //updating dashedLines
                                     // right side of the bold black vertical line is completely in the y of the dashed line
@@ -226,7 +238,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                         //add line above the bold black vertical line
                                         dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
                                         
-                                        //delete line from list with dashed lines
+                                        //delete line from array with dashed lines
                                         for(int k = 0; k < dashedLines.length; k++){
                                             if(dashedLines[k] == dashedLines[j]){
                                                 // shifting elements
@@ -241,7 +253,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                         //add line under the bold black vertical line
                                         dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
                                         
-                                        //delete line from list with dashed lines
+                                        //delete line from array with dashed lines
                                         for(int k = 0; k < dashedLines.length; k++){
                                             if(dashedLines[k] == dashedLines[j]){
                                                 // shifting elements
@@ -255,7 +267,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                         //add line above the bold black vertical line
                                         dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
                                         
-                                        //delete line from list with dashed lines
+                                        //delete line from array with dashed lines
                                         for(int k = 0; k < dashedLines.length; k++){
                                             if(dashedLines[k] == dashedLines[j]){
                                                 // shifting elements
@@ -271,6 +283,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     }
                 }
             }    
-        }       
+        } 
+        
     }
 }
