@@ -45,29 +45,29 @@ public class Writer {
     
     public void writeGlobalData(){
         //err stream is used to print to momotor output to debug
-        System.err.println("Start print Instance used, by momotor testing");
+        //System.err.println("Start print Instance used, by momotor testing");
         
         // Print First line
         System.out.print("container height: ");
-        System.err.print("container height: ");// to show feedback in momotor
+        //System.err.print("container height: ");// to show feedback in momotor
         System.out.print(data.getType());
-        System.err.print(data.getType());// to show feedback in momotor
+        //System.err.print(data.getType());// to show feedback in momotor
         if(data.getType().equals(data.FIXED)){
             System.out.print(" " + data.getHeight());
-            System.err.print(" " + data.getHeight());//to show feedback in momotor
+            //System.err.print(" " + data.getHeight());//to show feedback in momotor
         }
         System.out.println();
-        System.err.println(); //to show feedback in momotor
+        //System.err.println(); //to show feedback in momotor
         
         // Print Second Line
         System.out.print("rotations allowed: ");
-        System.err.print("rotations allowed: "); //to show feedback in momotor
+        //System.err.print("rotations allowed: "); //to show feedback in momotor
         if(data.getRA()){
             System.out.println("yes");
-            System.err.println("yes");//to show feedback in momotor
+           // System.err.println("yes");//to show feedback in momotor
         }else{
             System.out.println("no");
-            System.err.println("no");//to show feedback in momotor
+            //System.err.println("no");//to show feedback in momotor
         }
         
         // Print Third line
