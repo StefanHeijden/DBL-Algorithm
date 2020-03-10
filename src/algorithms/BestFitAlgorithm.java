@@ -44,8 +44,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         
         gridHeight = global.getHeight();
         //identify the slot at the beginning
-        int[][] slots = {{0,0,gridHeight}}; //with x, y of lower left corner and heigth
-        
+        int[][] slots = new int[rectangles.length][3]; //with x, y of lower left corner and heigth
+        slots[0][0] = 0; 
+        slots[0][1] = 0;
+        slots[0][2] = gridHeight;
         
         int[][] notPlacedRectangles = rectangles; //with width and height
         int[][] placedRectangles = new int[rectangles.length][3]; //with width and height
@@ -195,14 +197,78 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     } while (needToBeSwapped);
                     
+                    //initializing a list with the dashed lines
+                    int[][] dashedLines = new int[rectangles.length][2]; //with lower y and higher y
+                    dashedLines [0][0] = 0;
+                    dashedLines [0][1] = gridHeight;
+                    
                     //updating slots
-                    
-                    
-                    //not adding a slot if it is the same as a previous one
-                    if(1!=1){
-                        
+                    for(int i=0; i < boldBlackVertcalLines.length; i++){
+                        for(int j=0; j < dashedLines.length; i++){
+                            //if bold black vertical line is (partly) in dashed line
+                            if((dashedLines[i][1] >= boldBlackVertcalLines[i][1] && boldBlackVertcalLines[i][1] >= dashedLines[i][0])
+                                || (dashedLines[i][1] >= boldBlackVertcalLines[i][2] && boldBlackVertcalLines[i][2] >= dashedLines[i][0])){
+                                //same x and next to each other in y restults in same slot
+                                if((boldBlackVertcalLines[i][0] != boldBlackVertcalLines[i-1][0]) && (boldBlackVertcalLines[i][1] != boldBlackVertcalLines[i-1][2]) && (boldBlackVertcalLines[i][2] != boldBlackVertcalLines[i-1][1])){
+                                    //add slot
+                                    slots[slots.length][0] = boldBlackVertcalLines[i][0];
+                                    slots[slots.length][1] = dashedLines[j][0];
+                                    slots[slots.length][2] = dashedLines[j][1] - dashedLines[j][0];
+                                    
+                                    //updating dashedLines
+                                    // right side of the bold black vertical line is completely in the y of the dashed line
+                                    if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])
+                                        && (dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
+                                        
+                                        //add line under the bold black vertical line
+                                        dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
+                                        
+                                        //add line above the bold black vertical line
+                                        dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
+                                        
+                                        //delete line from list with dashed lines
+                                        for(int k = 0; k < dashedLines.length; k++){
+                                            if(dashedLines[k] == dashedLines[j]){
+                                                // shifting elements
+                                                for(int l = k; l < dashedLines.length - 1; l++){
+                                                    dashedLines[j] = dashedLines[l+1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // right side of the bold black vertical line is completely in the y of the dashed line
+                                    else if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
+                                        //add line under the bold black vertical line
+                                        dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
+                                        
+                                        //delete line from list with dashed lines
+                                        for(int k = 0; k < dashedLines.length; k++){
+                                            if(dashedLines[k] == dashedLines[j]){
+                                                // shifting elements
+                                                for(int l = k; l < dashedLines.length - 1; l++){
+                                                    dashedLines[j] = dashedLines[l+1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if ((dashedLines[j][1] > boldBlackVertcalLines[i][2]) && (boldBlackVertcalLines[i][2] > dashedLines[j][0])){
+                                        //add line above the bold black vertical line
+                                        dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
+                                        
+                                        //delete line from list with dashed lines
+                                        for(int k = 0; k < dashedLines.length; k++){
+                                            if(dashedLines[k] == dashedLines[j]){
+                                                // shifting elements
+                                                for(int l = k; l < dashedLines.length - 1; l++){
+                                                    dashedLines[j] = dashedLines[l+1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    
                 }
             }    
         }       
