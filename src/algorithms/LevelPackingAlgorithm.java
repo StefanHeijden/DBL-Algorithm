@@ -29,7 +29,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     int rectArea = 0;
     
     //array of heights of all the placed rectangles
-    int[] heights = new int[global.getRectangles().length];
+    int[] heights  = new int[global.getRectangles().length];
     
     //array of widths of all the placed rectangles
     int[] widths = new int[global.getRectangles().length];
@@ -52,7 +52,37 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     //will sort them using the bottom left heurstic
     //returns a grid
     public Grid bottomLeft(int[][] passedRectangle, boolean rotationAllowed) {
-        
+        counter = 0;
+    int x = 0; 
+    int y = 0; 
+    
+    // counts the number of rectangles placed
+    counter = 0;
+    
+    // maximum height of already placed rectagnles
+    maxHeight = 0;
+    
+    //maximum widht of already placed rectangles
+    maxWidth = 0;
+    
+    //total area of the rectangles
+    rectArea = 0;
+    
+    //array of heights of all the placed rectangles
+    heights  = new int[global.getRectangles().length];
+    
+    //array of widths of all the placed rectangles
+    widths = new int[global.getRectangles().length];
+    
+    //temporary placement
+    placementFinal = new int[global.getNumRectangles()][];
+    
+    //rectagnle number
+    rectangle = 0;
+    
+    //upper bound
+    fixedBound = 0;
+    
         // Series of if-statements that compute bottomleft differently
         // Computation based on vars containerType and rotationsAllowed
         // Very ugly implementation, purely meant for simple testing
