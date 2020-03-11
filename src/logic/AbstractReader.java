@@ -61,11 +61,11 @@ public class AbstractReader {
         numRectangles = Integer.parseInt(textData[2].substring(22));
         
         rectangles = new int[numRectangles][2]; //used to store rectangles
-        
+         
         for (int i  = 3; i < textData.length; i++) { //loop through all rectan.
             String currentRectangleString = textData[i];
             // Create a array of characters to loop over
-            char[] charArray = currentRectangleString.toCharArray();
+            char[] charArray = currentRectangleString.toCharArray();          
             int x = 0; // X coordinate for rectangle
             int y = 0;// Y coordinate for rectangle
             boolean first = true; // Determines whether x or y is changed
