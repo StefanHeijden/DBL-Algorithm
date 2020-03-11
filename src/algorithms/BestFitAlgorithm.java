@@ -13,8 +13,10 @@ import logic.Grid;
  * @author Jodi
  */
 public class BestFitAlgorithm extends AbstractAlgorithm {
-    int [][] rectangles;
+    int [][] rectangles; //with width and height
     int gridHeight;
+    int gridWidth; 
+    
     public BestFitAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
         //gets the data and gives every rectangle a number
@@ -30,55 +32,258 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     }
     
     //takes the lower left corner of a slot
-    public int[] LeftLowerCorner (int[][] slot) {
-        int[] coordinates = slot[0];
-        int xCoordinate = coordinates[0];
-        int yCoordinate = coordinates[1];
-        int[] coordinate = {xCoordinate, yCoordinate};
+    public int[] LowerLeftCorner (int[] slot) {
+        int xSlot = slot[0];
+        int ySlot = slot[1];
+        int[] coordinate = {xSlot, ySlot};
         return coordinate;
     }
+    
+    //adds an item to an array
+    public int[][] AddingToArray (int[][] array, int length, int width,  int[] item){
+        int[][] newArray = new int[length + 1][];
+        
+        for (int i = 0; i < length; i++){
+            for (int j = 0; j < width; j++){
+                newArray[i][j] = array[i][j];
+                
+            }
+        }   
+  
+        newArray[length] = item; 
+        
+        return newArray;
+    } 
     
     @Override
     public void run() {
         
         gridHeight = global.getHeight();
         //identify the slot at the beginning
-        int[][] slots = {{0,0,gridHeight}};
+        int[][] slots = {{0, 0, gridHeight}}; //with x, y of lower left corner and heigth
         
+        int[][] notPlacedRectangles = rectangles; //with width and height
+        int[][] placedRectangles = new int[rectangles.length][3]; //with width and height
+        int[][] places = new int[rectangles.length][2]; //with x and y of lower left corner
+                
+        //determining the optimal height of the sheet
+        gridWidth = 0;
+        for (int i=0; i<rectangles.length; i++){
+            gridWidth = gridWidth + notPlacedRectangles[i][1];
+        }
         
-        int[][] notPlacedRectangles = rectangles;
-        int[][] placedRectangles = new int[rectangles.length][3];
-        while (notPlacedRectangles.length > 1) {
-            //checks if every rectangle can fit in a slot
-            boolean canFit = true;
-            for(int i=0; i<notPlacedRectangles.length; i++){
-                for(int j=0; j<slots.length; j++){
-                    if(rectangles[i][1] < slots[j][3]){
-                        
-                    } 
-                    else {
-                        canFit = false;
-                        break;
-                    }
-                }
-            }
-            if (canFit){
-                //safe the highest score and the rectangle and place of the highest score
-                int highestScore;
-                int[] allocationSlot;
-                int[] alloctationReclangle;
-                //check every allocation
+        //array with the placement policies
+        String[] policies = new String[3];
+        policies[0] = "lowerLeftCorner";
+        policies[1] = "tallestNeighboringPiece";
+        policies[2] = "shortestNeighboringPiece";
+        
+        for(int p=0; p<policies.length; p++){
+            String policie = policies[p];
+            while (notPlacedRectangles.length > 1) {
+                //checks if there is a rectangle which can fit in a slot
+                boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
                     for(int j=0; j<slots.length; j++){
-                    //score = ;
-                    //if the score is better, safe the score, rectangle and place
-                    //if (score > highestScore){
-                        //higestScore = score;
-                        //allocationSlot = notPlacedRectangles[i];
-                        //allocatationRectangle = slots[j];
+                        if(rectangles[i][1] < slots[j][3]){
+                            canFit = true;
+                        } 
+                        else {
+                        
+                        }
+                    }
+                }
+                if (canFit){
+                    //safe the highest score and the rectangle and place of the highest score
+                    double highestScore = -1000000000;
+                    int[] allocationSlot = new int[3]; //with x, y and height 
+                    int[] allocationRectangle = new int[2]; //with width and height
+                    int[] allocationPlace = new int[2]; //with width and height;
+                    int[][] boldBlackVertcalLines = new int[rectangles.length][3]; //with x, lowest y and highest y
+                    //check every allocation
+                    for(int i=0; i<notPlacedRectangles.length; i++){
+                        for(int j=0; j<slots.length; j++){
+                            //if rectangle fits in the slot;
+                            if(rectangles[i][1] < slots[j][3]){
+                                //possible values to compute the score with
+                                double W = notPlacedRectangles[i][0]; //width of the piece
+                                double H = notPlacedRectangles[i][1]; //height of the piece
+                                double A = W * H; //area of piece
+                                double SW = slots[j][0]; //sloth width, relative to base of sheet
+                                double SHL = slots[j][2] - notPlacedRectangles[i][1]; //difference between slot and piece heights
+                                double GH = gridHeight; //height of sheet;
+                                double GW = gridWidth * 1.5; //width of optimum solution multiplied by 1.5
+                                //double ERC = ; //ephemeral random constant (to be determined if necessarily);
+
+                                double score = (SHL / (GW - W)) - (SW + H);
+                                //if the score is better, safe the score, rectangle and place
+                                if (score > highestScore){
+                                    highestScore = score;
+                                    allocationSlot = notPlacedRectangles[i];
+                                    allocationRectangle = slots[j];
+                                }
+                            }
+                        }
+                    }
+                    //computing the exact place of the allocation
+                    if(policie == "lowerLeftCorner"){
+                        allocationPlace = LowerLeftCorner(allocationSlot);
+                    }
+                    //else if(policie == "tallestNeighboringPiece"){
+                    // ;   
+                    //}
+                    //else if(policie == "smallestNeightboringPiece"){
+                    // ;   
+                    //}
+                            
+                    //storing the location and rectangle
+                    places[placedRectangles.length] = allocationPlace;
+                    placedRectangles[placedRectangles.length] = allocationRectangle;
+                        
+                    //updating boldBlackVertcalLines
+                    int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[0], allocationPlace[0]+allocationRectangle[1]}; //with x, lowest y and highest y
+                    for(int i=0; i<boldBlackVertcalLines.length; i++){
+                        int lowestYBoldBlackVertcalLine = boldBlackVertcalLines[i][1];
+                        int highestYBoldBlackVertcalLine = boldBlackVertcalLines[i][2];
+                    
+                        //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
+                        if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
+                                && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //delete line from array
+                            for(int k = 0; k < boldBlackVertcalLines.length; k++){
+                                if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
+                                    // shifting elements
+                                    for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
+                                        boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                                    }
+                                }
+                            }
+                        }
+                        //if upper part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                        else if(rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //only hold bottom part of line
+                            boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
+                        }
+                        //if bottom part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                        else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //only hold upper part of line
+                            boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
+                        }
+                        //if middle part of boldBlackVerticalLines element is under rightSideOfAllocationRectangle
+                        else if(rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1] 
+                                && rightSideOfAllocationRectangle[2]>highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]){
+                            //add under part of line to array
+                            boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
+                            boldBlackVertcalLines[i][2] = rightSideOfAllocationRectangle[1];
+                            //add upper part of line to array
+                            boldBlackVertcalLines[boldBlackVertcalLines.length] = boldBlackVertcalLines[i];
+                            boldBlackVertcalLines[i][1] = rightSideOfAllocationRectangle[2];
+                            //delete line from array
+                            for(int k = 0; k < boldBlackVertcalLines.length; k++){
+                                if(boldBlackVertcalLines[k] == boldBlackVertcalLines[i]){
+                                    // shifting elements
+                                    for(int j = k; j < boldBlackVertcalLines.length - 1; j++){
+                                        boldBlackVertcalLines[j] = boldBlackVertcalLines[j+1];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //adding right side of allocation rectangle to boldBlackVertcalLines
+                    boldBlackVertcalLines[boldBlackVertcalLines.length] = rightSideOfAllocationRectangle;
+                    
+                    //sorting boldBlackVertcalLines on first column in descending order
+                    boolean needToBeSwapped;
+                    do {
+                        needToBeSwapped = false;
+                        for (int i = 0; i < boldBlackVertcalLines.length - 1; i++) {
+                            //check if needed to swap
+                            if (boldBlackVertcalLines[i][0] < boldBlackVertcalLines[i + 1][0]) {
+                                 
+                                //swap
+                                int temp = boldBlackVertcalLines[i][0];
+                                boldBlackVertcalLines[i][0] = boldBlackVertcalLines[i + 1][0];
+                                boldBlackVertcalLines[i + 1][0] = temp;
+                       
+                                needToBeSwapped = true;
+                            }
+                        }
+                    } while (needToBeSwapped);
+                    
+                    //initializing a array with the dashed lines
+                    int[][] dashedLines = new int[rectangles.length][2]; //with lower y and higher y
+                    dashedLines [0][0] = 0;
+                    dashedLines [0][1] = gridHeight;
+                    
+                    //updating slots
+                    for(int i=0; i < boldBlackVertcalLines.length; i++){
+                        for(int j=0; j < dashedLines.length; i++){
+                            //if bold black vertical line is (partly) in dashed line
+                            if((dashedLines[i][1] >= boldBlackVertcalLines[i][1] && boldBlackVertcalLines[i][1] >= dashedLines[i][0])
+                                || (dashedLines[i][1] >= boldBlackVertcalLines[i][2] && boldBlackVertcalLines[i][2] >= dashedLines[i][0])){
+                                //same x and next to each other in y restults in same slot
+                                if((boldBlackVertcalLines[i][0] != boldBlackVertcalLines[i-1][0]) && (boldBlackVertcalLines[i][1] != boldBlackVertcalLines[i-1][2]) && (boldBlackVertcalLines[i][2] != boldBlackVertcalLines[i-1][1])){
+                                    //add slot
+                                    int [] element = {boldBlackVertcalLines[i][0], dashedLines[j][0], dashedLines[j][1],  dashedLines[j][0]};
+                                    AddingToArray (slots, slots.length, 3, element);
+                                    
+                                    //updating dashedLines
+                                    // right side of the bold black vertical line is completely in the y of the dashed line
+                                    if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])
+                                        && (dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
+                                        
+                                        //add line under the bold black vertical line
+                                        dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
+                                        
+                                        //add line above the bold black vertical line
+                                        dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
+                                        
+                                        //delete line from array with dashed lines
+                                        for(int k = 0; k < dashedLines.length; k++){
+                                            if(dashedLines[k] == dashedLines[j]){
+                                                // shifting elements
+                                                for(int l = k; l < dashedLines.length - 1; l++){
+                                                    dashedLines[j] = dashedLines[l+1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // right side of the bold black vertical line is completely in the y of the dashed line
+                                    else if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
+                                        //add line under the bold black vertical line
+                                        dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
+                                        
+                                        //delete line from array with dashed lines
+                                        for(int k = 0; k < dashedLines.length; k++){
+                                            if(dashedLines[k] == dashedLines[j]){
+                                                // shifting elements
+                                                for(int l = k; l < dashedLines.length - 1; l++){
+                                                    dashedLines[j] = dashedLines[l+1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if ((dashedLines[j][1] > boldBlackVertcalLines[i][2]) && (boldBlackVertcalLines[i][2] > dashedLines[j][0])){
+                                        //add line above the bold black vertical line
+                                        dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
+                                        
+                                        //delete line from array with dashed lines
+                                        for(int k = 0; k < dashedLines.length; k++){
+                                            if(dashedLines[k] == dashedLines[j]){
+                                                // shifting elements
+                                                for(int l = k; l < dashedLines.length - 1; l++){
+                                                    dashedLines[j] = dashedLines[l+1];
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }    
-        }       
+        } 
+        
     }
 }

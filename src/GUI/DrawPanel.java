@@ -21,7 +21,6 @@ public class DrawPanel extends JPanel {
     
     public DrawPanel(){
         super();
-        
     }
     
     @Override
@@ -30,9 +29,6 @@ public class DrawPanel extends JPanel {
         
         // First draw the boundingBox
         g.setColor(boundingBoxColor);
-        System.out.println("panel height: " + (this.getHeight() - heightFix));
-        System.out.println("heightB: " + boundingBox.height);
-        System.out.println("heightBScaled: " + boundingBox.scaledHeight);
         g.fillRect(boundingBox.scaledX, this.getHeight() - heightFix - boundingBox.scaledHeight, 
                 boundingBox.scaledWidth, 
                 boundingBox.scaledHeight);
@@ -56,7 +52,6 @@ public class DrawPanel extends JPanel {
         this.rectangles = rectangles;
         scale = 1; // also reset scaling
         int width = getMaxWidth();
-        System.out.println("height: " + height);
         if(height <= 0){
             height = getMaxHeight();
         }
@@ -202,8 +197,7 @@ public class DrawPanel extends JPanel {
     }
 
     String[] getRectangleAt(int x, int y) {
-        y = this.getHeight() - y - 10;
-        x = x - 8;
+        y = this.getHeight() - y;
         String[] info = new String[5];
         info[0] = "Rectangle: ";
         info[1] = "x: ";
@@ -224,9 +218,20 @@ public class DrawPanel extends JPanel {
         return info;
     }
     
+    int getRectangleIndexAt(int x, int y) {
+        y = this.getHeight() - y;
+        if(canRepaint()){ 
+            for(BetterRectangle r1: rectangles){
+                if(r1.scaledInside(x, y)){
+                    return r1.index;
+                }
+            }
+        }
+        return -1;
+    }
+    
     public void selectRectangleAt(int x, int y){
-        y = this.getHeight() - y - 10;
-        x = x - 8;
+        y = this.getHeight() - y;
         if(selected != null){
             selected.changeColor();
         }
