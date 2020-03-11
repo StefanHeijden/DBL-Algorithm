@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -59,8 +60,8 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
                 counter++;
                 continue;
             }
-            rectangles[depth][0] = rectangles[i][0];
-            rectangles[depth][1] = rectangles[i][1];
+            rectangles[depth][0] = global.getRectangles()[i][0];
+            rectangles[depth][1] = global.getRectangles()[i][1];
             rectangles[depth][2] = i;
             positions.set(counter, -1);
             doLoop(depth + 1);
@@ -95,20 +96,43 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Count the number of calculation that are made
         numberOfCalculations++;
         bottemLeftAgorithm.bottomLeft(rectangles, false);
+        System.out.print("placement for positions: ");
+        for(int[] rectangle: rectangles){
+            System.out.print(" "+ Arrays.toString(rectangle));
+        }
+        System.out.println("");
+        for(int[] placement: grid.getPlacement()){
+            System.out.println("placement[0]: " + placement[0]);
+            System.out.println("placement[1]: " + placement[1]);
+        }
+        System.out.println("");
+        
         // Calc score of the solution
+        System.out.println("OLD VALUE: " + bestValue);
         grid.computeFinalDensity(global);
+        System.out.println("grid.getDensity(): " + grid.getDensity());
         if(grid.getDensity() > bestValue){
+            System.out.println("NEW BEST VALUE!!!------------------------------------");
             bestValue = grid.getDensity();
             bestResult = toArray(grid.getPlacement());
         }
     }
     
     public void setFinalResult(){
+        System.out.println("calc final result");
         finalResultingPlacement = new int[global.getNumRectangles()][2];
-        
+        System.out.print("best positions: ");
+        for(int[] placement: bestResult ){
+            System.out.println("placement[0]: " + placement[0]);
+            System.out.println("placement[1]: " + placement[1]);
+        }
+        System.out.println("");
         for(int i = 0; i < finalResultingPlacement.length; i++){
+            System.out.println("i: " + i);
             for(int[] placement: bestResult ){
                 if(i == placement[2]){
+                    System.out.println("placement[0]: " + placement[0]);
+                    System.out.println("placement[1]: " + placement[1]);
                     finalResultingPlacement[i][0] = placement[0];
                     finalResultingPlacement[i][1] = placement[1];
                 }
