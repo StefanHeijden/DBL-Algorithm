@@ -131,7 +131,12 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         return y;
     }
     
-    //
+    //for every x in the width of the placed rectangles, the algorithm finds the lowest y
+    //where the rectagnle can be placed.
+    //if it can be placed at coordinate 0, then that is returned.
+    //else all possible coordinates are stored
+    //the best coordinate is chosen based that minimizes the wasted space.
+    //this coordinate is returned
     public int[] computeBottomLeftCoordinate(int[][] passedRectangle, int width, int height) {
         int y2 = 0;
         int x2 = 0;
@@ -186,7 +191,12 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         return new int[]{x2,y2};
     }
     
-    int issue = 0;
+    //this method looks at the given y coordinate and find if there is any rectagnle 
+    //that is overlapping with it on the y axis.
+    //if yes, then the x coordinate is checked. 
+    //the overlapping for a given rectangle to each other rectangle is stored in 
+    //a boolean array.
+    //if all values are false, so no overlapping, then true is returned (no overlaps).
     public boolean overlapsRectangle(int[][] passedRectangle, int width, int height, int yInitial, int xInitial) {
         boolean[] fits = new boolean[passedRectangle.length];
         int count = 0;
@@ -235,7 +245,6 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                     }
                 }
                 count ++;
-                issue ++;
             }
         }
         for(boolean i: fits) {
@@ -247,6 +256,10 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         return true;
     }
     
+    //this method checks if the given rectangle overlaps with an already placed rectangle
+    //on the a axis.
+    //if yes, false is returned.
+    //otherwise true is returned.
     public boolean overlapsXRectanlge(int passedRectangle, int width, int xInitial, int i) {
         if((xInitial >= placementFinal[i][0]) && ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) {
             //System.out.println("There is a rectangle larger than current. width " + passedRectangle);
@@ -297,6 +310,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         return returnCoordinates;
     }
     
+    // computation of bottomleft corner in case (containerType == "fixed")
     public int[] computeBottomleftFixed(int width, int height, int[][] passedRectangle, int maxHeight) {
         fixedBound = maxHeight;
         int[] z = computeBottomLeftCoordinate(passedRectangle, width, height);
