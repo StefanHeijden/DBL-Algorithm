@@ -41,7 +41,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Set best placement in Grid
         grid.storePlacement(bestResult);
         grid.computeFinalDensity(global);
-        System.out.println("grid.getDensity(): " + grid.getDensity());
+        System.out.println("Best Value: " + grid.getDensity());
         
         // Show the number of calculation that are made
         System.err.println("Number Of Calculations: " + numberOfCalculations);
@@ -148,7 +148,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         for(int i = 0; i < ordened.length; i++){
             int counter = 0;
             for(int[] placement: grid.getPlacement() ){
-                if(i == rectangles[i][2]){
+                if(i == rectangles[counter][2]){
                     ordened[i][0] = placement[0];
                     ordened[i][1] = placement[1];
                 }
