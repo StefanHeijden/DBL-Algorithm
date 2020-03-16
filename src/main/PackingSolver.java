@@ -98,8 +98,8 @@ public class PackingSolver {
         switch(algorithmName) {
         case "BestFit":
             return new BestFitAlgorithm(grid, data);
-        case "BruteForcFree":
-            return new BruteForceAlgorithmFree(grid, data);
+        case "BruteForce":
+            return new BruteForceAlgorithm(grid, data);
         case "BruteForceLeftBottom":
             return new BruteForceLeftBottomAlgorithm(grid, data);
         case "BruteForceLeftBottomWithRotation":

@@ -39,8 +39,9 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         calcLB(0);
         
         // Set best placement in Grid
-        setFinalResult();
-        grid.storePlacement(finalResultingPlacement);
+        grid.storePlacement(bestResult);
+        grid.computeFinalDensity(global);
+        System.out.println("grid.getDensity(): " + grid.getDensity());
         
         // Show the number of calculation that are made
         System.err.println("Number Of Calculations: " + numberOfCalculations);
@@ -95,7 +96,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        bottemLeftAgorithm.bottomLeft(rectangles, false);
+        grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
         System.out.print("placement for positions: ");
         for(int[] rectangle: rectangles){
             System.out.print(" "+ Arrays.toString(rectangle));
@@ -109,6 +110,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         
         // Calc score of the solution
         System.out.println("OLD VALUE: " + bestValue);
+        grid.storePlacement(orden());
         grid.computeFinalDensity(global);
         System.out.println("grid.getDensity(): " + grid.getDensity());
         if(grid.getDensity() > bestValue){
@@ -117,7 +119,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
             bestResult = toArray(grid.getPlacement());
         }
     }
-    
+/*    
     public void setFinalResult(){
         System.out.println("calc final result");
         finalResultingPlacement = new int[global.getNumRectangles()][2];
@@ -138,6 +140,22 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
                 }
             }
         }
+    }
+*/    
+    public int[][] orden(){
+       int[][] ordened = new int[global.getNumRectangles()][2];
+       
+        for(int i = 0; i < ordened.length; i++){
+            int counter = 0;
+            for(int[] placement: grid.getPlacement() ){
+                if(i == rectangles[i][2]){
+                    ordened[i][0] = placement[0];
+                    ordened[i][1] = placement[1];
+                }
+                counter++;
+            }
+        }
+        return ordened;
     }
     
 }

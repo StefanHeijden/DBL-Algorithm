@@ -66,7 +66,7 @@ public class SimpleGUI {
     
     // Names of the algorithms, standard is used to let the PackingSolver
     // decide what algorithm to use based on the data
-    static final String[] ALGORITHMS = {"standard", "BestFit", "BruteForcFree", 
+    static final String[] ALGORITHMS = {"standard", "BestFit", "BruteForce", 
         "LevelPacking", "Testing", "BruteForceLeftBottom", "BruteForceLeftBottomWithRotation"};
      
     // Path is now in file testfiles in the DBL-Algorithm files, 
