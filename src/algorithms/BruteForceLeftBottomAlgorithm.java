@@ -39,7 +39,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         calcLB(0);
         
         // Set best placement in Grid
-        grid.storePlacement(bestResult);
+        setBestResult();
         grid.computeFinalDensity(global);
         
         // Show the number of calculation that are made
@@ -121,6 +121,10 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
             }
         }
         return ordened;
+    }
+
+    public void setBestResult() {
+        grid.storePlacement(bestResult);
     }
     
 }
