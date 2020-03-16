@@ -1,7 +1,7 @@
 container height: free
 rotations allowed: no
 number of rectangles: 4
-37 23
-36 30
-20 36
-23 13
+19 17
+15 14
+9 24
+15 20
