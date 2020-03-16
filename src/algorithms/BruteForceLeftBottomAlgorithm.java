@@ -41,7 +41,6 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Set best placement in Grid
         grid.storePlacement(bestResult);
         grid.computeFinalDensity(global);
-        System.out.println("Best Value: " + grid.getDensity());
         
         // Show the number of calculation that are made
         System.err.println("Number Of Calculations: " + numberOfCalculations);
@@ -97,51 +96,16 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Count the number of calculation that are made
         numberOfCalculations++;
         grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
-        System.out.print("placement for positions: ");
-        for(int[] rectangle: rectangles){
-            System.out.print(" "+ Arrays.toString(rectangle));
-        }
-        System.out.println("");
-        for(int[] placement: grid.getPlacement()){
-            System.out.println("placement[0]: " + placement[0]);
-            System.out.println("placement[1]: " + placement[1]);
-        }
-        System.out.println("");
         
         // Calc score of the solution
-        System.out.println("OLD VALUE: " + bestValue);
         grid.storePlacement(orden());
         grid.computeFinalDensity(global);
-        System.out.println("grid.getDensity(): " + grid.getDensity());
         if(grid.getDensity() > bestValue){
-            System.out.println("NEW BEST VALUE!!!------------------------------------");
             bestValue = grid.getDensity();
             bestResult = toArray(grid.getPlacement());
         }
     }
-/*    
-    public void setFinalResult(){
-        System.out.println("calc final result");
-        finalResultingPlacement = new int[global.getNumRectangles()][2];
-        System.out.print("best positions: ");
-        for(int[] placement: bestResult ){
-            System.out.println("placement[0]: " + placement[0]);
-            System.out.println("placement[1]: " + placement[1]);
-        }
-        System.out.println("");
-        for(int i = 0; i < finalResultingPlacement.length; i++){
-            System.out.println("i: " + i);
-            for(int[] placement: bestResult ){
-                if(i == placement[2]){
-                    System.out.println("placement[0]: " + placement[0]);
-                    System.out.println("placement[1]: " + placement[1]);
-                    finalResultingPlacement[i][0] = placement[0];
-                    finalResultingPlacement[i][1] = placement[1];
-                }
-            }
-        }
-    }
-*/    
+ 
     public int[][] orden(){
        int[][] ordened = new int[global.getNumRectangles()][2];
        
@@ -151,6 +115,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
                 if(i == rectangles[counter][2]){
                     ordened[i][0] = placement[0];
                     ordened[i][1] = placement[1];
+                    break;
                 }
                 counter++;
             }
