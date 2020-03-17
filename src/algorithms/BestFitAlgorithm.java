@@ -5,14 +5,14 @@
  */
 
 //TO DO:
-//ADDING BETTER WAY OF UPDATING SLOTS
+//ADDING BETTER WAY OF UPDATING SLOTS?
 //ADDING RETURNING BEST SOLUTION
 //ADDING POLICIES
 //ADDING ROTATING OF RECTANGLES
 //ADDING THAT FIRST RECTANGLE IS PLACED IN UPPER LEFT CORNER
 //ADDING WHAT TO DO IF IF STATEMENT IS NOT MET
 //FIXING INITIALIZING ARRAYS/REPLACE ARRAYS WITH ARRAYLISTS
-//
+
 package algorithms;
 
 import logic.GlobalData;
@@ -244,6 +244,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     } while (needToBeSwapped);
                     
+                    /* maybe it can be done simpler?
                     //updating slots
                     for(int i = 0; i < boldBlackVertcalLines.length; i++){
                         int[] slot = new int[3];
@@ -253,16 +254,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                         AddingToArray (slots, 3, slot);
                     }
-                    
-                    
-                    
-                                                            
-                                                            
-                    
-                    
-                 /*   
-                
-                    
+                    */
+                      
                     //initializing a array with the dashed lines
                     int[][] dashedLines = {{0, gridHeight}}; //with lower y and higher y
                     
@@ -281,14 +274,17 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     //updating dashedLines
                                     // right side of the bold black vertical line is completely in the y of the dashed line
                                     if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])
-                                        && (dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
+                                        && (dashedLines[j][1] > boldBlackVertcalLines[i][2]) && (boldBlackVertcalLines[i][2] > dashedLines[j][0])){
                                         
                                         //add line under the bold black vertical line
-                                        AddingToArray (dashedLines, 3, boldBlackVertcalLines[i][1]);
-                                        dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
+                                        int [] underLine = dashedLines[j];
+                                        underLine[1] = boldBlackVertcalLines[i][1];
+                                        AddingToArray (dashedLines, 3, underLine);
                                         
                                         //add line above the bold black vertical line
-                                        dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
+                                        int [] upperLine = dashedLines[j];
+                                        upperLine[0] = boldBlackVertcalLines[i][2];
+                                        AddingToArray (dashedLines, 3, upperLine);
                                         
                                         //delete line from array with dashed lines
                                         for(int k = 0; k < dashedLines.length; k++){
@@ -303,7 +299,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     // right side of the bold black vertical line is completely in the y of the dashed line
                                     else if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
                                         //add line under the bold black vertical line
-                                        dashedLines[dashedLines.length][1] = boldBlackVertcalLines[i][1];
+                                        int [] underLine = dashedLines[j];
+                                        underLine[1] = boldBlackVertcalLines[i][1];
+                                        AddingToArray (dashedLines, 3, underLine);
                                         
                                         //delete line from array with dashed lines
                                         for(int k = 0; k < dashedLines.length; k++){
@@ -317,7 +315,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     }
                                     else if ((dashedLines[j][1] > boldBlackVertcalLines[i][2]) && (boldBlackVertcalLines[i][2] > dashedLines[j][0])){
                                         //add line above the bold black vertical line
-                                        dashedLines[dashedLines.length][0] = boldBlackVertcalLines[i][2];
+                                        int [] upperLine = dashedLines[j];
+                                        upperLine[0] = boldBlackVertcalLines[i][2];
+                                        AddingToArray (dashedLines, 3, upperLine);
                                         
                                         //delete line from array with dashed lines
                                         for(int k = 0; k < dashedLines.length; k++){
@@ -333,7 +333,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             }
                         }
                     }
-                    */
+                    
                     
                     
                     
