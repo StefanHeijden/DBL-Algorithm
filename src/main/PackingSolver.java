@@ -83,9 +83,20 @@ public class PackingSolver {
         }
         // Else determine the algorithm based on some variables
         // If number of rectangles is small, use Brute Force
-        if(data.getNumRectangles() < BRUTEFORCETHRESHOLD){
+        if(data.getNumRectangles() <= BRUTEFORCETHRESHOLD){
+            // If it is free data type
             if(data.getType().equalsIgnoreCase(data.FREE)){
-                return "BruteForceFree";
+                if(!data.getRA()){
+                    return "BruteForceLeftBottomFree";
+                }else{
+                    return "BruteForceLeftBottomFreeWithRotation";
+                }
+            }else{ // If it is fixed data type
+                if(!data.getRA()){
+                    return "BruteForceLeftBottomFixed";
+                }else{
+                    return "BruteForceLeftBottomFixedWithRotation";
+                }
             }
         }
         return "Testing";
@@ -100,10 +111,14 @@ public class PackingSolver {
             return new BestFitAlgorithm(grid, data);
         case "BruteForce":
             return new BruteForceAlgorithm(grid, data);
-        case "BruteForceLeftBottom":
-            return new BruteForceLeftBottomAlgorithm(grid, data);
-        case "BruteForceLeftBottomWithRotation":
-            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data);
+        case "BruteForceLeftBottomFree":
+            return new BruteForceLeftBottomAlgorithm(grid, data, true);
+        case "BruteForceLeftBottomFreeWithRotation":
+            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data, true);
+        case "BruteForceLeftBottomFixed":
+            return new BruteForceLeftBottomAlgorithm(grid, data, false);
+        case "BruteForceLeftBottomFixedWithRotation":
+            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data, false);
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":

@@ -1,7 +1,6 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -18,8 +17,8 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
     boolean[] tempRot;
     int[][] tempRect;
     
-    public BruteForceLeftBottomWithRotationAlgorithm(Grid grid, GlobalData data) {
-        super(grid, data);
+    public BruteForceLeftBottomWithRotationAlgorithm(Grid grid, GlobalData data, boolean free) {
+        super(grid, data, free);
         rotations = new ArrayList();
     }
     
@@ -42,7 +41,11 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        if(free){
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        }else{
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        }
         
         // Calc score of the solution
         // First make sure the rectangles and rotations array ordened such
@@ -94,6 +97,5 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
     public void setBestResult() {
         grid.storePlacement(bestResult);
         grid.storeRotations(bestRotations);
-        System.out.println(Arrays.toString(bestRotations));
     }
 }
