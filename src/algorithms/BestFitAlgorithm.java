@@ -6,7 +6,7 @@
 
 //TO DO:
 //ADDING BETTER WAY OF UPDATING SLOTS?
-//ADDING RETURNING BEST SOLUTION
+//ADDING RETURNING SOLUTION
 //ADDING POLICIES
 //ADDING ROTATING OF RECTANGLES
 //ADDING THAT FIRST RECTANGLE IS PLACED IN UPPER LEFT CORNER
@@ -49,16 +49,34 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         return coordinate;
     }
     
-    //adds an item to an array
-    public int[][] AddingToArray (int[][] array, int width,  int[] item){
+    //adds an item to an two dimentional array
+    public int[][] AddingToArray (int[][] array, int variables,  int[] item){
         int length = array.length;
         
         int[][] newArray = new int[length + 1][];
         
         for (int i = 0; i < length; i++){
-            for (int j = 0; j < width; j++){
+            for (int j = 0; j < variables; j++){
                 newArray[i][j] = array[i][j];
-                
+            }
+        }   
+  
+        newArray[length] = item; 
+        
+        return newArray;
+    } 
+    
+    //adds an item to an three array
+    public int[][][] AddingToArray (int[][][] array, int rectangles, int variables, int[][] item){
+        int length = array.length;
+        
+        int[][][] newArray = new int[length + 1][][];
+        
+        for (int i = 0; i < length; i++){
+            for (int j = 0; j < rectangles; j++){
+                for (int k = 0; k < variables; k++){
+                newArray[i][j][k] = array[i][j][k];
+                }
             }
         }   
   
@@ -75,7 +93,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         //determining the optimal height of the sheet
         gridWidth = 0;
         for (int i=0; i<rectangles.length; i++){
-            gridWidth = gridWidth + notPlacedRectangles[i][1];
+            gridWidth = gridWidth + rectangles[i][1];
         }
         
         //array with the placement policies
@@ -84,18 +102,14 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         policies[1] = "tallestNeighboringPiece";
         policies[2] = "shortestNeighboringPiece";
         
-        /*
+        
         //arrays with the solutions
-        //solutions first policy
-        int[][] placedRectangles1 = new int[rectangles.length][2];
-        int[][] places1 = new int[rectangles.length][2];
-        //solutions second policy
-        int[][] placedRectangles2 = new int[rectangles.length][2];
-        int[][] places2 = new int[rectangles.length][2];
-        //solutions third policy
-        int[][] placedRectangles3 = new int[rectangles.length][2];
-        int[][] places3 = new int[rectangles.length][2];
-        */
+        int[][][] placedRectanglesSolutions;
+        int[][][] placesSolutions;
+        int[][] placedRectanglesSolution;
+        int[][] placesSolution;
+        int indexSolution;
+
         
         for(int p=0; p<policies.length; p++){
             String policie = policies[p];
@@ -340,14 +354,33 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     
                     
                 }
-            }    
+                else{
+                    //GO FURTHER IN THE NEXT STEP OF THE FOR LOOP
+                }
+            }
+            //add solution to solutions
+            AddingToArray (placedRectanglesSolutions, rectangles.length, 2, placedRectangles);
+            AddingToArray (placesSolutions, rectangles.length, 2, places);  
         } 
         
         
+        for(int i = 0; i < placedRectanglesSolutions.length; i++){
+            //keeps the width of the solution of the placing policy
+            int widthPolicySolution = 0; 
+            for(int j = 0; j < rectangles.length; j++){
+            
+                //the x value of the right side of the rectangle
+                int highestXofRectangle = placedRectanglesSolutions[i][j][0] + placesSolutions[i][j][0];
+                if(highestXofRectangle > widthPolicySolution){
+                    widthPolicySolution = highestXofRectangle;
+                }
+            }
+            if(widthPolicySolution < widthSolution){
+                indexSolution = i;
+            }
+        }
         
-    }
-    
-    
-    
-    
+        placedRectanglesSolution = placedRectanglesSolutions[i];
+        placesSolution = placesSolutions[i];   
+    } 
 }
