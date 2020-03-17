@@ -6,7 +6,7 @@
 
 //TO DO:
 //ADDING BETTER WAY OF UPDATING SLOTS?
-//ADDING RETURNING SOLUTION
+//ADDING PUTTING THE VALUES IN THE GUI
 //ADDING POLICIES
 //ADDING ROTATING OF RECTANGLES
 //ADDING THAT FIRST RECTANGLE IS PLACED IN UPPER LEFT CORNER
@@ -106,9 +106,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         //arrays with the solutions
         int[][][] placedRectanglesSolutions;
         int[][][] placesSolutions;
-        int[][] placedRectanglesSolution;
-        int[][] placesSolution;
         int indexSolution;
+        int [][] finalPlaces = new int [rectangles.length][2];
 
         
         for(int p=0; p<policies.length; p++){
@@ -380,7 +379,15 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
         }
         
-        placedRectanglesSolution = placedRectanglesSolutions[i];
-        placesSolution = placesSolutions[i];   
+        //arrays with the places and arrays
+        int [][] placedRectanglesSolution = placedRectanglesSolutions[indexSolution];
+        int [][] placesSolution = placesSolutions[indexSolution];   
+        
+        //sort the places so it matches the rectangles
+        for(int i = 0; i < placedRectanglesSolution.length; i++){
+            finalPlaces[placedRectanglesSolution[i][2]] = placesSolution[i];
+        }
+        //PUT THE VALUES IN THE GUI
+        //setRectangles(finalPlaces);
     } 
 }
