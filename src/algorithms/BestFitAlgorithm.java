@@ -10,7 +10,6 @@
 //ADDING POLICIES
 //ADDING ROTATING OF RECTANGLES
 //ADDING THAT FIRST RECTANGLE IS PLACED IN UPPER LEFT CORNER
-//ADDING WHAT TO DO IF IF STATEMENT IS NOT MET
 //FIXING INITIALIZING ARRAYS/REPLACE ARRAYS WITH ARRAYLISTS
 
 package algorithms;
@@ -106,6 +105,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         //arrays with the solutions
         int[][][] placedRectanglesSolutions;
         int[][][] placesSolutions;
+        int widthSolution = 1000000000;
         int indexSolution;
         int [][] finalPlaces = new int [rectangles.length][2];
 
@@ -354,7 +354,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     
                 }
                 else{
-                    //GO FURTHER IN THE NEXT STEP OF THE FOR LOOP
+                    //go further with the next policy
+                    break;
                 }
             }
             //add solution to solutions
