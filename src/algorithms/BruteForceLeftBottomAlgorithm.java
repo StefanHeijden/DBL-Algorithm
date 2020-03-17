@@ -1,7 +1,6 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -19,10 +18,12 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     int numberOfCalculations = 0;
     LevelPackingAlgorithm bottemLeftAgorithm;
     int[][] finalResultingPlacement;
+    boolean free = true;
     
-    public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data) {
+    public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data, boolean free) {
         super(grid, data);
         bottemLeftAgorithm = new LevelPackingAlgorithm(grid, data);
+        this.free = free;
         // Initialize lists
         rectangles = new int[data.getNumRectangles()][3];
         positions = new ArrayList();
@@ -95,7 +96,11 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        if(free){
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        }else{
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        }
         
         // Calc score of the solution
         grid.storePlacement(orden());
