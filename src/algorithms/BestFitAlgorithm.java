@@ -6,7 +6,6 @@
 
 //TO DO:
 //ADDING BETTER WAY OF UPDATING SLOTS?
-//ADDING PUTTING THE VALUES IN THE GUI
 //ADDING POLICIES
 //ADDING ROTATING OF RECTANGLES
 //ADDING THAT FIRST RECTANGLE IS PLACED IN UPPER LEFT CORNER
@@ -388,7 +387,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         for(int i = 0; i < placedRectanglesSolution.length; i++){
             finalPlaces[placedRectanglesSolution[i][2]] = placesSolution[i];
         }
-        //PUT THE VALUES IN THE GUI
-        //setRectangles(finalPlaces);
+        
+        //puts the values in the gui
+        grid.storePlacement(finalPlaces);
     } 
 }
