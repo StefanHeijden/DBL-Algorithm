@@ -1,7 +1,7 @@
 
 package algorithms;
 
-import java.util.ArrayList;
+import java.awt.Rectangle;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -49,6 +49,7 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         } 
         //call the FR variant
         else if (global.getType().equals(global.FREE) && global.getRA()) {
+            //withinBounds() and overlaps() needs to be adapted to allow for rotations
             computeFR();
         }
         //call the SPNR variant
@@ -57,6 +58,7 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         }
         //call the SPR variant
         else if (global.getType().equals(global.FIXED) && global.getRA()) {
+            //withinBounds() and overlaps() needs to be adapted to allow for rotations
             computeSPR();
         }  
     }
@@ -151,16 +153,8 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         
         //done removing placedAtCorner, start adding new corners
         //first need to get dimensions of rectangle that was placed
-        int width = 0; //placed rectangle width
-        int height = 0;//placed rectangle height
-        
-        for (int i = 0; i < rectanglesWithIndex.length; i++) {
-            //if rectangle with index indexPlacedRectangle
-            if (rectanglesWithIndex[i][1][0] == IndexPlacedRectangle) {
-                width = rectanglesWithIndex[i][0][0];
-                height = rectanglesWithIndex[i][0][1];
-            }
-        }
+        int width = getWidthRectangleIndex(IndexPlacedRectangle); //placed rectangle width
+        int height = getHeightRectangleIndex(IndexPlacedRectangle);//placed rectangle height
         
         //compute new corners
         int[][] newCorners = new int[corners.length + 2][]; //two corners will be added
@@ -205,5 +199,64 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         return permutations;
     }
     
+    private boolean validPlacement(int IndexPlacedRectangle, int[] placementCoordinates) {
+        return (!overlaps() && withinBounds(IndexPlacedRectangle, placementCoordinates));
+    }
+    
+    //TODO needs to be adapted to allow for rotations
+    private boolean overlaps() {
+        //TODO implement, idea is to use Rectangle class of java awt
+        return true; //assume while not implemented placement is not valid
+    }
+    
+    //TODO needs to be adapted to allow for rotations
+    private boolean withinBounds(int IndexPlacedRectangle, int[] placementCoordinates) {      
+        //if placement corner is not in first quadrant or does not touch x- or y-axis  
+        //and in first quadrant than some part not in first quadrant so not within bounds
+        if (! (placementCoordinates[0] >= 0 && placementCoordinates[1] >= 0)) {
+            return false;
+        }
+        
+        //maximal y coordinate of given placed rectangle
+        int maxYOfRectangle = placementCoordinates[1] + getHeightRectangleIndex(IndexPlacedRectangle);
+        
+        //if FNR variant
+        if (global.getType().equals(global.FREE) && ! global.getRA()) {
+            return true; //if it passed first test this should be fine
+            //check still here because not everything implemented
+        }
+        
+        //if SPNR variant
+        if (global.getType().equals(global.FIXED) && ! global.getRA()) {
+            //does not exceed height limit
+            if (maxYOfRectangle < global.getHeight()) {
+                return true;
+            }
+        }
+        
+        return false;// assume if variant not implemented that it is not valid
+    }
+    
+    private int getWidthRectangleIndex(int index) {
+        int width = 0; //placed rectangle width
+        for (int i = 0; i < rectanglesWithIndex.length; i++) {
+            //if rectangle with index indexPlacedRectangle
+            if (rectanglesWithIndex[i][1][0] == index) {
+                width = rectanglesWithIndex[i][0][0];
+            }
+        }
+        return width;
+    }
+    
+    private int getHeightRectangleIndex(int index) {
+        int height = 0; //placed rectangle height
+        for (int i = 0; i < rectanglesWithIndex.length; i++) {
+            //if rectangle with index indexPlacedRectangle
+            if (rectanglesWithIndex[i][1][0] == index) {
+                height = rectanglesWithIndex[i][0][1];
+            }
+        }
+        return height;
+    }
     
 }
