@@ -128,6 +128,8 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     and adding width or height and have this as new corner. **/
     private int[][] computeCorner() {
         //TODO: implement corner computation
+        int[][] returnThing = new int[3][];
+        return returnThing;
     }
     
     /* computes and returns all possbile permutations of given rectangles, so all
@@ -135,6 +137,8 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     permutation itself is by the index of the rectangle**/
     private int[][] computePermutations (int[][][] rectanglesToPlace) {
         //TODO: implement permutation computation
+        int[][] returnThing = new int[3][];
+        return returnThing;
     }
     
     
