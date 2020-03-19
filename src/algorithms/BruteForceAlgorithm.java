@@ -1,6 +1,7 @@
 
 package algorithms;
 
+import java.util.ArrayList;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -125,20 +126,83 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     
     /* computes and returns 2d array of corners that can be filled. Initialization
     should be with the origin: (0, 0). Computes new corners by placing new rectangle
-    and adding width or height and have this as new corner. **/
-    private int[][] computeCorner() {
-        //TODO: implement corner computation
-        int[][] returnThing = new int[3][];
-        return returnThing;
+    and adding width or height and have this as new corner. First parameter is
+    current corners, second parameter is index of rectangle placed and last parameter
+    is the corner the rectangle is placed at**/
+    private int[][] computeCorners(int[][] oldCorners, int IndexPlacedRectangle, 
+            int[] placedAtCorner) {
+        //representation for new corners, one smaller because a corner has to be removed
+        int[][] corners = new int[oldCorners.length - 1][];
+        //get index of placedAtCorner in corners
+        for (int i = 0; i < oldCorners.length; i++) { //loop over all corners
+            //if corner is the same corner as placedAtCorner, note not duplicates
+            if (oldCorners[i][0] == placedAtCorner[0] && oldCorners[i][1] == placedAtCorner[1]) {
+                for(int j = 0; j < oldCorners.length - 1; j++) { //loop over all oldCorners except one
+                    if (j < i) { //just copy if placedAtCorner not encountered yet
+                        corners[j] = oldCorners[j];
+                    } else if (j == i) { //so if placedAtCorner is encountered
+                        corners[j] = oldCorners[j + 1]; //skip this value in oldCorners
+                    } else { // if j > i
+                        corners[j] = oldCorners[j + 1];// still need to account for skipping
+                    }
+                }
+            }
+        }
+        
+        //done removing placedAtCorner, start adding new corners
+        //first need to get dimensions of rectangle that was placed
+        int width = 0; //placed rectangle width
+        int height = 0;//placed rectangle height
+        
+        for (int i = 0; i < rectanglesWithIndex.length; i++) {
+            //if rectangle with index indexPlacedRectangle
+            if (rectanglesWithIndex[i][1][0] == IndexPlacedRectangle) {
+                width = rectanglesWithIndex[i][0][0];
+                height = rectanglesWithIndex[i][0][1];
+            }
+        }
+        
+        //compute new corners
+        int[][] newCorners = new int[corners.length + 2][]; //two corners will be added
+        int[] newCorner1 = new int[2]; //first new corner
+        int[] newCorner2 = new int[2]; //second new corner
+        
+        //first new corner is top left corner of newly placed rectangle
+        newCorner1[0] = placedAtCorner[0];
+        newCorner1[1] = placedAtCorner[1] + height;
+        
+        //second new corner is bottom right corner of newly placed rectangle
+        newCorner2[0] = placedAtCorner[0] + width;
+        newCorner2[1] = placedAtCorner[1];
+        
+        //copying corners array, so last two indexes of newCorners still empty
+        System.arraycopy(corners, 0, newCorners, 0, corners.length); //newCorners except last 2
+        
+        //finally add both new corners
+        newCorners[corners.length + 1] = newCorner1;
+        newCorners[corners.length + 2] = newCorner2;
+        
+        return newCorners;
     }
     
     /* computes and returns all possbile permutations of given rectangles, so all
     different orderings. Result is all different permutations as an array. The 
-    permutation itself is by the index of the rectangle**/
-    private int[][] computePermutations (int[][][] rectanglesToPlace) {
-        //TODO: implement permutation computation
-        int[][] returnThing = new int[3][];
-        return returnThing;
+    permutation itself is by the index of the rectangle. Gets computed in Permutations**/
+    private int[][] computePermutations (int[][][] rectanglesToPlace) {   
+        //need to know how many rectangles to permutate for rectangles still to place
+        int numRectangles = rectanglesToPlace.length;
+        //need to get all the indexes of the rectangles to be permutated
+        int [] rectangleIndexes = new int[numRectangles];
+        
+        for (int i = 0; i < numRectangles; i++) { //loop over all rectangles to be placed
+            //take out the index
+            rectangleIndexes[i] = rectanglesToPlace[i][1][0];
+        }
+        
+        Permutations computePermutations = new Permutations(); // make permutation object
+        // compute permutations and store in permutations
+        int[][] permutations = computePermutations.compute(numRectangles, rectangleIndexes);
+        return permutations;
     }
     
     

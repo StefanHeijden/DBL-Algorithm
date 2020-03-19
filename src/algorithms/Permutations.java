@@ -6,6 +6,7 @@ package algorithms;
  * 19/03/2020
  * 
  * Class purpose is to compute all possible permutations of certain elements
+ * It is used in the BruteForceAlgorithm
  */
 public class Permutations {
     
