@@ -7,7 +7,6 @@
 //TO DO:
 //FIXING INITIALIZING ARRAYS/REPLACE ARRAYS WITH ARRAYLISTS
 //ADDING BETTER WAY OF UPDATING SLOTS?
-//ADDING POLICIES
 //ADDING ROTATING OF RECTANGLES
 
 package algorithms;
@@ -38,12 +37,96 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         }
     }
     
-    //takes the lower left corner of a slot
-    public int[] UpperLeftCorner (int[] slot) {
+    //takes the upper left corner of a slot
+    public int[] UpperLeftCorner (int[] slot){
         int xSlot = slot[0];
         int ySlot = slot[1] + slot[2];
-        int[] coordinate = {xSlot, ySlot};
-        return coordinate;
+        int[] coordinates = {xSlot, ySlot};
+        return coordinates;
+    }
+    
+    //takes the upper left corner of a rectangle when it is placed to the side
+    //of the slot with the neighboring rectangle with the highest width
+    public int[] FattestNeighboringPiece (int[] slot, int[][] placedRectangles, int[][]places){
+        int xSlot = slot[0];
+        int yLowerSlot = slot[1];
+        int yUpperSlot = slot[1] + slot[2];
+        int[] coordinates = new int[2];
+        
+        //index for the upper neighboring rectangle
+        int u = 0;
+        for(int i = 0; i < placedRectangles.length; i++){
+            //takes the neighboring rectangle on the upper left corner of the slot
+            if(places[i][1] == yUpperSlot && places[i][0] <= xSlot && xSlot < (places[i][0] + placedRectangles[i][0])){
+                u = i;
+            }
+        }
+        
+        //index for the lower neighboring rectangle
+        int l = 0;
+        for(int i = 0; i < placedRectangles.length; i++){
+            //takes the neighboring rectangle on the lower left corner of the slot
+            if((places[i][1] + placedRectangles[i][1]) == yLowerSlot && places[i][0] <= xSlot && xSlot < (places[i][0] + placedRectangles[i][0])){
+                l = i;
+            }
+        }
+        
+        //if the width of the lower neighbor is bigger than the width of the upper neighbor
+        if(placedRectangles[l][0] > placedRectangles[u][0]){
+            //the rectangle has to be placed in the lower left corner of the slot
+            coordinates[0] = xSlot;
+            coordinates[1] = yLowerSlot + placedRectangles[l][1];
+        }
+        //if the width of the lower neighbor is not bigger than the width of the upper neighbor
+        else{
+            //the rectangle has to be placed in the upper left corner of the slot
+            coordinates[0] = xSlot;
+            coordinates[1] = yUpperSlot;
+        }
+        
+        return coordinates;
+    }
+    
+     //takes the upper left corner of a rectangle when it is placed to the side
+    //of the slot with the neighboring rectangle with the highest width
+    public int[] ThinnestNeighboringPiece (int[] slot, int[][] placedRectangles, int[][]places){
+        int xSlot = slot[0];
+        int yLowerSlot = slot[1];
+        int yUpperSlot = slot[1] + slot[2];
+        int[] coordinates = new int[2];
+        
+        //index for the upper neighboring rectangle
+        int u = 0;
+        for(int i = 0; i < placedRectangles.length; i++){
+            //takes the neighboring rectangle on the upper left corner of the slot
+            if(places[i][1] == yUpperSlot && places[i][0] <= xSlot && xSlot < (places[i][0] + placedRectangles[i][0])){
+                u = i;
+            }
+        }
+        
+        //index for the lower neighboring rectangle
+        int l = 0;
+        for(int i = 0; i < placedRectangles.length; i++){
+            //takes the neighboring rectangle on the lower left corner of the slot
+            if((places[i][1] + placedRectangles[i][1]) == yLowerSlot && places[i][0] <= xSlot && xSlot < (places[i][0] + placedRectangles[i][0])){
+                l = i;
+            }
+        }
+        
+        //if the width of the lower neighbor is smaller than the width of the upper neighbor
+        if(placedRectangles[l][0] < placedRectangles[u][0]){
+            //the rectangle has to be placed in the lower left corner of the slot
+            coordinates[0] = xSlot;
+            coordinates[1] = yLowerSlot + placedRectangles[l][1];
+        }
+        //if the width of the lower neighbor is not smaller than the width of the upper neighbor
+        else{
+            //the rectangle has to be placed in the upper left corner of the slot
+            coordinates[0] = xSlot;
+            coordinates[1] = yUpperSlot;
+        }
+        
+        return coordinates;
     }
     
     //adds an item to an two dimentional array
@@ -95,9 +178,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         
         //array with the placement policies
         String[] policies = new String[3];
-        policies[0] = "lowerLeftCorner";
-        policies[1] = "tallestNeighboringPiece";
-        policies[2] = "shortestNeighboringPiece";
+        policies[0] = "upperLeftCorner";
+        policies[1] = "fattestNeighboringPiece";
+        policies[2] = "thinnestNeighboringPiece";
         
         
         //arrays with the solutions
@@ -162,15 +245,15 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     }
                     //computing the exact place of the allocation
-                    if(policie == "lowerLeftCorner"){
+                    if(policie == "upperLeftCorner"){
                         allocationPlace = UpperLeftCorner(allocationSlot);
                     }
-                    //else if(policie == "tallestNeighboringPiece"){
-                    // ;   
-                    //}
-                    //else if(policie == "smallestNeightboringPiece"){
-                    // ;   
-                    //}
+                    else if(policie == "fattestNeighboringPiece"){
+                        FattestNeighboringPiece(allocationSlot, placedRectangles, places);   
+                    }
+                    else if(policie == "thinnestNeightboringPiece"){
+                        ThinnestNeighboringPiece(allocationSlot, placedRectangles, places);   
+                    }
                             
                     //storing the location and rectangle
                     AddingToArray (places, 2,  allocationPlace);
