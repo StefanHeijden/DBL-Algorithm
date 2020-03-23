@@ -3,6 +3,7 @@ package algorithms;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 import logic.GlobalData;
 import logic.Grid;
 
@@ -78,28 +79,20 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         //if Rectangles to place has no more rectangles to place, so done with placing
         if (! (rectanglesToPlace.length > 0)) {
             //store results as grid object
-            Grid semiFinalPlacement = new Grid();
-            
+            Grid finalPlacement = new Grid();
+            //create and store placement
+            int[][] placement = computePlacement(currentPlacement);
+            finalPlacement.storePlacement(placement);
             // compute the density of this placement
-            semiFinalPlacement.computeFinalDensity(global);
-            double density = semiFinalPlacement.getDensity();
+            finalPlacement.computeFinalDensity(global);
+            double density = finalPlacement.getDensity();
             // check if this is best solution so far
             if (density > maxDensity) {
                 maxDensity = density; //store as current best density
-                bestPlacement = semiFinalPlacement; //store as current best placement
+                bestPlacement = finalPlacement; //store as current best placement
             }
         }
-        
-        //pseudocode for the following section:
-        //for each corner 
-        //  for each permutation of Rectangles to Place
-        //      if first rectangle can be placed
-        //          place first rectangle
-        //          and store in currentPlacement
-        //          and update rectangles to place
-        //          FNR(updated parameters);
-
-        
+   
         //loop over all corners
         for (int[] corner : corners) {
             //gets all possible permutations for rectangles that have not been placed
@@ -140,6 +133,32 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     private Grid computeSPR() {
         Grid emptyGrid = new Grid();
         return emptyGrid;
+    }
+    
+    /** The intent of this method is to convert currentPlacement to placement,
+     since all different permutations the order of placements might have changed
+     So this method basically reorders currentPlacement and removes the index*/
+    private int[][] computePlacement(int[][][] currentPlacement) {
+        //representation of the to be returned placement
+        int[][] placement = new int[currentPlacement.length][2];
+        //create array with all rectangleIndexes in the order of occurence in currentPlacement
+        int[] rectangleOrder = new int[currentPlacement.length];
+        for (int i = 0; i < currentPlacement.length; i++) { //loop to take out indexes
+            rectangleOrder[i] = currentPlacement[i][1][0]; //the index
+        }
+        //search where placement coordinates in currentPlacement are
+        for (int i = 0; i < currentPlacement.length; i++) {
+            //assigns placement in correct order based on indexOrder
+            placement[i] = currentPlacement[findIndex(rectangleOrder, i)][0];
+        }
+        return placement;
+    }
+    
+    /* take in int array and int element and outputs index of that element in the array **/
+    private int findIndex(int[] array, int element) {
+        int length = array.length;
+        //returns the first result if it is there, otherwise -1
+        return IntStream.range(0, length).filter(i -> element == array[i]).findFirst().orElse(-1);
     }
     
     /** this method will remove a rectangle from the rectanglesToBePlaced,
