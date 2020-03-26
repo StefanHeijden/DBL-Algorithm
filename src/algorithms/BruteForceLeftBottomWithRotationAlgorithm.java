@@ -14,8 +14,11 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
     ArrayList<Boolean> rotations;
     boolean[]  bestRotations;
     
-    public BruteForceLeftBottomWithRotationAlgorithm(Grid grid, GlobalData data) {
-        super(grid, data);
+    boolean[] tempRot;
+    int[][] tempRect;
+    
+    public BruteForceLeftBottomWithRotationAlgorithm(Grid grid, GlobalData data, boolean free) {
+        super(grid, data, free);
         rotations = new ArrayList();
     }
     
@@ -36,26 +39,63 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
     @Override
     public void useLB(){
         // Run lb
-        // TODO -----------------------------------------------------------------
         // Count the number of calculation that are made
         numberOfCalculations++;
+        if(free){
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        }else{
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        }
+        
         // Calc score of the solution
-//        grid.computeFinalDensity(global);
-//        if(grid.getDensity() > bestValue){
-//            bestValue = grid.getDensity();
-//            bestResult = toArray(grid.getPlacement());
-//            bestRotations = toArray(rotations);
-//        }
+        // First make sure the rectangles and rotations array ordened such
+        // that they repesent the rectangles of the input in order
+        orderWithRotations();
+        // Update the grid
+        grid.storePlacement(tempRect);
+        grid.storeRotations(tempRot);
+        // Then compute the density
+        grid.computeFinalDensity(global);
+        // And check whether the new density is better then the old one
+        if(grid.getDensity() > bestValue){
+            bestValue = grid.getDensity();
+            bestResult = toArray(grid.getPlacement());
+            bestRotations = toArray(tempRot);
+        }
     }
     
     // Returns a copy of the array given
-    public boolean[] toArray(ArrayList<Boolean> result) {
-        boolean[] array = new boolean[result.size()];
+    public boolean[] toArray(boolean[] result) {
+        boolean[] array = new boolean[result.length];
         int counter = 0;
         for(boolean i: result){
             array[counter] = i;
             counter++;
         }
         return array;
+    }
+    
+    public void orderWithRotations(){
+        tempRot = new boolean[global.getNumRectangles()];
+        tempRect = new int[global.getNumRectangles()][2];
+       
+        for(int i = 0; i < tempRect.length; i++){
+            int counter = 0;
+            for(int[] placement: grid.getPlacement() ){
+                if(i == rectangles[counter][2]){
+                    tempRect[i][0] = placement[0];
+                    tempRect[i][1] = placement[1];
+                    tempRot[i] = rotations.get(i);
+                    break;
+                }
+                counter++;
+            }
+        }
+    }
+    
+    @Override
+    public void setBestResult() {
+        grid.storePlacement(bestResult);
+        grid.storeRotations(bestRotations);
     }
 }

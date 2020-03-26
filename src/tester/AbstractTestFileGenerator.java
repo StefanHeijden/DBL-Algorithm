@@ -9,7 +9,7 @@ import logic.GlobalData;
 /**
  *
  * This is a simple runnable class that will create a file with inputs
- * of choise and random generated rectangles
+ * of choice and random generated rectangles
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
