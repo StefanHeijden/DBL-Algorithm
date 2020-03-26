@@ -31,40 +31,45 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     final int[][] originCorner = {origin}; //used as intialization for corners
     //used to initialize computations, of form [[[x0,y0], i0], [[x1,y1], i1]]
     //but with length of rectangles, i is for indexing the rectangle; x,y for width/height
-    private int[][][] rectanglesWithIndex;
+    private int[][][] rectanglesWithIndex = new int[global.getNumRectangles()][2][2];
 
     //method to run the algorithm, it will choose which variant to run in another method
     @Override
     public void run() {
-        //intialize rectanglesWithIndex, see representation above for more detail
-        for (int i = 0; i < global.getNumRectangles(); i++) {
-            // the [x, y] copying
-            rectanglesWithIndex[i][0] = global.getRectangles()[i];
-            // indexing the rectangle
-            rectanglesWithIndex[i][1][0] = i;
-        }
-        
-        // call the FNR variant 
-        if (global.getType().equals(global.FREE) && ! global.getRA()) {
-            //run with all rectangles, no current placment and origin as start corner
-            //TODO: pass intialized length of currentPlacement
-            computeFNR(rectanglesWithIndex, originCorner, null);
-        } 
-        //call the FR variant
-        else if (global.getType().equals(global.FREE) && global.getRA()) {
-            //withinBounds() and overlaps() needs to be adapted to allow for rotations
-            computeFR();
-        }
-        //call the SPNR variant
-        else if (global.getType().equals(global.FIXED) && ! global.getRA()) {
-            computeSPNR();
-        }
-        //call the SPR variant
-        else if (global.getType().equals(global.FIXED) && global.getRA()) {
-            //withinBounds() and overlaps() needs to be adapted to allow for rotations
-            computeSPR();
-        }  
+        System.out.println("TESTING RUN");
     }
+        //System.err.println(rectanglesWithIndex[0][0][0]);
+        //intialize rectanglesWithIndex, see representation above for more detail
+//        for (int i = 0; i < global.getNumRectangles(); i++) {
+//            // the [x, y] copying
+////            rectanglesWithIndex[i][0] = new int[2];
+////            rectanglesWithIndex[i][0] = global.getRectangles()[i];
+////            // indexing the rectangle
+////            rectanglesWithIndex[i][0] = new int[2];
+////            rectanglesWithIndex[i][1][0] = i;
+//        }
+
+//        // call the FNR variant 
+//        if (global.getType().equals(global.FREE) && ! global.getRA()) {
+//            //run with all rectangles, no current placment and origin as start corner
+//            //TODO: pass intialized length of currentPlacement
+//            computeFNR(rectanglesWithIndex, originCorner, null);
+//        } 
+//        //call the FR variant
+//        else if (global.getType().equals(global.FREE) && global.getRA()) {
+//            //withinBounds() and overlaps() needs to be adapted to allow for rotations
+//            computeFR();
+//        }
+//        //call the SPNR variant
+//        else if (global.getType().equals(global.FIXED) && ! global.getRA()) {
+//            computeSPNR();
+//        }
+//        //call the SPR variant
+//        else if (global.getType().equals(global.FIXED) && global.getRA()) {
+//            //withinBounds() and overlaps() needs to be adapted to allow for rotations
+//            computeSPR();
+//        }  
+//    }
     
     //TODO: adapt description of algorithm
     /* computes the Free Not Rotated variant and stores result, first parameter:
@@ -382,5 +387,7 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         }
         return height;
     }
+    
+    
     
 }
