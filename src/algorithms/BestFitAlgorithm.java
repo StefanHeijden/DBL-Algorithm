@@ -5,10 +5,10 @@
  */
 
 //TO DO:
-//FIXING INITIALIZING ARRAYS/REPLACE ARRAYS WITH ARRAYLISTS
+//ADDING WHAT IT NEEDS TO DO IF THERE IS NO SOLUTION
 //TESTING
-//ADDING EASIER WAY OR SORTING BOLDBLACKVERTICALLINES
-//ADDING EASIER WAY OF UPDATING SLOTS?
+//MAYBE ADDING EASIER WAY OR SORTING BOLDBLACKVERTICALLINES
+//MAYBE ADDING EASIER WAY OF UPDATING SLOTS?
 //ADDING ROTATING OF RECTANGLES
 
 package algorithms;
@@ -193,7 +193,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         ArrayList<ArrayList<ArrayList<Integer>>> placedRectanglesSolutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
         ArrayList<ArrayList<ArrayList<Integer>>> placesSolutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
         int widthSolution = 1000000000;
-        int indexSolution;
+        int indexSolution = 1000000000;
         int [][] finalPlaces = new int [rectangles.length][2];
 
         
@@ -477,11 +477,23 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
         }
         
-        //arrays with the places and arrays
+        //the places of the solution converted to an array
+        int[][] placesSolution = new int[placesSolutions.get(indexSolution).size()][2];
+        for(int i=0; i<placesSolutions.get(indexSolution).size();i++){
+            ArrayList<Integer> locationOutput = placesSolutions.get(indexSolution).get(i);
+            for(int j=0; j<locationOutput.size();j++){
+                placesSolution[i][j] = locationOutput.get(j).intValue(); 
+            }
+        }
         
-        
-        int [][] placedRectanglesSolution = placedRectanglesSolutions.get(indexSolution);
-        int [][] placesSolution = placesSolutions.get(indexSolution);   
+        //the rectangles of the solution converted to an array
+        int[][] placedRectanglesSolution = new int[placedRectanglesSolutions.get(indexSolution).size()][2];
+        for(int i=0; i<placedRectanglesSolutions.get(indexSolution).size();i++){
+            ArrayList<Integer> rectangleOutput = placedRectanglesSolutions.get(indexSolution).get(i);
+            for(int j=0; j<rectangleOutput.size();j++){
+                placedRectanglesSolution[i][j] = rectangleOutput.get(j).intValue(); 
+            }
+        } 
         
         //sort the places so it matches the rectangles
         for(int i = 0; i < placedRectanglesSolution.length; i++){
