@@ -8,7 +8,7 @@ import logic.GlobalData;
 import logic.Grid;
 
 /**
- *
+ * Testing whether I can upload stuff to Git properly
  * @author Leighton
  * 
  * The purpose of this algorithm is to compute good and if possible perfect
