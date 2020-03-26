@@ -72,10 +72,10 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                     //grid.setRotationsIndexI(false, i);
             } 
             else if (global.getType().equals("fixed") && !global.getRA() ) {
-                placementFinal[i] = computeBottomleftFixed(rectWidth, rectLength, passedRectangle, global.getHeight());
+                placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             }
             else if (global.getType().equals("fixed") && global.getRA() ) {
-                placementFinal[i] = computeBottomleftFixed(rectWidth, rectLength, passedRectangle, global.getHeight());
+                placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             }
             rectangle ++;
         }
