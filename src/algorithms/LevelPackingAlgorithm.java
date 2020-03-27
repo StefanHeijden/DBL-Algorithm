@@ -121,7 +121,6 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             }
             rectangle ++;
         }
-        global.setRectangles(passedRectangle);
         grid.storePlacement(placementFinal);
         return grid;
     }
