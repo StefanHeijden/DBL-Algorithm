@@ -5,8 +5,8 @@
  */
 
 //TO DO:
-//ADDING WHAT IT NEEDS TO DO IF THERE IS NO SOLUTION
 //TESTING
+//ADDING WHAT IT NEEDS TO DO IF THERE IS NO SOLUTION
 //MAYBE ADDING EASIER WAY OR SORTING BOLDBLACKVERTICALLINES
 //MAYBE ADDING EASIER WAY OF UPDATING SLOTS?
 //ADDING ROTATING OF RECTANGLES
@@ -27,7 +27,7 @@ import java.util.List;
 public class BestFitAlgorithm extends AbstractAlgorithm {
     int [][] rectangles; //with width and height
     int gridHeight;
-    int gridWidth;
+    double optimalWidth;
     
     public BestFitAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
@@ -176,11 +176,12 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         
         gridHeight = global.getHeight();
                
-        //determining the optimal height of the sheet
-        gridWidth = 0;
+        //determining the optimal width of the sheet
+        double totalArea = 0;
         for (int i=0; i<rectangles.length; i++){
-            gridWidth = gridWidth + rectangles[i][1];
+            totalArea = totalArea + (rectangles[i][0] * rectangles[i][1]);
         }
+        optimalWidth = totalArea/gridHeight;
         
         //array with the placement policies
         String[] policies = new String[3];
@@ -192,8 +193,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         //arrays with the solutions
         ArrayList<ArrayList<ArrayList<Integer>>> placedRectanglesSolutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
         ArrayList<ArrayList<ArrayList<Integer>>> placesSolutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
-        int widthSolution = 1000000000;
-        int indexSolution = 1000000000;
+        int widthSolution = -1;
+        int indexSolution = -1;
         int [][] finalPlaces = new int [rectangles.length][2];
 
         
@@ -202,7 +203,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             //identify the slot at the beginning
             int[][] slots = {{0, 0, gridHeight}}; //with x, y of lower left corner and heigth
         
-            int[][] notPlacedRectangles = rectangles; //with width, height and place
+            int[][] notPlacedRectangles = rectangles; //with width, height and number
             ArrayList<ArrayList<Integer>> placedRectangles = new ArrayList<ArrayList<Integer>>(); //with width and height
             ArrayList<ArrayList<Integer>> places = new ArrayList<ArrayList<Integer>>(); //with x and y of lower left corner
             while (notPlacedRectangles.length > 0) {
@@ -222,14 +223,14 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     //safe the highest score and the rectangle and place of the highest score
                     double highestScore = -1000000000;
                     int[] allocationSlot = new int[3]; //with x, y and height 
-                    int[] allocationRectangle = new int[3]; //with width, height and place
+                    int[] allocationRectangle = new int[3]; //with width, height and number
                     int[] allocationPlace = new int[2]; //with width and height;
                     ArrayList<ArrayList<Integer>> boldBlackVertcalLines = new ArrayList<ArrayList<Integer>>(); //with x, lowest y and highest y
                     //check every allocation
                     for(int i=0; i<notPlacedRectangles.length; i++){
                         for(int j=0; j<slots.length; j++){
                             //if rectangle fits in the slot;
-                            if(rectangles[i][1] < slots[j][2]){
+                            if(notPlacedRectangles[i][1] < slots[j][2]){
                                 //possible values to compute the score with
                                 double W = notPlacedRectangles[i][0]; //width of the piece
                                 double H = notPlacedRectangles[i][1]; //height of the piece
@@ -237,7 +238,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                 double SW = slots[j][0]; //sloth width, relative to base of sheet
                                 double SHL = slots[j][2] - notPlacedRectangles[i][1]; //difference between slot and piece heights
                                 double GH = gridHeight; //height of grid;
-                                double GW = gridWidth * 1.5; //width of optimum solution multiplied by 1.5
+                                double GW = optimalWidth * 1.5; //width of optimum solution multiplied by 1.5
                                 //double ERC = ; //ephemeral random constant (to be determined if necessarily);
 
                                 double score = (SHL / (GW - W)) - (SW + H);
@@ -255,10 +256,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         allocationPlace = UpperLeftCorner(allocationSlot);
                     }
                     else if(policy == "fattestNeighboringPiece"){
-                        FattestNeighboringPiece(allocationSlot, placedRectangles, places);   
+                        allocationPlace = FattestNeighboringPiece(allocationSlot, placedRectangles, places);   
                     }
                     else if(policy == "thinnestNeightboringPiece"){
-                        ThinnestNeighboringPiece(allocationSlot, placedRectangles, places);   
+                        allocationPlace = ThinnestNeighboringPiece(allocationSlot, placedRectangles, places);   
                     }
                             
                     //storing the location
