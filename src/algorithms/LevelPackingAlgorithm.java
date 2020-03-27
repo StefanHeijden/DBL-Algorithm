@@ -58,10 +58,10 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     //will sort them using the bottom left heurstic
     //returns a grid
     public Grid bottomLeft(int[][] passedRectangle, boolean rotationAllowed) {
-        counter = 0;
-        int x = 0; 
-        int y = 0; 
-    
+        
+        x = 0; 
+        y = 0; 
+        
         // counts the number of rectangles placed
         counter = 0;
     
@@ -97,10 +97,8 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         // assign placement of rectangle
         
         for (int i = 0; i < passedRectangle.length; i++) { 
-            //System.out.println("rectagnle number: " + rectangle);
             int rectWidth = passedRectangle[i][0];
             int rectLength = passedRectangle[i][1];
-            System.out.println(rectangle);
             if (global.getType().equals("free") && !global.getRA() ) {
                 placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             } 
@@ -109,7 +107,6 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                         rotate = true;
                     }
                     placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
-                    //grid.setRotationsIndexI(false, i);
             } 
             else if (global.getType().equals("fixed") && !global.getRA() ) {
                 fixedBound = global.getHeight();
@@ -129,28 +126,58 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         return grid;
     }
 
-    public int computeLowestPoint2(int width, int height, int[][] passedRectangle, int x){
+    public int computeLowestPoint2(int width, int height, int[][] passedRectangle, int x2){
         int y2 = 0;
         int heightUsed = maxHeight;
         if(fixedBound != 0) {
             heightUsed = fixedBound - height;
         }
         for(int i = 0; i < heightUsed; i++) {
-                //System.out.println("MAYBE FITS INTO 0 " + overlapsRectangle(passedRectangle, width, height, 0, x));
-                if(overlapsRectangle(passedRectangle, width, height, 0, x)) {
-                    //System.out.println("FITS INTO 0");
-                    return 0;
-                }
-                if(overlapsRectangle(passedRectangle, width, height, y2, x)) {
-                    //System.out.println("FITS INTO " + y2 + " " + x);
-                    return y2;
-                }
-                //System.out.println("y count " + y2);
-                y2 += 1;
+            if(overlapsRectangle(passedRectangle, width, height, y2, x2)) {
+                return y2;
+            }
+            y2 += 1;
         }
         return y2;
     }
     
+//    //computes the lowest y based on the given x coordinate
+//    //looks through all rectagnles and depending on if the rectagnle is 
+//   //smaller/bigger or between the current one, based on the x axis
+//    //the y value becomes the end point of the checked rectangle.
+//    //If the rectangle fits into the spot, y value is returned
+//    public int computeLowestPoint(int width, int height, int[][] passedRectangle, int x){
+//        for(int i = 0; i < placementFinal.length; i++) {
+//            int y2 = y;
+//            if(placementFinal[i] != null) {
+//                //System.out.println("MAYBE FITS INTO 0 " + overlapsRectangle(passedRectangle, width, height, 0, x));
+//                if((x >= placementFinal[i][0]) && ((passedRectangle[i][0] + placementFinal[i][0]) >= (x + width))) {
+//                    y2 = (passedRectangle[i][1] + placementFinal[i][1]);
+//                    //System.out.println("y Rectangle larger or same size as current, with y2 " + y2 + " x " + x);
+//                    return y2;
+//                }
+//                if((x <= placementFinal[i][0]) && ((passedRectangle[i][0] + placementFinal[i][0]) >= (x + width)) && ((x + width) > (placementFinal[i][0]))) {
+//                    y2 = (passedRectangle[i][1] + placementFinal[i][1]);
+//                    //System.out.println("y Rectangle starts in middle and end after current, with y2 " + y2 + " x " + x);
+//                    return y2;
+//                }
+//                if((x <= placementFinal[i][0]) && ((passedRectangle[i][0] + placementFinal[i][0]) <= (x + width))) {
+//                    y2 = (passedRectangle[i][1] + placementFinal[i][1]);  
+//                    //System.out.println("y Rectangle in middle of current, with y2 " + y2 + " x " + x);
+//                    return y2;
+//                }
+//                if((x >= placementFinal[i][0]) && ((passedRectangle[i][0] + placementFinal[i][0]) <= (x + width)) && (x < passedRectangle[i][0] + placementFinal[i][0])) {
+//                    y2 = (passedRectangle[i][1] + placementFinal[i][1]);
+//                    //System.out.println("y Rectangle starts before and end in middle of current, with y2 " + y2 + " x " + x);
+//                    return y2;
+//                }
+//            }
+//        }
+//        if(overlapsRectangle(passedRectangle, width, height, 0, x)){
+//            return 0;
+//        }
+//        return y;
+//    }
     
     //for every x in the width of the placed rectangles, the algorithm finds the lowest y
     //where the rectagnle can be placed.
@@ -166,46 +193,27 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         int[][] lowestPoints = new int[(maxWidth + 1) * 2][];
 
         for(int i = 0; i < maxWidth + 1; i++) {
-            if(overlapsRectangle(passedRectangle, width, height, 0, x)) {
-                //System.out.println("FITS INTO 0 two");
-                return new int[]{x2,y2};
-            }
-            else {
                 y2 = computeLowestPoint2(width, height, passedRectangle, x2);
-
-                //System.out.println("1 " + rectangle + " x " + x2 + " y " + y2 + " overlaps " + overlapsRectangle(passedRectangle, width, height, y2, x2));
-                if(overlapsRectangle(passedRectangle, width, height, y2, x2)) {
-                    //System.out.println("1.1 " + rectangle + " x " + x2 + " y " + y2 + " overlaps " + overlapsRectangle(passedRectangle, width, height, y2, x2));
-                    int[] coord = new int[]{x2, y2};
-                    lowestPoints[count] = coord;
-                    rotations[count] = false;
-                    count ++;
-                }
-                x2 ++;
+            if(overlapsRectangle(passedRectangle, width, height, y2, x2)) {
+                int[] coord = new int[]{x2, y2};
+                lowestPoints[count] = coord;
+                rotations[count] = false;
+                count ++;
             }
+            x2 ++;
         }
         if (rotate) {
             x2 = 0;
             for(int i = 0; i < maxWidth + 1; i++) {
-                if(overlapsRectangle(passedRectangle, height, width, 0, x)) {
-                //System.out.println("FITS INTO 0 two");
-                    return new int[]{x2,y2};
-                }
-                else {
-                    if(fixedBound != 0) {
                     y2 = computeLowestPoint2(height, width, passedRectangle, x2);
-                    //System.out.println("2 " + rectangle + " x " + x2 + " y " + y2 + " overlaps " + overlapsRectangle(passedRectangle, height, width, y2, x2));
                     if(overlapsRectangle(passedRectangle, height, width, y2, x2)) {
-                        //System.out.println("2.1 " + rectangle + " x " + x2 + " y " + y2 + " overlaps " + overlapsRectangle(passedRectangle, height, width, y2, x2));
                         int[] coord = new int[]{x2, y2};
                         lowestPoints[count] = coord;
                         rotations[count] = true;
                         count ++;
                     }
-                    x2 ++;
-                }
+                x2 ++;
             }
-        }
         }
         float ration = 200000.0f;
         float rationTemp = 0;
@@ -216,7 +224,6 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             if (lowestPoints[i] != null && overlapsRectangle(passedRectangle, height, width, lowestPoints[i][1], lowestPoints[i][0])) {
                 float maxWidth_1 = maxWidth;
                 float maxHeight_1 = maxHeight;
-                //System.out.println(rectangle + " x " + lowestPoints[i][0] + " y " + lowestPoints[i][1] + " overlaps " + overlapsRectangle(passedRectangle, height, width, lowestPoints[i][1], lowestPoints[i][0]));
                 if(rotations[i]) {
                     if((lowestPoints[i][0] + height) > maxWidth_1) {
                         maxWidth_1  = lowestPoints[i][0] + height;
@@ -234,20 +241,23 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                     } 
                 }
                 rationTemp = ((maxHeight_1 * maxWidth_1)/rectAreaTemp);
-                if(fixedBound != 0) {
-                    if(xMaximized > maxWidth_1) {
-                        xMaximized = (int)maxWidth_1;
-                        y2 = lowestPoints[i][1];
-                        x2 = lowestPoints[i][0];
-                        if(rotate) {
-                            grid.setRotationsIndexI(rotations[i], rectangle);
-                            passedRectangle[rectangle][0] = height;
-                            passedRectangle[rectangle][1] = width;
-                            rotated = true;
-                        }
-                    }
-                }
-                else{
+                //if(fixedBound != 0) {
+                //    if(xMaximized > maxWidth_1) {
+                //        xMaximized = (int)maxWidth_1;
+                //        if(rationTemp < ration) {
+                 //       ration = rationTemp;
+                 //       y2 = lowestPoints[i][1];
+                 //       x2 = lowestPoints[i][0];
+                //        if(rotate) {
+                //            grid.setRotationsIndexI(rotations[i], rectangle);
+                //            passedRectangle[rectangle][0] = height;
+                //            passedRectangle[rectangle][1] = width;
+                //            rotated = true;
+                //        }
+                //        }
+                //    }
+               // }
+                //else{
                     if(rationTemp < ration) {
                         ration = rationTemp;
                         y2 = lowestPoints[i][1];
@@ -259,7 +269,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                             rotated = true;
                         }
                     }
-                }
+                //}
             }
         }
         return new int[]{x2,y2};
@@ -278,42 +288,22 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             if(placementFinal[i] != null) { 
                 if((yInitial >= placementFinal[i][1]) && ((passedRectangle[i][1] + placementFinal[i][1]) >= (yInitial + height))) {
                     //System.out.println("There is a rectangle larger than current. height " + passedRectangle[i][1]);
-                    if (overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i)) {
-                        fits[count] = false;
-                    }
-                    else{
-                        fits[count] = true;
-                    }
+                    fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                 }
                 else {
                     if((yInitial <= placementFinal[i][1]) && ((passedRectangle[i][1] + placementFinal[i][1]) <= (yInitial + height))) {
                         //System.out.println("There is a rectangle in middle of current. height " + passedRectangle[i][1]);
-                        if (overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i)) {
-                            fits[count] = false;
-                        }
-                        else{
-                            fits[count] = true;
-                        }
+                        fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                     }
                     else { 
                         if(((yInitial >= placementFinal[i][1])&& ((passedRectangle[i][1] + placementFinal[i][1]) <= (yInitial + height)))  && (yInitial < (passedRectangle[i][1] + placementFinal[i][1]))) {
                             //System.out.println("There is a rectangle starts before and ends in middle of current. height " + passedRectangle[i][1]);
-                            if (overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i)) {
-                                fits[count] = false;
-                            }
-                            else{
-                                fits[count] = true;
-                            }
+                            fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                         }
                         else {
                             if(((yInitial <= placementFinal[i][1])&& ((passedRectangle[i][1] + placementFinal[i][1]) >= (yInitial + height))) && (placementFinal[i][1] < (yInitial + height))) {
                                 //System.out.println("There is a rectangle starts in middle and ends after current. height " + passedRectangle[i][1]);
-                                if (overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i)) {
-                                    fits[count] = false;
-                                }
-                                else{
-                                    fits[count] = true;
-                                }
+                                fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                             }
                         }
                     }
@@ -327,8 +317,12 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                 return false;
             }
         }
+        
+        //System.out.println("rectangle fits ");
         return true;
     }
+    
+    
     
     //this method checks if the given rectangle overlaps with an already placed rectangle
     //on the a axis.
@@ -343,17 +337,17 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             //System.out.println("There is a rectangle in middle of current. width " + passedRectangle);
             return false;
         }
-        if(((xInitial >= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) <= (xInitial + width)) && (xInitial < (passedRectangle + placementFinal[i][0])))) {
+        if(((xInitial >= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) <= (xInitial + width)) && ((xInitial) < (passedRectangle + placementFinal[i][0])))) {
             //System.out.println("There is a rectangle starts before and ends in middle of current. width " + passedRectangle);
             return false;
         }
-        if(((xInitial <= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) && ((xInitial + width) > (placementFinal[i][0]))) {
-            //System.out.println("There is a rectangle starts in middle and ends after current. width " + passedRectangle);
+        if (((xInitial <= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) && ((xInitial + width) > (placementFinal[i][0]))) {
             return false;
         }
-        //System.out.println("Rectangle safe " + rectang;);
+        //System.out.println("Rectangle safe " + rectangle);
         return true;
     }
+
     
     // computation of bottomleft corner in case (containerType == "free")
     public int[] computeBottomleftFree(int width, int height, int[][] passedRectangle) {
@@ -394,9 +388,9 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     public void run() {
         
         // getting the data from the logic package
-        int[][] rectangle = global.getRectangles();
+        int[][] rectangleOriginal = global.getRectangles();
         grid.setRotationsLength(global.getNumRectangles());
         
-        bottomLeft(rectangle, global.getRA());
+        bottomLeft(rectangleOriginal, global.getRA());
     }  
 }
