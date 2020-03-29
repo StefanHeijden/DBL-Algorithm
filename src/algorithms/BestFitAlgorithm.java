@@ -159,7 +159,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
         }   
 
-        newArray[length] = item; 
+        newArray[length] = item.clone(); 
 
         return newArray;
     } 
@@ -177,7 +177,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
         }   
   
-        newArray[length] = item; 
+        newArray[length] = item.clone(); 
         
         return newArray;
     } 
@@ -195,10 +195,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
           }
         }
         for(int indexBefore=0; indexBefore<indexToDelete; indexBefore++){
-         newArray[indexBefore] = tempArray[indexBefore];
+         newArray[indexBefore] = tempArray[indexBefore].clone();
         }
         for(int indexAfter=indexToDelete; indexAfter<tempArray.length-1; indexAfter++){
-          newArray[indexAfter] = tempArray[indexAfter+1];
+          newArray[indexAfter] = tempArray[indexAfter+1].clone();
         }
         return newArray;
     }
@@ -310,10 +310,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         if(tempNotPlacedRectangles[k] == allocationRectangle){
                             // shifting elements
                             for(int j = k; j < tempNotPlacedRectangles.length - 1; j++){
-                                notPlacedRectangles[j] = tempNotPlacedRectangles[j+1];
+                                notPlacedRectangles[j] = tempNotPlacedRectangles[j+1].clone();
                             }
                             for(int l = 0; l<k; l++){
-                                notPlacedRectangles[l] = tempNotPlacedRectangles[l];
+                                notPlacedRectangles[l] = tempNotPlacedRectangles[l].clone();
                             }
                         }
                     }
@@ -351,10 +351,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     }
                     
-                    
                     //adding right side of allocation rectangle to boldBlackVertcalLines
                     boldBlackVertcalLines = AddingToArray (boldBlackVertcalLines, 3,  rightSideOfAllocationRectangle);
-                    
+                    System.out.println(Arrays.toString((rightSideOfAllocationRectangle))+"bold");
                     
                     //sorting boldBlackVertcalLines on first column in descending order
                     
@@ -370,8 +369,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                  
                                 //swap
                                 int[] temp = boldBlackVertcalLines[i].clone();
-                                boldBlackVertcalLines[i] = boldBlackVertcalLines[i + 1];
-                                boldBlackVertcalLines[i + 1] = temp;
+                                boldBlackVertcalLines[i] = boldBlackVertcalLines[i + 1].clone();
+                                boldBlackVertcalLines[i + 1] = temp.clone();
                        
                                 needToBeSwapped = true;
                             }
@@ -407,20 +406,30 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                         ||((boldBlackVertcalLines[i][0] == boldBlackVertcalLines[i-1][0]) && (boldBlackVertcalLines[i][1] != boldBlackVertcalLines[i-1][2]) && (boldBlackVertcalLines[i][2] != boldBlackVertcalLines[i-1][1]))){
                                     //add slot
                                     int [] element = {boldBlackVertcalLines[i][0], dashedLines[j][0], dashedLines[j][1]};
+                                    System.out.println(Arrays.toString(dashedLines[j])+"dashed");
                                     slots = AddingToArray (slots, 3, element);
                                     //updating dashedLines
-                                    //the bold black vertical line is completely in the y of the dashed line
-                                    if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])
-                                        && (dashedLines[j][1] > boldBlackVertcalLines[i][2]) && (boldBlackVertcalLines[i][2] > dashedLines[j][0])){
+                                    //the bold black vertical line is in the complete y of the dashed line
+                                    if ((boldBlackVertcalLines[i][2] == dashedLines[j][1]) && (boldBlackVertcalLines[i][1] == dashedLines[j][0])){
+                                        System.out.println("TEST0");
+                                        
+                                        //delete old dashed line from array
+                                        newDashedLines = DeleteElement(newDashedLines, dashedLines[j]);
+                                    }
+                                    //the bold black vertical line is in the y of the dashed line
+                                    else if ((boldBlackVertcalLines[i][2] < dashedLines[j][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
+                                        System.out.println("TEST1");
                                         //add line under the bold black vertical line
-                                        int [] underLine = dashedLines[j];
+                                        int [] underLine = dashedLines[j].clone();
                                         underLine[1] = boldBlackVertcalLines[i][1];
-                                        slots = AddingToArray (dashedLines, 2, underLine);
+                                        //System.out.println(Arrays.toString(underLine) +"under1");
+                                        newDashedLines = AddingToArray (newDashedLines, 2, underLine);
       
                                         //add line above the bold black vertical line
-                                        int [] upperLine = dashedLines[j];
+                                        int [] upperLine = dashedLines[j].clone();
                                         upperLine[0] = boldBlackVertcalLines[i][2];
-                                        slots = AddingToArray (dashedLines, 2, upperLine);
+                                        //System.out.println(Arrays.toString(upperLine)+"upper1");
+                                        newDashedLines = AddingToArray (newDashedLines, 2, upperLine);
                                         
                                         //delete old dashed line from array
                                         newDashedLines = DeleteElement(newDashedLines, dashedLines[j]);
@@ -428,10 +437,11 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                         
                                     // the bold black vertical line is in the upper part of the y of the dashed line
                                     else if ((dashedLines[j][1] > boldBlackVertcalLines[i][1]) && (boldBlackVertcalLines[i][1] > dashedLines[j][0])){
-                                        
+                                        System.out.println("TEST2");
                                         //add line of the under part of the dashed line
                                         int [] underLine = dashedLines[j].clone();
                                         underLine[1] = boldBlackVertcalLines[i][1];
+                                        //System.out.println(Arrays.toString(underLine) +"under2");
                                         newDashedLines = AddingToArray (newDashedLines, 2, underLine);
                                         
                                         //delete old dashed line from array
@@ -439,9 +449,11 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     }
                                     
                                     // the bold black vertical line is in the under part of the y of the dashed line
-                                    else if ((dashedLines[j][1] > boldBlackVertcalLines[i][2] && (boldBlackVertcalLines[i][2]) > dashedLines[j][0])){
+                                    else if ((dashedLines[j][0] < boldBlackVertcalLines[i][2] && (boldBlackVertcalLines[i][2]) < dashedLines[j][1])){
+                                        System.out.println("TEST3");
                                         //add line of the upper part of the dashed line
-                                        int [] upperLine = dashedLines[j];
+                                        int [] upperLine = dashedLines[j].clone();
+                                        //System.out.println(Arrays.toString(upperLine) +"upper3");
                                         upperLine[0] = boldBlackVertcalLines[i][2];
                                         newDashedLines = AddingToArray (newDashedLines, 2, upperLine);
                                         
