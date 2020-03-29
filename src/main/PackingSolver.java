@@ -123,6 +123,8 @@ public class PackingSolver {
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":
             return new TestingAlgorithm(grid, data);
+        case "BigAlgorithm":
+            return new BigAlgorithm(grid, data);
         }
         // If nothing is found
         System.out.println("Algorithm not found: " + testingAlgorithm);
