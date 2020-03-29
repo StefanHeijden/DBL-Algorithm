@@ -20,10 +20,10 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     int[][] finalResultingPlacement;
     boolean free = true;
     
-    public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data, boolean free) {
+    public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
         bottemLeftAgorithm = new LevelPackingAlgorithm(grid, data);
-        this.free = free;
+        this.free = data.getRA();
         // Initialize lists
         rectangles = new int[data.getNumRectangles()][3];
         positions = new ArrayList();
@@ -96,11 +96,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        if(free){
-            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
-        }else{
-            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
-        }
+        grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
         
         // Calc score of the solution
         grid.storePlacement(orden());

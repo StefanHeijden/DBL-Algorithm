@@ -99,7 +99,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         // Computation based on vars containerType and rotationsAllowed
         // Very ugly implementation, purely meant for simple testing
         
-
+        System.out.println("fixed: " + global.getType().equals("fixed"));
         // assign placement of rectangle
         for (int i = 0; i < passedRectangle.length; i++) { 
             int rectWidth = passedRectangle[i][0];
