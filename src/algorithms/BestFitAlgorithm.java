@@ -57,9 +57,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         int yLowerSlot = slot[1];
         int yUpperSlot = slot[1] + slot[2];
         int[] coordinates = new int[2];
-        
+      
+   
         //index for the upper neighboring rectangle
-        int u = 0;
+        int u = -1;
         for(int i = 0; i < placedRectangles.size(); i++){
             //takes the neighboring rectangle on the upper left corner of the slot
             if(places.get(i).get(0) == yUpperSlot && places.get(i).get(0) <= xSlot && xSlot < (places.get(i).get(0) + placedRectangles.get(i).get(0))){
@@ -68,27 +69,33 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         }
         
         //index for the lower neighboring rectangle
-        int l = 0;
+        int l = -1;
         for(int i = 0; i < placedRectangles.size(); i++){
             //takes the neighboring rectangle on the lower left corner of the slot
             if((places.get(i).get(0) + placedRectangles.get(i).get(0)) == yLowerSlot && places.get(i).get(0) <= xSlot && xSlot < (places.get(i).get(0) + placedRectangles.get(i).get(0))){
                 l = i;
             }
         }
-        
-        //if the width of the lower neighbor is bigger than the width of the upper neighbor
-        if(placedRectangles.get(1).get(0) > placedRectangles.get(u).get(0)){
-            //the rectangle has to be placed in the lower left corner of the slot
-            coordinates[0] = xSlot;
-            coordinates[1] = yLowerSlot;
+          
+        if(l!=-1 && u!=-1){
+            //if the width of the lower neighbor is bigger than the width of the upper neighbor
+            if(placedRectangles.get(1).get(0) > placedRectangles.get(u).get(0)){
+                //the rectangle has to be placed in the lower left corner of the slot
+                coordinates[0] = xSlot;
+                coordinates[1] = yLowerSlot;
+            }
+            //if the width of the lower neighbor is not bigger than the width of the upper neighbor
+            else{
+                //the rectangle has to be placed in the upper left corner of the slot
+                coordinates[0] = xSlot;
+                coordinates[1] = yUpperSlot + rectangle[1];
+            }
         }
-        //if the width of the lower neighbor is not bigger than the width of the upper neighbor
-        else{
+        else {
             //the rectangle has to be placed in the upper left corner of the slot
             coordinates[0] = xSlot;
             coordinates[1] = yUpperSlot + rectangle[1];
         }
-        
         return coordinates;
     }
     
@@ -101,7 +108,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         int[] coordinates = new int[2];
         
         //index for the upper neighboring rectangle
-        int u = 0;
+        int u = -1;
         for(int i = 0; i < placedRectangles.size(); i++){
             //takes the neighboring rectangle on the upper left corner of the slot
             if(places.get(i).get(1) == yUpperSlot && places.get(i).get(0) <= xSlot && xSlot < (places.get(i).get(0) + placedRectangles.get(i).get(0))){
@@ -110,7 +117,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         }
         
         //index for the lower neighboring rectangle
-        int l = 0;
+        int l = -1;
         for(int i = 0; i < placedRectangles.size(); i++){
             //takes the neighboring rectangle on the lower left corner of the slot
             if((places.get(i).get(1) + placedRectangles.get(i).get(1)) == yLowerSlot && places.get(i).get(0) <= xSlot && xSlot < (places.get(i).get(0) + placedRectangles.get(i).get(0))){
@@ -118,19 +125,25 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
         }
         
-        //if the width of the lower neighbor is smaller than the width of the upper neighbor
-        if(placedRectangles.get(1).get(0) < placedRectangles.get(u).get(0)){
-            //the rectangle has to be placed in the lower left corner of the slot
-            coordinates[0] = xSlot;
-            coordinates[1] = yLowerSlot;
+        if(l!=-1 && u!=-1){
+            //if the width of the lower neighbor is smaller than the width of the upper neighbor
+            if(placedRectangles.get(1).get(0) < placedRectangles.get(u).get(0)){
+                //the rectangle has to be placed in the lower left corner of the slot
+                coordinates[0] = xSlot;
+                coordinates[1] = yLowerSlot;
+            }
+            //if the width of the lower neighbor is not smaller than the width of the upper neighbor
+            else{
+                //the rectangle has to be placed in the upper left corner of the slot
+                coordinates[0] = xSlot;
+                coordinates[1] = yUpperSlot + rectangle[1];
+            }
         }
-        //if the width of the lower neighbor is not smaller than the width of the upper neighbor
-        else{
+        else {
             //the rectangle has to be placed in the upper left corner of the slot
             coordinates[0] = xSlot;
             coordinates[1] = yUpperSlot + rectangle[1];
         }
-        
         return coordinates;
     }
     
@@ -212,7 +225,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         //arrays with the solutions
         ArrayList<ArrayList<ArrayList<Integer>>> placedRectanglesSolutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
         ArrayList<ArrayList<ArrayList<Integer>>> placesSolutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
-        int widthSolution = -1;
+        int widthSolution = 1000000000;
         int indexSolution = -1;
         int [][] finalPlaces = new int [rectangles.length][2];
 
@@ -278,7 +291,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     else if(policy == "fattestNeighboringPiece"){
                         allocationPlace = FattestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);   
                     }
-                    else if(policy == "thinnestNeightboringPiece"){
+                    else if(policy == "thinnestNeighboringPiece"){
                         allocationPlace = ThinnestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);   
                     }
                             
@@ -288,6 +301,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     //storing the rectangle
                     placedRectangles.add(new ArrayList<Integer>());
                     placedRectangles.get(placedRectangles.size()-1).addAll(Arrays.asList(Arrays.stream(allocationRectangle).boxed().toArray(Integer[]::new)));
+                    
+                    
                     //deleting rectangle from notPlacedRectangles
                     int[][] tempNotPlacedRectangles = notPlacedRectangles.clone();
                     notPlacedRectangles = new int[tempNotPlacedRectangles.length-1][3];
@@ -302,7 +317,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             }
                         }
                     }
-                       
+                    
                     //updating boldBlackVertcalLines
                     int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[1], allocationPlace[1] + allocationRectangle[1]}; //with x, lowest y and highest y
                     for(int i=0; i<boldBlackVertcalLines.length; i++){
@@ -425,7 +440,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     
                                     // the bold black vertical line is in the under part of the y of the dashed line
                                     else if ((dashedLines[j][1] > boldBlackVertcalLines[i][2] && (boldBlackVertcalLines[i][2]) > dashedLines[j][0])){
-                                        System.out.println("test2");
                                         //add line of the upper part of the dashed line
                                         int [] upperLine = dashedLines[j];
                                         upperLine[0] = boldBlackVertcalLines[i][2];
@@ -452,7 +466,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             placesSolutions.get(placesSolutions.size()-1).addAll(places);
         } 
         
+        System.out.println(placedRectanglesSolutions+"rect");
+        System.out.println(placesSolutions+"places");
         
+        //deciding which solution is the best
         for(int i = 0; i < placedRectanglesSolutions.size(); i++){
             //keeps the width of the solution of the placing policy
             int widthPolicySolution = 0; 
@@ -468,22 +485,27 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 indexSolution = i;
             }
         }
+        System.out.println(indexSolution);
         
         //the places of the solution converted to an array
         int[][] placesSolution = new int[placesSolutions.get(indexSolution).size()][2];
         for(int i=0; i<placesSolutions.get(indexSolution).size();i++){
             ArrayList<Integer> locationOutput = placesSolutions.get(indexSolution).get(i);
+            System.out.println(locationOutput+"output");
             for(int j=0; j<locationOutput.size();j++){
                 placesSolution[i][j] = locationOutput.get(j).intValue(); 
+                System.out.println(placesSolution[i][j]+"placessol" + i +"i"+ j+"j");
             }
         }
         
         //the rectangles of the solution converted to an array
-        int[][] placedRectanglesSolution = new int[placedRectanglesSolutions.get(indexSolution).size()][2];
+        int[][] placedRectanglesSolution = new int[placedRectanglesSolutions.get(indexSolution).size()][3];
         for(int i=0; i<placedRectanglesSolutions.get(indexSolution).size();i++){
             ArrayList<Integer> rectangleOutput = placedRectanglesSolutions.get(indexSolution).get(i);
+            System.out.println(rectangleOutput+"output");
             for(int j=0; j<rectangleOutput.size();j++){
                 placedRectanglesSolution[i][j] = rectangleOutput.get(j).intValue(); 
+                System.out.println(placedRectanglesSolution[i][j]+"sol" + i +"i"+ j+"j");
             }
         } 
         
