@@ -17,8 +17,8 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
     boolean[] tempRot;
     int[][] tempRect;
     
-    public BruteForceLeftBottomWithRotationAlgorithm(Grid grid, GlobalData data, boolean free) {
-        super(grid, data, free);
+    public BruteForceLeftBottomWithRotationAlgorithm(Grid grid, GlobalData data) {
+        super(grid, data);
         rotations = new ArrayList();
     }
     
@@ -41,11 +41,7 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        if(free){
-            grid = bottemLeftAgorithm.bottomLeft(rectangles, false, false);
-        }else{
-            grid = bottemLeftAgorithm.bottomLeft(rectangles, false, false);
-        }
+        grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
         
         // Calc score of the solution
         // First make sure the rectangles and rotations array ordened such
