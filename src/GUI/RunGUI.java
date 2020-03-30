@@ -13,4 +13,4 @@ public class RunGUI {
         gui = new SimpleGUI();
         SimpleGUI.run();
     }
-}
+}  

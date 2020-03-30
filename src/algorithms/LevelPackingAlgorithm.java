@@ -37,6 +37,9 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     //temporary placement
     int[][] placementFinal = new int[global.getNumRectangles()][];
     
+    //return  placement if local
+    int[][] placementReturn = new int[global.getNumRectangles()][];
+    
     //rectagnle number
     int rectangle = 0;
     
@@ -47,15 +50,13 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     boolean rotate = false;
     
     //has been rotated
-    boolean rotated = false;
+    int rotated = 0;
     
-    //total width of all rectangles (not yet added too)
-    int totalWidth = 0;
+    int rectNum;
     
-    //big rectangle rotated
-    boolean bigRotate = false;
-    
-    
+    //rotations array with reference
+    boolean[] rotationsF = new boolean[global.getNumRectangles()];
+
     public LevelPackingAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
     }
@@ -63,7 +64,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     //method to call, given an array of rectagnles 
     //will sort them using the bottom left heurstic
     //returns a grid
-    public Grid bottomLeft(int[][] passedRectangle, boolean rotationAllowed) {
+    public Grid bottomLeft(int[][] passedRectangle, boolean rotationAllowed, boolean local) {
         
         x = 0; 
         y = 0; 
@@ -88,12 +89,16 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
     
         //temporary placement
         placementFinal = new int[global.getNumRectangles()][];
+        
+        placementReturn = new int[global.getNumRectangles()][];
     
         //rectagnle number
         rectangle = 0;
     
         //upper bound
         fixedBound = 0;
+        
+        
     
         // Series of if-statements that compute bottomleft differently
         // Computation based on vars containerType and rotationsAllowed
@@ -104,6 +109,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         for (int i = 0; i < passedRectangle.length; i++) { 
             int rectWidth = passedRectangle[i][0];
             int rectLength = passedRectangle[i][1];
+            rectNum = passedRectangle[i][2];
             if (global.getType().equals("free") && !global.getRA() ) {
                 placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             } 
@@ -125,8 +131,37 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                 placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             }
             rectangle ++;
+            if(local) {
+                int[] coord = new int[]{placementFinal[i][0], placementFinal[i][1], passedRectangle[i][2], rotated};
+                placementReturn[i] = coord;
+                if(placementReturn[i][3] == 1) {
+                    rotationsF[i] = true;
+                    int rectW = passedRectangle[i][0];
+                    int rectL = passedRectangle[i][1];
+                    passedRectangle[i] = new int[]{rectL, rectW, passedRectangle[i][2]};
+                }
+            }
         }
-        grid.storePlacement(placementFinal);
+        if(local) {
+            java.util.Arrays.sort(placementReturn, new java.util.Comparator<int[]>() {
+                public int compare(int[] a, int[] b) {
+                    return Integer.compare(a[2], b[2]);
+                }
+            });
+            java.util.Arrays.sort(passedRectangle, new java.util.Comparator<int[]>() {
+                public int compare(int[] a, int[] b) {
+                    return Integer.compare(a[2], b[2]);
+                }
+            });
+            int [][] rectanglesFinal = Arrays.copyOf(passedRectangle, passedRectangle.length);
+
+            grid.storeRotations(rotationsF);
+            global.setRectangles(rectanglesFinal);
+            grid.storePlacement(placementReturn);
+        }
+        else {
+            grid.storePlacement(placementFinal);
+        }
         return grid;
     }
 
@@ -161,7 +196,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         for(int i = 0; i < maxWidth + 1; i++) {
                 y2 = computeLowestPoint2(width, height, passedRectangle, x2);
             if(overlapsRectangle(passedRectangle, width, height, y2, x2)) {
-                int[] coord = new int[]{x2, y2};
+                int[] coord = new int[]{x2, y2, 0};
                 lowestPoints[count] = coord;
                 rotations[count] = false;
                 count ++;
@@ -173,7 +208,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             for(int i = 0; i < maxWidth + 1; i++) {
                     y2 = computeLowestPoint2(height, width, passedRectangle, x2);
                     if(overlapsRectangle(passedRectangle, height, width, y2, x2)) {
-                        int[] coord = new int[]{x2, y2};
+                        int[] coord = new int[]{x2, y2, 1};
                         lowestPoints[count] = coord;
                         rotations[count] = true;
                         count ++;
@@ -184,13 +219,20 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         float ration = 200000.0f;
         float rationTemp = 0;
         float rectAreaTemp = rectArea;
-        int xMaximized = 100000000;
         rectAreaTemp += (width * height);
         for(int i = 0; i < lowestPoints.length; i++) {
-            if (lowestPoints[i] != null && overlapsRectangle(passedRectangle, height, width, lowestPoints[i][1], lowestPoints[i][0])) {
+            boolean pass = false;
+            if(lowestPoints[i] != null) {
+            if((lowestPoints[i][2] == 0)) {
+                pass = overlapsRectangle(passedRectangle, height, width, lowestPoints[i][1],lowestPoints[i][0]);
+            }
+            if((lowestPoints[i][2] == 1)) {
+                pass = overlapsRectangle(passedRectangle, width, height, lowestPoints[i][1],lowestPoints[i][0]);
+            }
+            if (pass) {
                 float maxWidth_1 = maxWidth;
                 float maxHeight_1 = maxHeight;
-                if(rotations[i]) {
+                if(lowestPoints[i][2] == 1) {
                     if((lowestPoints[i][0] + height) > maxWidth_1) {
                         maxWidth_1  = lowestPoints[i][0] + height;
                     }
@@ -207,41 +249,21 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
                     } 
                 }
                 rationTemp = ((maxHeight_1 * maxWidth_1)/rectAreaTemp);
-                    if(rationTemp < ration) {
-                        ration = rationTemp;
-                        y2 = lowestPoints[i][1];
-                        x2 = lowestPoints[i][0];
-                        if(rotate) {
-                            grid.setRotationsIndexI(rotations[i], rectangle);
-                            passedRectangle[rectangle][0] = height;
-                            passedRectangle[rectangle][1] = width;
-                            rotated = true;
-                        }
+                if(rationTemp < ration) {
+                    ration = rationTemp;
+                    y2 = lowestPoints[i][1];
+                    x2 = lowestPoints[i][0];
+                    if(lowestPoints[i][2] == 1) {
+                        rotated = 1;
                     }
+                    else {
+                        rotated = 0;
+                    }
+                    }
+                }
             }
         }
         return new int[]{x2,y2};
-    }
-    
-    public int[] computeBottomLeftCoordinate2(int[][] passedRectangle, int width, int height) {
-        int breakingPoint = totalWidth/10;
-        int[] coordinate;
-        if(x > breakingPoint){
-            x = 0;
-        }
-        else{
-            x += width;
-        }
-        if(( height >=fixedBound) && global.getRA()) {
-            y = computeLowestPoint2(height, width, passedRectangle, x);
-            bigRotate = true;
-        }
-        else {
-            y = computeLowestPoint2(width, height, passedRectangle, x);
-            bigRotate = false;
-        }
-        coordinate = new int[]{x, y};
-        return coordinate;
     }
     
     //this method looks at the given y coordinate and find if there is any rectagnle 
@@ -281,13 +303,10 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             }
         }
         for(boolean i: fits) {
-            //System.out.println(i);
             if(i == true) {
                 return false;
             }
         }
-        
-        //System.out.println("rectangle fits ");
         return true;
     }
     
@@ -313,7 +332,6 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         if (((xInitial <= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) && ((xInitial + width) > (placementFinal[i][0]))) {
             return false;
         }
-        //System.out.println("Rectangle safe " + rectangle);
         return true;
     }
 
@@ -333,7 +351,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         returnCoordinates[1] = lowestY;
         
         //adds current object
-        if(rotated) {
+        if(rotated == 1) {
             heights[counter] = width + lowestY;
             widths[counter] = height + closestX;
         }
@@ -341,7 +359,7 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
             heights[counter] = height + lowestY;
             widths[counter] = width + closestX;
         }
-        rotated = false;
+        //rotated = 0;
         //if current height is larger than existing, replace it
         if(heights[counter] > maxHeight) {
             maxHeight = heights[counter];
@@ -361,16 +379,18 @@ public class LevelPackingAlgorithm extends AbstractAlgorithm {
         // getting the data from the logic package
         int[][] rectangleOriginal = global.getRectangles();
         grid.setRotationsLength(global.getNumRectangles());
+        int[][] rectangleOriginalRef = new int[rectangleOriginal.length][];
+        for(int i= 0; i < rectangleOriginal.length; i++) {
+            int[] rect = new int[]{rectangleOriginal[i][0],rectangleOriginal[i][1],i};
+            rectangleOriginalRef[i] = rect;
+        }
         
-        
-        
-        //java.util.Arrays.sort(rectangleOriginal, (int[] a, int[] b) -> Integer.compare(b[0], a[0]));
-        
-        //for(int i = 0; i < rectangleOriginal.length; i ++) {
-            //System.out.println(" x " + rectangleOriginal[i][0] + " y " + rectangleOriginal[i][1]);
-        //}
-        
-        bottomLeft(rectangleOriginal, global.getRA());
+        java.util.Arrays.sort(rectangleOriginalRef, new java.util.Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return Integer.compare(b[0], a[0]);
+            }
+        });
+        bottomLeft(rectangleOriginalRef, global.getRA(), true);
         
     }  
 }

@@ -42,9 +42,9 @@ public class BruteForceLeftBottomWithRotationAlgorithm extends BruteForceLeftBot
         // Count the number of calculation that are made
         numberOfCalculations++;
         if(free){
-            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false, false);
         }else{
-            grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+            grid = bottemLeftAgorithm.bottomLeft(rectangles, false, false);
         }
         
         // Calc score of the solution
