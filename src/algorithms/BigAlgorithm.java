@@ -173,7 +173,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
         int y2 = 0;
         int x2 = 0;
         int count = 0;
-        boolean[] rotations = new boolean[(maxWidth + 1) * 2];
         int[][] lowestPoints = new int[(maxWidth + 1) * 2][];
 
         for(int i = 0; i < maxWidth + 1; i++) {
@@ -181,7 +180,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
             if(overlapsRectangle(passedRectangle, width, height, y2, x2)) {
                 int[] coord = new int[]{x2, y2, 0};
                 lowestPoints[count] = coord;
-                rotations[count] = false;
                 count ++;
             }
             x2 ++;
@@ -193,7 +191,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
                     if(overlapsRectangle(passedRectangle, height, width, y2, x2)) {
                         int[] coord = new int[]{x2, y2, 1};
                         lowestPoints[count] = coord;
-                        rotations[count] = true;
                         count ++;
                     }
                 x2 ++;
@@ -302,6 +299,9 @@ public class BigAlgorithm extends AbstractAlgorithm {
     public boolean overlapsXRectanlge(int passedRectangle, int width, int xInitial, int i) {
         if((xInitial >= placementFinal[i][0]) && ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) {
             //System.out.println("There is a rectangle larger than current. width " + passedRectangle);
+            //if(rectNum == 708) {
+            //    System.out.println("FALSE");
+            //}
             return false;
         }
         if((xInitial <= placementFinal[i][0]) && ((passedRectangle + placementFinal[i][0]) <= (xInitial + width))) {
@@ -536,7 +536,8 @@ public class BigAlgorithm extends AbstractAlgorithm {
                 rotationsF[i] = true;
             }
         }
-        
+        //System.out.println(rotationsF[0]);
+        //System.out.println(rotationsF[708]);
         grid.storeRotations(rotationsF);
         global.setRectangles(rectanglesFinal);
         grid.storePlacement(placement);
