@@ -87,15 +87,15 @@ public class PackingSolver {
             // If it is free data type
             if(data.getType().equalsIgnoreCase(data.FREE)){
                 if(!data.getRA()){
-                    return "BruteForceLeftBottomFree";
+                    return "BruteForceLeftBottom";
                 }else{
-                    return "BruteForceLeftBottomFreeWithRotation";
+                    return "BruteForceLeftBottomWithRotation";
                 }
             }else{ // If it is fixed data type
                 if(!data.getRA()){
-                    return "BruteForceLeftBottomFixed";
+                    return "BruteForceLeftBottom";
                 }else{
-                    return "BruteForceLeftBottomFixedWithRotation";
+                    return "BruteForceLeftBottomWithRotation";
                 }
             }
         }
@@ -111,18 +111,18 @@ public class PackingSolver {
             return new BestFitAlgorithm(grid, data);
         case "BruteForce":
             return new BruteForceAlgorithm(grid, data);
-        case "BruteForceLeftBottomFree":
-            return new BruteForceLeftBottomAlgorithm(grid, data, true);
-        case "BruteForceLeftBottomFreeWithRotation":
-            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data, true);
-        case "BruteForceLeftBottomFixed":
-            return new BruteForceLeftBottomAlgorithm(grid, data, false);
-        case "BruteForceLeftBottomFixedWithRotation":
-            return new BruteForceLeftBottomWithRotationAlgorithm(grid, data, false);
+        case "BruteForceLeftBottom":
+            if(!data.getRA()){
+                return new BruteForceLeftBottomAlgorithm(grid, data);
+            }else{
+                return new BruteForceLeftBottomWithRotationAlgorithm(grid, data);
+            }
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":
             return new TestingAlgorithm(grid, data);
+        case "BigAlgorithm":
+            return new BigAlgorithm(grid, data);
         }
         // If nothing is found
         System.out.println("Algorithm not found: " + testingAlgorithm);
