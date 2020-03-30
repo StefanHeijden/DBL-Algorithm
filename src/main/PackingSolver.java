@@ -84,20 +84,9 @@ public class PackingSolver {
         // Else determine the algorithm based on some variables
         // If number of rectangles is small, use Brute Force
         if(data.getNumRectangles() <= BRUTEFORCETHRESHOLD){
-            // If it is free data type
-            if(data.getType().equalsIgnoreCase(data.FREE)){
-                if(!data.getRA()){
-                    return "BruteForceLeftBottom";
-                }else{
-                    return "BruteForceLeftBottomWithRotation";
-                }
-            }else{ // If it is fixed data type
-                if(!data.getRA()){
-                    return "BruteForceLeftBottom";
-                }else{
-                    return "BruteForceLeftBottomWithRotation";
-                }
-            }
+            return "BruteForceLeftBottom";
+        }else{
+            
         }
         return "Testing";
     }
