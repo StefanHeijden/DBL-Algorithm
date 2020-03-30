@@ -297,15 +297,20 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     }
                     System.out.println((Arrays.toString(allocationSlot)+"alloslot"));
-                    //computing the exact place of the allocation
-                    if(policy == "upperLeftCorner"){
+                    if(null != policy) //computing the exact place of the allocation
+                    switch (policy) {
+                    case "upperLeftCorner":
                         allocationPlace = UpperLeftCorner(allocationSlot, allocationRectangle);
-                    }
-                    else if(policy == "fattestNeighboringPiece"){
-                        allocationPlace = FattestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);   
-                    }
-                    else if(policy == "thinnestNeighboringPiece"){
+                        break;
+                    case "fattestNeighboringPiece":
+                        allocationPlace = FattestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);
+                        break;
+                    case "thinnestNeighboringPiece":
                         allocationPlace = ThinnestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);   
+                        break;
+                    default:
+                        System.out.println("MIAUW");
+                        break;
                     }
                             
                     //storing the location
@@ -409,6 +414,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     }
                     */
                       
+                    // Just for testing for now
+                    updateDashedLines(boldBlackVertcalLines);
+                    
                     //initializing a array with the dashed lines
                     int[][] dashedLines = {{0, gridHeight}}; //with lower y and higher y
                     
@@ -498,6 +506,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     break;
                 }
             }
+            
             //add solution to solutions
             placedRectanglesSolutions.add(new ArrayList<ArrayList<Integer>>());
             placedRectanglesSolutions.get(placedRectanglesSolutions.size()-1).addAll(placedRectangles);
@@ -553,4 +562,116 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         //puts the values in the gui
         grid.storePlacement(finalPlaces);
     } 
+    
+    public int[][] updateDashedLines(int[][] boldBlackVertcalLines){
+        System.out.println("-----------------------Start-------------------------");
+        System.out.println("boldLines: ");
+        for(int[] i: boldBlackVertcalLines){
+            System.out.println(Arrays.toString(i));
+        }
+        ArrayList<int[]> dL = new ArrayList(); // The dashed lines
+        
+        ArrayList<Integer> alreadyChecked = new ArrayList();
+        ArrayList<int[]> bL; // Keeps track of bLine that are used to draw the dashed  
+        // Check for each bold black line
+        for(int r = 0; r < boldBlackVertcalLines.length; r++){
+            // First make sure this line wasn't already checked
+            if(!alreadyChecked.contains(r)){
+                // Then start with obtaining all black lines
+                // that determine whether a dashedline can be drawn
+                bL = new ArrayList();  
+                // Start with adding itself, since that space cannot be used
+                // for a dashedline
+                int[] line = {boldBlackVertcalLines[r][1], boldBlackVertcalLines[r][2]};
+                bL.add(line);
+                
+                // then check each other bold black line
+                for(int c = 0; c < boldBlackVertcalLines.length; r++){
+                    // Make sure you dont check the same line
+                    // and line 1 (r) is more to the left then line 2 (c)
+                    if(r != c && boldBlackVertcalLines[r][0] <= boldBlackVertcalLines[c][0]){
+                        // Then add the black line
+                        int [] bline = {boldBlackVertcalLines[c][1], boldBlackVertcalLines[c][2]};
+                        bL.add(bline);
+                        // If he x is the same make sure it is not checked
+                        if(boldBlackVertcalLines[r][0] == boldBlackVertcalLines[c][0]){
+                            alreadyChecked.add(c);
+                        }
+                    }
+                }
+                // Finaly create dashedLines based on the black lines
+                addDashLines(dL, bL);
+            }
+        }
+        
+        // Convert the dashlines to table of integers
+        // since this is the format we use in other code
+        int [][] result = new int[dL.size()][2]; 
+        for(int i = 0; i < dL.size(); i++){
+            result[i] = dL.get(i);
+        }
+        System.out.println("Result: ");
+        for(int[] i: dL){
+            System.out.println(Arrays.toString(i));
+        }
+        System.out.println("-----------------------DONE-------------------------");
+        return result;
+    }
+
+    // This method adds dashlines at the empty spots between the black lines
+    private void addDashLines(ArrayList<int[]> dL, ArrayList<int[]> bL) {
+        // Order the bL, such that for each i < i + 1: bL.get(i)[1] <= bL.get(i + 1)[0]
+        order(bL);
+        
+        // Check the first bL to make sure it starts at 0
+        if(bL.get(0)[0] > 0){
+            // If not add a dashedline there
+            int[] line = {0, bL.get(0)[0]};
+            dL.add(line);
+        }
+
+        // then check for holes between the ordened lines
+        for(int i = 0; i < bL.size() - 1; i++){
+            // If there is a spot between 2 lines
+            if(bL.get(i)[1] < bL.get(i+1)[0]){
+                // add spots are added to dL as dashedLines
+                int[] line = {bL.get(i)[1], bL.get(i+1)[0]};
+                dL.add(line);
+            }
+        }
+        // Check the final bL to make sure it ends add gridHeight
+        if(bL.get(bL.size() - 1)[1] < gridHeight){
+            // If not add a dashedline there
+            int[] line = {bL.get(bL.size() - 1)[1], gridHeight};
+            dL.add(line);
+        }
+    }
+
+    private ArrayList<int[]> order(ArrayList<int[]> bL) {
+        ArrayList<int[]> result = new ArrayList();
+        System.out.println("before sort: ");
+        for(int[] i: bL){
+            System.out.println(Arrays.toString(i));
+        }
+        for(int r = 0; r < bL.size(); r ++){
+            for(int c = 0; c < bL.size(); c ++){
+                // If lines r upperY is smaller then c lowerY
+                if(bL.get(r)[1] < bL.get(c)[0]){
+                    // then switch those 2
+                    int[] temp = bL.get(c);
+                    bL.get(c)[0] = bL.get(r)[0];
+                    bL.get(c)[1] = bL.get(r)[1];
+                    bL.get(r)[0] = temp[0];
+                    bL.get(r)[1] = temp[1];
+                    // switch
+                }
+            }
+            
+        }
+        System.out.println("after sort: ");
+        for(int[] i: bL){
+            System.out.println(Arrays.toString(i));
+        }
+        return result;
+    }
 }
