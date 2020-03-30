@@ -573,6 +573,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         grid.storePlacement(finalPlaces);
     } 
     
+    // Create all the dashed line based on the boldlines
     public int[][] updateDashedLines(int[][] boldBlackVertcalLines){
         System.out.println("boldLines: ");
         for(int[] i: boldBlackVertcalLines){
@@ -616,6 +617,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         // Remove duplicates
         for(int r = 0; r < dL.size(); r ++){
             for(int c = r + 1; c < dL.size(); c ++){
+                // if lower y and upper y are the same, one should be removed
                 if(dL.get(r)[1] == dL.get(c)[1] && dL.get(r)[2] == dL.get(c)[2]){
                     dL.remove(c);
                 }
@@ -665,8 +667,11 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         }
     }
 
+    // Orders the list of bold lines such that they are in order from lowest to
+    // highest line
     private ArrayList<int[]> order(ArrayList<int[]> bL) {
         ArrayList<int[]> result = new ArrayList();
+        // For each bold line check all others that are still left
         for(int r = 0; r < bL.size(); r ++){
             for(int c = r; c < bL.size(); c ++){
                 // If lines r upperY is smaller then c lowerY
@@ -677,7 +682,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     bL.get(c)[1] = bL.get(r)[1];
                     bL.get(r)[0] = temp[0];
                     bL.get(r)[1] = temp[1];
-                    // switch
                 }
             }
             
@@ -685,6 +689,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         return result;
     }
     
+    // Creates a slot based on the dashedline and all of the bold lines
+    // It looks for the highest black line that is under the dashedline
+    // such that you are left with a rectangle between the dashline and 
+    // surrounding boldlines
     public int[] createSlot(int[] dashedLine, int[][] bL){
         int[] slot = new int[3];
         slot[1] = dashedLine[1];
