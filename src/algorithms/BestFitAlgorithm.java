@@ -17,7 +17,6 @@ import logic.GlobalData;
 import logic.Grid;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 //import java.util.Collections;
 
 /**
@@ -569,6 +568,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         for(int[] i: boldBlackVertcalLines){
             System.out.println(Arrays.toString(i));
         }
+        System.out.println("gridHeight: " + gridHeight);
         ArrayList<int[]> dL = new ArrayList(); // The dashed lines
         
         ArrayList<Integer> alreadyChecked = new ArrayList();
@@ -601,6 +601,16 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 }
                 // Finaly create dashedLines based on the black lines
                 addDashLines(dL, bL);
+            }
+        }
+        
+        // Remove duplicates
+        for(int r = 0; r < dL.size(); r ++){
+            for(int c = r + 1; c < dL.size(); c ++){
+                if(dL.get(r)[0] == dL.get(c)[0] && dL.get(r)[1] == dL.get(c)[1]){
+                    dL.remove(c);
+                    System.out.println("Remove duplicate at index: " + c);
+                }
             }
         }
         
@@ -639,11 +649,16 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 dL.add(line);
             }
         }
+        
         // Check the final bL to make sure it ends add gridHeight
         if(bL.get(bL.size() - 1)[1] < gridHeight){
             // If not add a dashedline there
             int[] line = {bL.get(bL.size() - 1)[1], gridHeight};
             dL.add(line);
+        }
+        System.out.println("Intermediate result: ");
+        for(int[] i: dL){
+            System.out.println(Arrays.toString(i));
         }
     }
 
@@ -654,11 +669,11 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             System.out.println(Arrays.toString(i));
         }
         for(int r = 0; r < bL.size(); r ++){
-            for(int c = 0; c < bL.size(); c ++){
+            for(int c = r; c < bL.size(); c ++){
                 // If lines r upperY is smaller then c lowerY
-                if(bL.get(r)[1] < bL.get(c)[0]){
+                if(bL.get(c)[0] < bL.get(r)[0]){
                     // then switch those 2
-                    int[] temp = bL.get(c);
+                    int[] temp = {bL.get(c)[0], bL.get(c)[1]};
                     bL.get(c)[0] = bL.get(r)[0];
                     bL.get(c)[1] = bL.get(r)[1];
                     bL.get(r)[0] = temp[0];
