@@ -94,7 +94,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         // Run lb
         // Count the number of calculation that are made
         numberOfCalculations++;
-        grid = bottemLeftAgorithm.bottomLeft(rectangles, false);
+        grid = bottemLeftAgorithm.bottomLeft(rectangles, false, false);
         
         // Calc score of the solution
         grid.storePlacement(orden());
