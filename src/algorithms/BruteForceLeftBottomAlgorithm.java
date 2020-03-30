@@ -18,12 +18,10 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     int numberOfCalculations = 0;
     LevelPackingAlgorithm bottemLeftAgorithm;
     int[][] finalResultingPlacement;
-    boolean free = true;
     
     public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
         bottemLeftAgorithm = new LevelPackingAlgorithm(grid, data);
-        this.free = data.getRA();
         // Initialize lists
         rectangles = new int[data.getNumRectangles()][3];
         positions = new ArrayList();
