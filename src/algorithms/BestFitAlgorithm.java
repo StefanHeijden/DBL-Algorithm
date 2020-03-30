@@ -586,7 +586,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 bL.add(line);
                 
                 // then check each other bold black line
-                for(int c = 0; c < boldBlackVertcalLines.length; r++){
+                for(int c = 0; c < boldBlackVertcalLines.length; c++){
                     // Make sure you dont check the same line
                     // and line 1 (r) is more to the left then line 2 (c)
                     if(r != c && boldBlackVertcalLines[r][0] <= boldBlackVertcalLines[c][0]){
