@@ -413,10 +413,19 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     }
                     */
                       
-                    // Just for testing for now
-                    updateDashedLines(boldBlackVertcalLines);
-                    
+                    // Update slots based on de bold lines
+                    System.out.println("-----------------------START WITH SLOTS-------------------------");
+                    int[][] dashyLines = updateDashedLines(boldBlackVertcalLines);
+                    System.out.println("Resulting slots: ");
+                    for(int[] line: dashyLines){
+                        int[] newSlot = createSlot(line, boldBlackVertcalLines);
+                        slots.add(new ArrayList<Integer>());
+                        slots.get(slots.size()-1).addAll(Arrays.asList(Arrays.stream(newSlot).boxed().toArray(Integer[]::new)));
+                        System.out.println(Arrays.toString(newSlot));
+                    }
+                    System.out.println("-----------------------DONE WITH SLOTS-------------------------");
                     //initializing a array with the dashed lines
+                    /*
                     int[][] dashedLines = {{0, gridHeight}}; //with lower y and higher y
                     
                     slots = new ArrayList<ArrayList<Integer>>();
@@ -497,8 +506,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     }
                                 }
                             }
-                        } dashedLines = newDashedLines.clone();
+                        } 
+                        dashedLines = newDashedLines.clone();
                     }
+                    */
                 }
                 else{
                     //go further with the next policy
@@ -563,12 +574,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     } 
     
     public int[][] updateDashedLines(int[][] boldBlackVertcalLines){
-        System.out.println("-----------------------Start-------------------------");
         System.out.println("boldLines: ");
         for(int[] i: boldBlackVertcalLines){
             System.out.println(Arrays.toString(i));
         }
-        System.out.println("gridHeight: " + gridHeight);
         ArrayList<int[]> dL = new ArrayList(); // The dashed lines
         
         ArrayList<Integer> alreadyChecked = new ArrayList();
@@ -584,7 +593,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 // for a dashedline
                 int[] line = {boldBlackVertcalLines[r][1], boldBlackVertcalLines[r][2]};
                 bL.add(line);
-                
+                int x = boldBlackVertcalLines[r][0];
                 // then check each other bold black line
                 for(int c = 0; c < boldBlackVertcalLines.length; c++){
                     // Make sure you dont check the same line
@@ -600,16 +609,15 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     }
                 }
                 // Finaly create dashedLines based on the black lines
-                addDashLines(dL, bL);
+                addDashLines(dL, bL, x);
             }
         }
         
         // Remove duplicates
         for(int r = 0; r < dL.size(); r ++){
             for(int c = r + 1; c < dL.size(); c ++){
-                if(dL.get(r)[0] == dL.get(c)[0] && dL.get(r)[1] == dL.get(c)[1]){
+                if(dL.get(r)[1] == dL.get(c)[1] && dL.get(r)[2] == dL.get(c)[2]){
                     dL.remove(c);
-                    System.out.println("Remove duplicate at index: " + c);
                 }
             }
         }
@@ -620,23 +628,22 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         for(int i = 0; i < dL.size(); i++){
             result[i] = dL.get(i);
         }
-        System.out.println("Result: ");
+        System.out.println("Resulting dashed lines: ");
         for(int[] i: dL){
             System.out.println(Arrays.toString(i));
         }
-        System.out.println("-----------------------DONE-------------------------");
         return result;
     }
 
     // This method adds dashlines at the empty spots between the black lines
-    private void addDashLines(ArrayList<int[]> dL, ArrayList<int[]> bL) {
+    private void addDashLines(ArrayList<int[]> dL, ArrayList<int[]> bL, int x) {
         // Order the bL, such that for each i < i + 1: bL.get(i)[1] <= bL.get(i + 1)[0]
         order(bL);
         
         // Check the first bL to make sure it starts at 0
         if(bL.get(0)[0] > 0){
             // If not add a dashedline there
-            int[] line = {0, bL.get(0)[0]};
+            int[] line = {x, 0, bL.get(0)[0]};
             dL.add(line);
         }
 
@@ -645,7 +652,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             // If there is a spot between 2 lines
             if(bL.get(i)[1] < bL.get(i+1)[0]){
                 // add spots are added to dL as dashedLines
-                int[] line = {bL.get(i)[1], bL.get(i+1)[0]};
+                int[] line = {0, bL.get(i)[1], bL.get(i+1)[0] - bL.get(i)[1]};
                 dL.add(line);
             }
         }
@@ -653,21 +660,13 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         // Check the final bL to make sure it ends add gridHeight
         if(bL.get(bL.size() - 1)[1] < gridHeight){
             // If not add a dashedline there
-            int[] line = {bL.get(bL.size() - 1)[1], gridHeight};
+            int[] line = {x, bL.get(bL.size() - 1)[1], gridHeight - bL.get(bL.size() - 1)[1]};
             dL.add(line);
-        }
-        System.out.println("Intermediate result: ");
-        for(int[] i: dL){
-            System.out.println(Arrays.toString(i));
         }
     }
 
     private ArrayList<int[]> order(ArrayList<int[]> bL) {
         ArrayList<int[]> result = new ArrayList();
-        System.out.println("before sort: ");
-        for(int[] i: bL){
-            System.out.println(Arrays.toString(i));
-        }
         for(int r = 0; r < bL.size(); r ++){
             for(int c = r; c < bL.size(); c ++){
                 // If lines r upperY is smaller then c lowerY
@@ -683,10 +682,24 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             }
             
         }
-        System.out.println("after sort: ");
-        for(int[] i: bL){
-            System.out.println(Arrays.toString(i));
-        }
         return result;
+    }
+    
+    public int[] createSlot(int[] dashedLine, int[][] bL){
+        int[] slot = new int[3];
+        slot[1] = dashedLine[1];
+        slot[2] = dashedLine[2];
+        slot[0] = 0;
+        for(int[] line: bL){
+            // look for the highest black line that is under the dashedline
+            
+            if((line[0] > slot[0]) && (line[0] < dashedLine[0]) && 
+                    (line[1] >= slot[1]) && (line[2] <= slot[1] + slot[2]) ){
+                // Then save that height as the slots height
+                slot[0] = line[0];
+            }
+        }
+        
+        return slot;
     }
 }
