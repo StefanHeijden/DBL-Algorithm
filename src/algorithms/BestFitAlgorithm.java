@@ -45,7 +45,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     //the coordinates if the rectangles is placed the upper left corner of a slot
     public int[] UpperLeftCorner (int[] slot, int[] rectangle){
         System.out.println(Arrays.toString(slot)+"slot in coor");
-        System.out.println(Arrays.toString(rectangle)+"rec in coor");
+        //System.out.println(Arrays.toString(rectangle)+"rec in coor");
         int xSlot = slot[0];
         int ySlot = slot[1] + slot[2] - rectangle[1];
         int[] coordinates = {xSlot, ySlot};
@@ -287,14 +287,16 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     allocationRectangle = notPlacedRectangles[i];
                                     //Arrays.asList(Arrays.stream(beginSlots).boxed().toArray(Integer[]::new)
                                     //allocationSlot = Arrays.asList(Arrays.stream(slots.get(j)).boxed().toArray(Integer[]::new);
+                                    System.out.println(slots+"slots");
                                     for(int a=0; a<slots.get(j).size();a++){
                                         allocationSlot[a] = slots.get(j).get(a).intValue();
                                     }
-                                    System.out.println((slots.get(j)+"alloslot"));
+                                    
                                 }
                             }
                         }
                     }
+                    System.out.println((Arrays.toString(allocationSlot)+"alloslot"));
                     //computing the exact place of the allocation
                     if(policy == "upperLeftCorner"){
                         allocationPlace = UpperLeftCorner(allocationSlot, allocationRectangle);
@@ -365,12 +367,12 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             //delete line from array
                             boldBlackVertcalLines = DeleteElement(boldBlackVertcalLines, boldBlackVertcalLines[i]);
                         }
-                        System.out.println(Arrays.toString(boldBlackVertcalLines[i])+"bold");
+                        //System.out.println(Arrays.toString(boldBlackVertcalLines[i])+"bold");
                     }
                     
                     //adding right side of allocation rectangle to boldBlackVertcalLines
                     boldBlackVertcalLines = AddingToArray (boldBlackVertcalLines, 3,  rightSideOfAllocationRectangle);
-                    System.out.println(Arrays.toString(rightSideOfAllocationRectangle)+"rightside");
+                    //System.out.println(Arrays.toString(rightSideOfAllocationRectangle)+"rightside");
                     
                     //sorting boldBlackVertcalLines on first column in descending order
                     
@@ -423,7 +425,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                         ||((boldBlackVertcalLines[i][0] == boldBlackVertcalLines[i-1][0]) && (boldBlackVertcalLines[i][1] != boldBlackVertcalLines[i-1][2]) && (boldBlackVertcalLines[i][2] != boldBlackVertcalLines[i-1][1]))){
                                     //add slot
                                     int [] element = {boldBlackVertcalLines[i][0], dashedLines[j][0], dashedLines[j][1] - dashedLines[j][0]};
-                                    System.out.println(Arrays.toString(element)+"element");
+                                    //System.out.println(Arrays.toString(element)+"element");
                                     //System.out.println(Arrays.toString(element)+"slot");
                                     slots.add(new ArrayList<Integer>());
                                     slots.get(slots.size()-1).addAll(Arrays.asList(Arrays.stream(element).boxed().toArray(Integer[]::new)));
@@ -431,8 +433,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     //the bold black vertical line is in the complete y of the dashed line
                                     //System.out.println(Arrays.toString(boldBlackVertcalLines[i])+"vert");
                                     //System.out.println(Arrays.toString(dashedLines[j])+"dashed");
-                                    System.out.println(Arrays.toString(boldBlackVertcalLines[i])+"bold");
-                                    System.out.println(Arrays.toString(dashedLines[j])+"dashed");
+                                    //System.out.println(Arrays.toString(boldBlackVertcalLines[i])+"bold");
+                                    //System.out.println(Arrays.toString(dashedLines[j])+"dashed");
                                     if ((boldBlackVertcalLines[i][2] == dashedLines[j][1]) && (boldBlackVertcalLines[i][1] == dashedLines[j][0])){
                                         System.out.println("TEST0");
                                         
