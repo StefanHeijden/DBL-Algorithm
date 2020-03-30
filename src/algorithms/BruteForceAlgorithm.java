@@ -34,7 +34,6 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     //but with length of rectangles, i is for indexing the rectangle; x,y for width/height
     private int[][][] rectanglesWithIndex = new int[global.getNumRectangles()][2][2];
     private int[][][] emptyCurrentPlacement = new int[global.getNumRectangles()][2][2];
-    private int[][][][] currentPlacements = new int[global.getNumRectangles()][global.getNumRectangles()][2][2];
 
     //method to run the algorithm, it will choose which variant to run in another method
     @Override
@@ -49,11 +48,6 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
             rectanglesWithIndex[i][1][0] = i;
             //initialize index of empty currentPlacements to -1
             emptyCurrentPlacement[i][1][0] = -1;
-            //initialize currentPlacements indexes to -1, the rest is already 0
-            for (int j = 0; j < global.getNumRectangles(); j++) {
-                currentPlacements[i][j][1][0] = -1;
-            }
-
 
 //            System.out.println("rectanglesWithIndex:");
 //            for (int j = 0; j < rectanglesWithIndex.length; j++) {
@@ -73,7 +67,8 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
         }
         //call the SPNR variant
         else if (global.getType().equals(global.FIXED) && ! global.getRA()) {
-            computeSPNR();
+            //computeSPNR();
+            computeFNR(rectanglesWithIndex, originCorner, emptyCurrentPlacement);
         }
         //call the SPR variant
         else if (global.getType().equals(global.FIXED) && global.getRA()) {
@@ -98,11 +93,11 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
     currentPlacement is of form: [ [[x0,y0], i0], [[x1,y1], i0], [[x2,y2], i2] ]
     where x an y are the placement coordinates and i is the rectangle index**/
     public void computeFNR(int[][][] rectanglesToPlace, int[][] corners, int[][][] currentPlacement) {
-        System.out.println("rectanglesToPlace: " + rectanglesToPlace.length);
+//        System.out.println("rectanglesToPlace: " + rectanglesToPlace.length);
 
         //if Rectangles to place has no more rectangles to place, so done with placing
         if (!(rectanglesToPlace.length > 0)) {
-            System.out.println("end of recursive calls is reached");
+//            System.out.println("end of recursive calls is reached");
             //store results as grid object
             Grid finalPlacement = new Grid();
             //create and store placement
@@ -132,38 +127,38 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
             for (int[] corner : corners) {
                 //gets all possible permutations for rectangles that have not been placed
                 int[][] permutations = computePermutations(rectanglesToPlace);
-                System.out.println("permutations:");
-                for (int i = 0; i < permutations.length; i++) {
-                    for (int j = 0; j < permutations[0].length; j++) {
-                        System.out.print(permutations[i][j] + " ");
-                    }
-                    System.out.println();
-                }
+//                System.out.println("permutations:");
+//                for (int i = 0; i < permutations.length; i++) {
+//                    for (int j = 0; j < permutations[0].length; j++) {
+//                        System.out.print(permutations[i][j] + " ");
+//                    }
+//                    System.out.println();
+//                }
                 for (int[] permutation : permutations) {
                     int lastIndex = permutation.length - 1;
                     //if first rectangle of the permutation can be placed
                     //                System.out.println("permutation[0]:" + permutation[0]);
                     //                System.out.println("corner:" + corner[0] + " " + corner[1]);
-                    System.out.println("currentPlacement:");
-                    for (int i = 0; i < currentPlacement.length; i++) {
-                        System.out.println(currentPlacement[i][0][0] + " " + currentPlacement[i][0][1] + "  " + currentPlacement[i][1][0]);
-                    }
-
-                    System.out.println("currentPlacement pointer:" + currentPlacement);
-
-                    System.out.println("RTP:");
-                    for (int j = 0; j < rectanglesToPlace.length; j++) {
-                        System.out.println(rectanglesToPlace[j][0][0] + " " + rectanglesToPlace[j][0][1] + "  " + rectanglesToPlace[j][1][0]);
-                    }
+//                    System.out.println("currentPlacement:");
+//                    for (int i = 0; i < currentPlacement.length; i++) {
+//                        System.out.println(currentPlacement[i][0][0] + " " + currentPlacement[i][0][1] + "  " + currentPlacement[i][1][0]);
+//                    }
+//
+//                    System.out.println("currentPlacement pointer:" + currentPlacement);
+//
+//                    System.out.println("RTP:");
+//                    for (int j = 0; j < rectanglesToPlace.length; j++) {
+//                        System.out.println(rectanglesToPlace[j][0][0] + " " + rectanglesToPlace[j][0][1] + "  " + rectanglesToPlace[j][1][0]);
+//                    }
 
                     if (validPlacement(permutation[lastIndex], corner, currentPlacement)) { //permutation go from back to front in placement order
-                        System.out.println("is valid");
-                        System.out.println("permutation[lastIndex]: " + permutation[lastIndex]);
-                        System.out.print("permutation: ");
-                        for (int k = 0; k < permutation.length; k++) {
-                            System.out.print(permutation[k] + " ");
-                        }
-                        System.out.println();
+//                        System.out.println("is valid");
+//                        System.out.println("permutation[lastIndex]: " + permutation[lastIndex]);
+//                        System.out.print("permutation: ");
+//                        for (int k = 0; k < permutation.length; k++) {
+//                            System.out.print(permutation[k] + " ");
+//                        }
+//                        System.out.println();
                         //                    System.out.println("currentPlacement:");
                         //                    for (int i = 0; i < currentPlacement.length; i++) {
                         //                        System.out.println(currentPlacement[i][0][0] + " " + currentPlacement[i][0][1] + "  " + currentPlacement[i][1][0]);
@@ -171,9 +166,16 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
                         //                    System.out.println();
 
                         //create new current placement
-                        int[][][] newCurrentPlacement = currentPlacement.clone();
+                        //int[][][] newCurrentPlacement = currentPlacement.clone();
+                        int[][][] newCurrentPlacement = new int[currentPlacement.length][2][2];
+                        for (int i = 0; i < currentPlacement.length; i++) {
+                            newCurrentPlacement[i][0][0] = currentPlacement[i][0][0];
+                            newCurrentPlacement[i][0][1] = currentPlacement[i][0][1];
+                            newCurrentPlacement[i][1][0] = currentPlacement[i][1][0];
+                        }
+
                         //stores the [x,y] where rectangle i is placed
-                        System.out.println("current corner to be placed: " + corner[0] + " " + corner[1]);
+//                        System.out.println("current corner to be placed: " + corner[0] + " " + corner[1]);
                         newCurrentPlacement[permutation[lastIndex]][0] = corner;
                         //stores the i of rectangle i
                         newCurrentPlacement[permutation[lastIndex]][1][0] = permutation[lastIndex];
@@ -276,10 +278,10 @@ public class BruteForceAlgorithm extends AbstractAlgorithm{
                 }
             }
         }
-        System.out.println("UpdatedRTBP in removeRectangle(): ");
-        for (int i = 0; i < updatedRTBP.length; i++) {
-            System.out.println(updatedRTBP[i][0][0] + " " + updatedRTBP[i][0][1] + " " + updatedRTBP[i][1][0]);
-        }
+//        System.out.println("UpdatedRTBP in removeRectangle(): ");
+//        for (int i = 0; i < updatedRTBP.length; i++) {
+//            System.out.println(updatedRTBP[i][0][0] + " " + updatedRTBP[i][0][1] + " " + updatedRTBP[i][1][0]);
+//        }
         return updatedRTBP; //return the updated rectangleToBePlaced, input not adapted
     }
     
