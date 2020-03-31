@@ -85,8 +85,6 @@ public class PackingSolver {
         // If number of rectangles is small, use Brute Force
         if(data.getNumRectangles() <= BRUTEFORCETHRESHOLD){
             return "BruteForceLeftBottom";
-        }else{
-            
         }
         return "Testing";
     }
@@ -101,11 +99,7 @@ public class PackingSolver {
         case "BruteForce":
             return new BruteForceAlgorithm(grid, data);
         case "BruteForceLeftBottom":
-            if(!data.getRA()){
-                return new BruteForceLeftBottomAlgorithm(grid, data);
-            }else{
-                return new BruteForceLeftBottomWithRotationAlgorithm(grid, data);
-            }
+            return new BruteForceLeftBottomAlgorithm(grid, data);
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":
@@ -114,7 +108,7 @@ public class PackingSolver {
             return new BigAlgorithm(grid, data);
         }
         // If nothing is found
-        System.out.println("Algorithm not found: " + testingAlgorithm);
+        System.err.println("Algorithm not found: " + testingAlgorithm);
         return new TestingAlgorithm(grid, data);
     }
     
