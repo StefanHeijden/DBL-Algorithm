@@ -452,32 +452,7 @@ public class BigAlgorithm extends AbstractAlgorithm {
                 count ++;
             }
         }
-        elapsedTime = (new Date()).getTime() - startTime;
-        
-        if(elapsedTime >= 15 * 1000) {
-            count = 0;
-            int totalW = 0;
-            for(int i = 0; i < 1000; i++) {
-                for(int j=0; j < 10; j++) {
-                    placement[count][0] += totalW;
-                    count++;
-                }
-                totalW += rectangleTotal[i][0];
-            }
-            java.util.Arrays.sort(placement, new java.util.Comparator<int[]>() {
-                public int compare(int[] a, int[] b) {
-                    return Integer.compare(a[2], b[2]);
-                }
-            });
-        
-            rotationsF = new boolean[global.getNumRectangles()];
-            for(int i = 0; i < placement.length; i ++) {
-                if(placement[i][3] == 1) {
-                    rotationsF[placement[i][2]] = true;
-                }
-            }
-        }
-        else {
+
         int[][][] rectangleTotalSplit = splitArray(rectangleTotal, 10); //100
         int[][] rectangleTotal2 = new int[rectangleTotalSplit.length][]; //100
         
@@ -497,40 +472,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
             }
         }
         
-        elapsedTime = (new Date()).getTime() - startTime;
-        
-        if(elapsedTime >= 15 * 1000) {
-            count = 0;
-            int totalW = 0;
-            for(int i = 0; i < 100; i++) {
-                for(int j=0; j < 10; j++) {
-                    placementTotal[count][0] += totalW;
-                    count++;
-                }
-                totalW += rectangleTotal2[i][0];
-            }
-            count=0;
-            for(int i = 0; i < 1000; i++) {
-                for(int j=0; j < 10; j++) {
-                    placement[count][0] += placementTotal[i][0];
-                    placement[count][1] += placementTotal[i][1];
-                    count++;
-                }
-            }
-            java.util.Arrays.sort(placement, new java.util.Comparator<int[]>() {
-                public int compare(int[] a, int[] b) {
-                    return Integer.compare(a[2], b[2]);
-                }
-            });
-            rotationsF = new boolean[global.getNumRectangles()];
-            for(int i = 0; i < placement.length; i ++) {
-                if(placement[i][3] == 1) {
-                    rotationsF[placement[i][2]] = true;
-                }
-            }
-        }
-        
-        else {
         int[][][] rectangleTotalSplit2 = splitArray(rectangleTotal2, 10); //10
         int[][] rectangleTotal3 = new int[rectangleTotalSplit2.length][]; //10
         
@@ -593,8 +534,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
             if(placement[i][3] == 1) {
                 rotationsF[placement[i][2]] = true;
             }
-        }
-        }
         }
         
         grid.storeRotations(rotationsF);
