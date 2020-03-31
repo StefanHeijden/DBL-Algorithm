@@ -428,12 +428,19 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     System.out.println(slots);
                     int[][] dashyLines = updateDashedLines(boldBlackVertcalLines);
                     System.out.println("Resulting slots: ");
+                    slots = new ArrayList<>();
                     for(int[] line: dashyLines){
                         int[] newSlot = createSlot(line, boldBlackVertcalLines);
                         slots.add(new ArrayList<>());
                         slots.get(slots.size()-1).addAll(Arrays.asList(Arrays.stream(newSlot).boxed().toArray(Integer[]::new)));
                         System.out.println(Arrays.toString(newSlot));
                     }
+                    int[] highestSlot = new int[3];
+                    highestSlot[0] = boldBlackVertcalLines[0][0];
+                    highestSlot[1] = 0;
+                    highestSlot[2] = gridHeight;
+                    slots.add(new ArrayList<>());
+                    slots.get(slots.size()-1).addAll(Arrays.asList(Arrays.stream(highestSlot).boxed().toArray(Integer[]::new)));
                     System.out.println("New slots:");
                     System.out.println(slots);
                     System.out.println("-----------------------DONE WITH SLOTS-------------------------");
