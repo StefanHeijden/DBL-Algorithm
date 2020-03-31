@@ -12,6 +12,10 @@ import java.util.Arrays;
  */
 public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
     int [][] rectangles; //with width and height
+    int[][] rectanglesTurned;
+    boolean[][] rotations; // whether rectangle at index is turned yes or no
+    boolean[] bestRotations;
+    
     int gridHeight;
     double optimalWidth;
            
@@ -33,11 +37,17 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
         super(grid, data);
         //gets the data and gives every rectangle a number
         rectangles = new int[data.getRectangles().length][3];
+        rectanglesTurned = new int[data.getRectangles().length][3];
+        rotations = new boolean[3][data.getRectangles().length];
+        
         int i = 0;
         for(int[] r: data.getRectangles()){
             rectangles[i][0] = r[0];
             rectangles[i][1] = r[1];
             rectangles[i][2] = i;
+            rectanglesTurned[i][0] = r[1];
+            rectanglesTurned[i][1] = r[0];
+            rectanglesTurned[i][2] = i;
             i++;
         }
         
@@ -246,7 +256,7 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
             //identify the boldBlackVertcalLines at the beginning
             int [][] boldBlackVertcalLines = {{0, 0, gridHeight}}; //with x, lower y and higher y
            
-            int[][] notPlacedRectangles = rectangles.clone(); //with width, height and number
+            int[][] notPlacedRectangles = merge(rectangles, rectanglesTurned); //with width, height and number
             ArrayList<ArrayList<Integer>> placedRectangles = new ArrayList<>(); //with width and height
             ArrayList<ArrayList<Integer>> places = new ArrayList<>(); //with x and y of lower left corner
             while (notPlacedRectangles.length > 0) {
@@ -254,9 +264,15 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
                 boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
                     for(int j=0; j<slots.size(); j++){
-                        if(rectangles[i][1] <= slots.get(j).get(2)){
-                            canFit = true;
-                        } 
+                        if(i < rectangles.length){
+                            if(rectangles[i][1] <= slots.get(j).get(2)){
+                                canFit = true;
+                            } 
+                        }else{
+                            if(rectanglesTurned[i - rectangles.length][1] <= slots.get(j).get(2)){
+                                canFit = true;
+                            } 
+                        }
                     }
                 }
                 if (canFit){
@@ -316,16 +332,19 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
                     placedRectangles.get(placedRectangles.size()-1).addAll(Arrays.asList(Arrays.stream(allocationRectangle).boxed().toArray(Integer[]::new)));
                     
                     //deleting rectangle from notPlacedRectangles
-                    int[][] tempNotPlacedRectangles = notPlacedRectangles.clone();
-                    notPlacedRectangles = new int[tempNotPlacedRectangles.length-1][3];
-                    for(int k = 0; k < tempNotPlacedRectangles.length; k++){
-                        if(tempNotPlacedRectangles[k] == allocationRectangle){
-                            // shifting elements
-                            for(int j = k; j < tempNotPlacedRectangles.length - 1; j++){
-                                notPlacedRectangles[j] = tempNotPlacedRectangles[j+1].clone();
-                            }
-                            for(int l = 0; l<k; l++){
-                                notPlacedRectangles[l] = tempNotPlacedRectangles[l].clone();
+                    for(int o = 0; o < 2;o++){
+                        int[][] tempNotPlacedRectangles = notPlacedRectangles.clone();
+                        notPlacedRectangles = new int[tempNotPlacedRectangles.length - 1][3];
+                        for(int k = 0; k < tempNotPlacedRectangles.length; k++){
+                            if(tempNotPlacedRectangles[k][2] == allocationRectangle[2]){
+                                // shifting elements
+                                for(int j = k; j < tempNotPlacedRectangles.length - 1; j++){
+                                    notPlacedRectangles[j] = tempNotPlacedRectangles[j+1].clone();
+                                }
+                                for(int l = 0; l<k; l++){
+                                    notPlacedRectangles[l] = tempNotPlacedRectangles[l].clone();
+                                }
+                                break;
                             }
                         }
                     }
@@ -414,6 +433,35 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
             placesSolutions.add(new ArrayList<>());
             placesSolutions.get(placesSolutions.size()-1).addAll(places);
         } 
+        for(int r = 0; r < placedRectanglesSolutions.size(); r++){
+            for(int c = 0; c < placedRectanglesSolutions.get(r).size(); c++){
+                int width = placedRectanglesSolutions.get(r).get(c).get(0);
+                int height = placedRectanglesSolutions.get(r).get(c).get(1);
+                int index = placedRectanglesSolutions.get(r).get(c).get(2);
+                System.out.println(Arrays.toString(rectangles[index]));
+                if(rectangles[index][0] == width && rectangles[index][1] == height){
+                    System.out.println("is not rotated");
+                    rotations[r][index] = false;
+                }else{
+                    if(rectangles[index][1] == width && rectangles[index][0] == height){
+                        System.out.println("is rotated");
+                        rotations[r][index] = true;
+                    }else{
+                        System.out.println("THIS SHOULD NEVER HAPPEN KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKAAAAAAAAAAAAAAAAAAAAAAAAAAAKKKKKKKKKKKKKKKZZZZZOOOOOOOOOOOOOOOOOOOIII");
+                    }
+                }
+            }
+        }
+        System.out.println("rotations: ");
+        for (int r = 0; r < rotations.length;r++) {
+            System.out.println(placesSolutions.get(r));
+            System.out.println(Arrays.toString(rotations[r]));
+            System.out.println(placedRectanglesSolutions.get(r));
+            for(int[] rectangle: rectangles){
+                System.out.print(Arrays.toString(rectangle));
+            }
+            System.out.println();
+        }
         
         //deciding which solution is the best
         for(int i = 0; i < placedRectanglesSolutions.size(); i++){
@@ -441,6 +489,7 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
                 placesSolution[i][j] = locationOutput.get(j); 
             }
         }
+        bestRotations = rotations[indexSolution];
         
         //the rectangles of the solution converted to an array
         int[][] placedRectanglesSolution = new int[placedRectanglesSolutions.get(indexSolution).size()][3];
@@ -457,6 +506,7 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
         }
         
         //puts the values in the gui
+        grid.storeRotations(bestRotations);
         grid.storePlacement(finalPlaces);
     } 
     
@@ -588,5 +638,17 @@ public class BestFitRotationsAlgorithm extends AbstractAlgorithm {
         }
         
         return slot;
+    }
+    
+    
+    public int[][] merge(int[][] array1, int[][] array2){
+        int[][] result = new int[array1.length + array2.length][3];  //resultant array of size first array and second array  
+        System.arraycopy(array1, 0, result, 0, array1.length);  
+        System.arraycopy(array2, 0, result, array1.length, array2.length);  
+        System.out.println("result:" + Arrays.toString(result));    //prints the resultant array  
+        for(int[] rectangle: result){
+            System.out.println(Arrays.toString(rectangle));    //prints the resultant array  
+        }
+        return result;
     }
 }
