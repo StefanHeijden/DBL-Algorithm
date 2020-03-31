@@ -253,7 +253,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
                     for(int j=0; j<slots.size(); j++){
-                        if(rectangles[i][1] < slots.get(j).get(2)){
+                        if(rectangles[i][1] <= slots.get(j).get(2)){
                             canFit = true;
                         } 
                     }
@@ -268,7 +268,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     for (int[] notPlacedRectangle : notPlacedRectangles) {
                         for (int j = 0; j<slots.size(); j++) {
                             //if rectangle fits in the slot;
-                            if (notPlacedRectangle[1] < slots.get(j).get(2)) {
+                            if (notPlacedRectangle[1] <= slots.get(j).get(2)) {
                                 //possible values to compute the score with
                                 double W = notPlacedRectangle[0]; //width of the piece
                                 double H = notPlacedRectangle[1]; //height of the piece
