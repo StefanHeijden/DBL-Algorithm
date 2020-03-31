@@ -332,9 +332,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     placedRectangles.get(placedRectangles.size()-1).addAll(Arrays.asList(Arrays.stream(allocationRectangle).boxed().toArray(Integer[]::new)));
                     
                     System.out.println("placing Rectangle " + (placedRectangles.size()-1) + " <---------------------------------------------------------------------------------------------");
-                    for(int r :placedRectangles.get(placedRectangles.size()-1)){
-                         System.out.println(r);
-                    }
+                    System.out.println("x: " + places.get(places.size()-1).get(0));
+                    System.out.println("y: " + places.get(places.size()-1).get(1));
+                    System.out.println("width: " + placedRectangles.get(placedRectangles.size()-1).get(0));
+                    System.out.println("height: " + placedRectangles.get(placedRectangles.size()-1).get(1));
                     System.out.println("placed Rectangle <---------------------------------------------------------------------------------------------");
                     
                     //deleting rectangle from notPlacedRectangles
