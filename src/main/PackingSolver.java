@@ -41,7 +41,8 @@ public class PackingSolver {
         
         // Use inputs to determine what algorithm to run
         grid = new Grid();
-        AbstractAlgorithm algorithm = getAlgorithm();
+        //AbstractAlgorithm algorithm = getAlgorithm();
+        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
         // The execute algorithm
         algorithm.run();
         
@@ -101,11 +102,7 @@ public class PackingSolver {
         case "BruteForce":
             return new BruteForceAlgorithm(grid, data);
         case "BruteForceLeftBottom":
-            if(!data.getRA()){
-                return new BruteForceLeftBottomAlgorithm(grid, data);
-            }else{
-                return new BruteForceLeftBottomWithRotationAlgorithm(grid, data);
-            }
+            return new BruteForceLeftBottomAlgorithm(grid, data);
         case "LevelPacking":    
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":
