@@ -54,8 +54,27 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             i++;
         }
         
-        gridHeight = global.getHeight();
-               
+        if(data.getType().equals(data.FIXED)){
+            gridHeight = global.getHeight();
+        }else{
+            //Compute sum of rectangle area because is used in both variants
+            double areaRectangles = 0; //used to store sum of area of all rectangles
+            int min = 0;
+            for (int[] rectangle : data.getRectangles()) { //loop through all rectangles
+                if(rectangle[0] > min){
+                    min = rectangle[0];
+                }
+                if(rectangle[1] > min){
+                    min = rectangle[1];
+                }
+                double areaCurrentRectangle = rectangle[0] * rectangle[1];
+                areaRectangles += areaCurrentRectangle;
+            }
+            gridHeight = 1 + (int) Math.sqrt(areaRectangles);
+            if(gridHeight < min){
+                gridHeight = min;
+            }
+        }
         //determining the optimal width of the sheet
         for (i=0; i<rectangles.length; i++){
             totalArea = totalArea + (rectangles[i][0] * rectangles[i][1]);
