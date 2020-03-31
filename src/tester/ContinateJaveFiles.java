@@ -22,7 +22,7 @@ public class ContinateJaveFiles {
     // ADD YOURS HERE:
     // Path variables for Leighton
     static final String PLEIGHTON = "E:/TUe/PT/Courses/Y3/DBL algorithms/";
-    static final String DLEIGHTON = "C:/Users/20167014/Downloads/";
+    static final String DLEIGHTON = "C:/Users/20167014/Desktop/";
     
     // Path variables for Ezra:
     
@@ -34,8 +34,8 @@ public class ContinateJaveFiles {
     
     
     // Specify which path and destination to use
-    static final String PATH1 = PJODI; 
-    static final String DESTINATION = DJODI;
+    static final String PATH1 = PLEIGHTON;
+    static final String DESTINATION = DLEIGHTON;
     // Standard variables
     static final String PATH2 = "DBL-Algorithm/src/";
     static final String PATH = PATH1 + PATH2;
@@ -45,9 +45,12 @@ public class ContinateJaveFiles {
         "SimpleAlgorithm.java",
         "TestingAlgorithm.java",
         "LevelPackingAlgorithm.java",
-        "BruteForceAlgorithmFree.java",
+        "BruteForceAlgorithm.java",
         "BestFitAlgorithm.java",       
         "BigAlgorithm.java",
+        "BruteForceLeftBottomAlgorithm.java",
+        "BruteForceLeftBottomWithRotationAlgorithm.java",
+        "Permutations.java",
         //logic
         "AbstractReader.java",
         "GlobalData.java",
@@ -59,6 +62,9 @@ public class ContinateJaveFiles {
     };
     static final String[] PACKAGES = {"main/",
         //algorithms
+        "algorithms/",
+        "algorithms/",
+        "algorithms/",
         "algorithms/",
         "algorithms/",
         "algorithms/",
