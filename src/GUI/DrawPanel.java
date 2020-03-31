@@ -186,6 +186,7 @@ public class DrawPanel extends JPanel {
             for(BetterRectangle r2: rectangles){
                 if(r1 != r2){
                     if(r1.intersects(r2)){
+                        System.out.println(r1.index+ " " + r1.toString() + " " + r2.index + " " + r2.toString());
                         r1.setColor(new Color(255, 0, 0));
                         r2.setColor(new Color(255, 0, 0));
                         return false;
