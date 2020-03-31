@@ -7,7 +7,7 @@ package logic;
 public class GlobalData {
     private final String containerType;
     private final int containerHeight;
-    private final boolean rotationsAllowed;
+    private boolean rotationsAllowed;
     private int[][] rectangles;
     private final int numRectangles;
     public final String FREE = "free";
@@ -44,6 +44,10 @@ public class GlobalData {
 
     public void setRectangles(int[][] rectangles) {
         this.rectangles = rectangles;
+    }
+    
+    public void setRA(boolean rotationsAllowed) {
+        this.rotationsAllowed = rotationsAllowed;
     }
     
     public String[] dataToString(){
