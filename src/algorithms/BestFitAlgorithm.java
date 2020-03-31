@@ -233,7 +233,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     
     @Override
     public void run() {
-
+        System.out.println("TEST");
         
         for (String policy : policies) {
             //identify the slot at the beginning
@@ -451,6 +451,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 }
             }
             
+            System.out.println("Solution:");
+            System.out.println(placedRectangles);
+            System.out.println(places);
             //add solution to solutions
             placedRectanglesSolutions.add(new ArrayList<>());
             placedRectanglesSolutions.get(placedRectanglesSolutions.size()-1).addAll(placedRectangles);
@@ -459,8 +462,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             placesSolutions.get(placesSolutions.size()-1).addAll(places);
         } 
         
-        //System.out.println(placedRectanglesSolutions+"rect");
-        //System.out.println(placesSolutions+"places");
+        System.out.println(placedRectanglesSolutions+"rect");
+        System.out.println(placesSolutions+"places");
         
         //deciding which solution is the best
         for(int i = 0; i < placedRectanglesSolutions.size(); i++){
