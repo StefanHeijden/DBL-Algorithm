@@ -357,39 +357,44 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[1], allocationPlace[1] + allocationRectangle[1]}; //with x, lowest y and highest y
                     System.out.println("Right side new rectangle:");
                     System.out.println(Arrays.toString(rightSideOfAllocationRectangle));
+                    ArrayList<int[]> boldBlackVertcalLinesTemp = new ArrayList<>();
                     for (int[] boldBlackVertcalLine : boldBlackVertcalLines) {
                         int lowestYBoldBlackVertcalLine = boldBlackVertcalLine[1];
                         int highestYBoldBlackVertcalLine = boldBlackVertcalLine[2];
                         //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
                         if (rightSideOfAllocationRectangle[2]>=highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>=rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD0");
-                            //delete line from array
-                            boldBlackVertcalLines = DeleteElement(boldBlackVertcalLines, boldBlackVertcalLine);
+                            //delete line from array (by doing nothing)
                         } else if (rightSideOfAllocationRectangle[2]>=highestYBoldBlackVertcalLine && highestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD1");
                             //only hold bottom part of line
                             boldBlackVertcalLine[2] = rightSideOfAllocationRectangle[1];
+                            boldBlackVertcalLinesTemp.add(boldBlackVertcalLine);
+                            
                         } else if (rightSideOfAllocationRectangle[2]>lowestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>=rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD2");
                             //only hold upper part of line
                             boldBlackVertcalLine[1] = rightSideOfAllocationRectangle[2];
+                            boldBlackVertcalLinesTemp.add(boldBlackVertcalLine);
                         } else if (rightSideOfAllocationRectangle[2]<highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine<rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD");
                             //add under part of line to array
-                            boldBlackVertcalLines = AddingToArray(boldBlackVertcalLines, 3, boldBlackVertcalLine);
-                            boldBlackVertcalLines[boldBlackVertcalLines.length-1][2] = rightSideOfAllocationRectangle[1];
+                            int[] underLine = {boldBlackVertcalLine[0], boldBlackVertcalLine[1], rightSideOfAllocationRectangle[1]};
+                            boldBlackVertcalLinesTemp.add(underLine);
                             //add upper part of line to array
-                            boldBlackVertcalLines = AddingToArray(boldBlackVertcalLines, 3, boldBlackVertcalLine);
-                            boldBlackVertcalLines[boldBlackVertcalLines.length-1][1] = rightSideOfAllocationRectangle[2];
-                            //delete line from array
-                            boldBlackVertcalLines = DeleteElement(boldBlackVertcalLines, boldBlackVertcalLine);
+                            int[] upperLine = {boldBlackVertcalLine[0], rightSideOfAllocationRectangle[2], boldBlackVertcalLine[2]};
+                            boldBlackVertcalLinesTemp.add(upperLine);
+                            //delete line from array (by doing nothing)
                         }
-                        //System.out.println(Arrays.toString(boldBlackVertcalLines[i])+"bold");
                     }
-                    
                     //adding right side of allocation rectangle to boldBlackVertcalLines
-                    boldBlackVertcalLines = AddingToArray (boldBlackVertcalLines, 3,  rightSideOfAllocationRectangle);
-                    //System.out.println(Arrays.toString(rightSideOfAllocationRectangle)+"rightside");
+                    boldBlackVertcalLinesTemp.add(rightSideOfAllocationRectangle);
+                    // Then convert the arraylist to an array called boldBlackVertcalLines
+                    boldBlackVertcalLines = new int[boldBlackVertcalLinesTemp.size()][3];
+                    for (int i =0; i < boldBlackVertcalLinesTemp.size(); i++) {
+                        boldBlackVertcalLines[i] = boldBlackVertcalLinesTemp.get(i);
+                    }
+                    System.out.println("Result");
                     for(int j=0; j<boldBlackVertcalLines.length;j++){
                         System.out.println(Arrays.toString(boldBlackVertcalLines[j]));
                     }
