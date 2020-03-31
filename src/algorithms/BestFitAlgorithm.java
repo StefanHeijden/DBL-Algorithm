@@ -348,14 +348,20 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     }
                     
+                    System.out.println("----------------START WITH UPDATING BOLD LINES---------------------");
+                    System.out.println("Bold lines:");
+                    for(int j=0; j<boldBlackVertcalLines.length;j++){
+                        System.out.println(Arrays.toString(boldBlackVertcalLines[j]));
+                    }
                     //updating boldBlackVertcalLines
-                    System.out.println(Arrays.toString(allocationPlace));
                     int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[1], allocationPlace[1] + allocationRectangle[1]}; //with x, lowest y and highest y
+                    System.out.println("Right side new rectangle:");
+                    System.out.println(Arrays.toString(rightSideOfAllocationRectangle));
                     for (int[] boldBlackVertcalLine : boldBlackVertcalLines) {
                         int lowestYBoldBlackVertcalLine = boldBlackVertcalLine[1];
                         int highestYBoldBlackVertcalLine = boldBlackVertcalLine[2];
                         //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
-                        if (rightSideOfAllocationRectangle[2]>=highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>=rightSideOfAllocationRectangle[1]) {
+                        if (rightSideOfAllocationRectangle[2]>=highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine<=rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD0");
                             //delete line from array
                             boldBlackVertcalLines = DeleteElement(boldBlackVertcalLines, boldBlackVertcalLine);
@@ -367,7 +373,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             System.out.println("BOLD2");
                             //only hold upper part of line
                             boldBlackVertcalLine[1] = rightSideOfAllocationRectangle[2];
-                        } else if (rightSideOfAllocationRectangle[2]<highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine<rightSideOfAllocationRectangle[1]) {
+                        } else if (rightSideOfAllocationRectangle[2]<highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD");
                             //add under part of line to array
                             boldBlackVertcalLines = AddingToArray(boldBlackVertcalLines, 3, boldBlackVertcalLine);
@@ -384,6 +390,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     //adding right side of allocation rectangle to boldBlackVertcalLines
                     boldBlackVertcalLines = AddingToArray (boldBlackVertcalLines, 3,  rightSideOfAllocationRectangle);
                     //System.out.println(Arrays.toString(rightSideOfAllocationRectangle)+"rightside");
+                    for(int j=0; j<boldBlackVertcalLines.length;j++){
+                        System.out.println(Arrays.toString(boldBlackVertcalLines[j]));
+                    }
+                    System.out.println("----------------END WITH UPDATING BOLD LINES---------------------");
                     
                     //sorting boldBlackVertcalLines on first column in descending order
                     
