@@ -73,12 +73,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     
     //the coordinates if the rectangles is placed the upper left corner of a slot
     public int[] UpperLeftCorner (int[] slot, int[] rectangle){
-        System.out.println(Arrays.toString(slot)+"slot in coor");
-        //System.out.println(Arrays.toString(rectangle)+"rec in coor");
         int xSlot = slot[0];
         int ySlot = slot[1] + slot[2] - rectangle[1];
         int[] coordinates = {xSlot, ySlot};
-        //System.out.println(Arrays.toString(coordinates)+"coor");
         return coordinates;
     }
     
@@ -235,7 +232,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     public void run() {
         
         for (String policy : policies) {
-            System.out.println("-----------------------Next Policy-------------------------");
             //identify the slot at the beginning
             int[] beginSlot = {0, 0, gridHeight}; //with x, y of lower left corner and heigth
             ArrayList<ArrayList<Integer>> slots = new ArrayList<>();
@@ -248,7 +244,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             ArrayList<ArrayList<Integer>> placedRectangles = new ArrayList<>(); //with width and height
             ArrayList<ArrayList<Integer>> places = new ArrayList<>(); //with x and y of lower left corner
             while (notPlacedRectangles.length > 0) {
-                System.out.println("-----------------------Next Rectangle-------------------------");
                 //checks if there is a rectangle which can fit in a slot
                 boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
@@ -285,7 +280,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                     allocationRectangle = notPlacedRectangle;
                                     //Arrays.asList(Arrays.stream(beginSlots).boxed().toArray(Integer[]::new)
                                     //allocationSlot = Arrays.asList(Arrays.stream(slots.get(j)).boxed().toArray(Integer[]::new);
-                                    System.out.println(slots+"slots");
                                     for(int a=0; a<slots.get(j).size();a++){
                                         allocationSlot[a] = slots.get(j).get(a);
                                     }
@@ -293,34 +287,18 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             }
                         }
                     }
-                    System.out.println((Arrays.toString(allocationSlot)+"alloslot"));
                     if(null != policy) //computing the exact place of the allocation
                         switch (policy) {
                         case "upperLeftCorner":
-                            System.out.println("--------------UPPERLEFTCORNER-------------");
                             allocationPlace = UpperLeftCorner(allocationSlot, allocationRectangle);
                             break;
                         case "fattestNeighboringPiece":
-                            System.out.println("--------------START WITH FATTESTNEIGHBORINGPIECE-------------");
-                            System.out.println(Arrays.toString(allocationSlot));
-                            System.out.println((placedRectangles));
-                            System.out.println((places));
-                            System.out.println(Arrays.toString(allocationRectangle));
                             allocationPlace = FattestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);
-                            System.out.println(Arrays.toString(allocationPlace));
-                            System.out.println("--------------END WITH FATTESTNEIGHBORINGPIECE-------------");
                             break;
                         case "thinnestNeighboringPiece":
-                            System.out.println("--------------START WITH THINNESTNEIGHBORINGPIECE-------------");
-                            System.out.println(Arrays.toString(allocationSlot));
-                            System.out.println((placedRectangles));
-                            System.out.println((places));
                             allocationPlace = ThinnestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);
-                            System.out.println(Arrays.toString(allocationPlace));
-                            System.out.println("--------------END WITH THINNESTNEIGHBORINGPIECE-------------");
                             break;
                         default:
-                            System.out.println("MIAUW");
                             break;
                         }
                     
@@ -330,13 +308,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     //storing the rectangle
                     placedRectangles.add(new ArrayList<>());
                     placedRectangles.get(placedRectangles.size()-1).addAll(Arrays.asList(Arrays.stream(allocationRectangle).boxed().toArray(Integer[]::new)));
-                    
-                    System.out.println("placing Rectangle " + (placedRectangles.size()-1) + " <---------------------------------------------------------------------------------------------");
-                    System.out.println("x: " + places.get(places.size()-1).get(0));
-                    System.out.println("y: " + places.get(places.size()-1).get(1));
-                    System.out.println("width: " + placedRectangles.get(placedRectangles.size()-1).get(0));
-                    System.out.println("height: " + placedRectangles.get(placedRectangles.size()-1).get(1));
-                    System.out.println("placed Rectangle <---------------------------------------------------------------------------------------------");
                     
                     //deleting rectangle from notPlacedRectangles
                     int[][] tempNotPlacedRectangles = notPlacedRectangles.clone();
@@ -353,15 +324,9 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         }
                     }
                     
-                    System.out.println("----------------START WITH UPDATING BOLD LINES---------------------");
-                    System.out.println("Bold lines before:");
-                    for (int[] boldBlackVertcalLine : boldBlackVertcalLines) {
-                        System.out.println(Arrays.toString(boldBlackVertcalLine));
-                    }
                     //updating boldBlackVertcalLines
                     int[] rightSideOfAllocationRectangle = {allocationPlace[0]+allocationRectangle[0], allocationPlace[1], allocationPlace[1] + allocationRectangle[1]}; //with x, lowest y and highest y
-                    //System.out.println("Right side new rectangle:");
-                    //System.out.println(Arrays.toString(rightSideOfAllocationRectangle));
+                    
                     ArrayList<int[]> boldBlackVertcalLinesTemp = new ArrayList<>();
                     for (int[] boldBlackVertcalLine : boldBlackVertcalLines) {
                         int lowestYBoldBlackVertcalLine = boldBlackVertcalLine[1];
@@ -397,15 +362,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     for (int i =0; i < boldBlackVertcalLinesTemp.size(); i++) {
                         boldBlackVertcalLines[i] = boldBlackVertcalLinesTemp.get(i);
                     }
-                    System.out.println("Bold lines after:");
-                    for (int[] boldBlackVertcalLine : boldBlackVertcalLines) {
-                        System.out.println(Arrays.toString(boldBlackVertcalLine));
-                    }
-                    
-                    //sorting boldBlackVertcalLines on first column in descending order
-                    
-                    //Maybe it can be done simpler?
-                    //Collections.sort(boldBlackVertcalLines, Collections.reverseOrder());
                     
                     boolean needToBeSwapped;
                     do {
@@ -425,9 +381,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     } while (needToBeSwapped);
                       
                     // Update slots based on de bold lines
-                    System.out.println("-----------------------START WITH SLOTS-------------------------");
-                    System.out.println("Old slots:");
-                    System.out.println(slots);
                     int[][] dashyLines = updateDashedLines(boldBlackVertcalLines);
                     slots = new ArrayList<>();
                     for(int[] line: dashyLines){
@@ -441,8 +394,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     highestSlot[2] = gridHeight;
                     slots.add(new ArrayList<>());
                     slots.get(slots.size()-1).addAll(Arrays.asList(Arrays.stream(highestSlot).boxed().toArray(Integer[]::new)));
-                    System.out.println("Resulting slots: ");
-                    System.out.println(slots);
                 }
                 else{
                     //go further with the next policy
@@ -450,9 +401,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 }
             }
             
-            System.out.println("Solution:");
-            System.out.println(placedRectangles);
-            System.out.println(places);
             //add solution to solutions
             placedRectanglesSolutions.add(new ArrayList<>());
             placedRectanglesSolutions.get(placedRectanglesSolutions.size()-1).addAll(placedRectangles);
@@ -460,9 +408,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             placesSolutions.add(new ArrayList<>());
             placesSolutions.get(placesSolutions.size()-1).addAll(places);
         } 
-        
-        System.out.println(placedRectanglesSolutions+"rect");
-        System.out.println(placesSolutions+"places");
         
         //deciding which solution is the best
         for(int i = 0; i < placedRectanglesSolutions.size(); i++){
@@ -561,10 +506,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
         int [][] result = new int[dL.size()][2]; 
         for(int i = 0; i < dL.size(); i++){
             result[i] = dL.get(i);
-        }
-        System.out.println("Resulting dashed lines: ");
-        for(int[] i: dL){
-            System.out.println(Arrays.toString(i));
         }
         return result;
     }
