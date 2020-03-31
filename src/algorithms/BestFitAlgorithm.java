@@ -361,7 +361,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         int lowestYBoldBlackVertcalLine = boldBlackVertcalLine[1];
                         int highestYBoldBlackVertcalLine = boldBlackVertcalLine[2];
                         //if boldBlackVerticalLines element is completely under rightSideOfAllocationRectangle
-                        if (rightSideOfAllocationRectangle[2]>=highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine<=rightSideOfAllocationRectangle[1]) {
+                        if (rightSideOfAllocationRectangle[2]>=highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>=rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD0");
                             //delete line from array
                             boldBlackVertcalLines = DeleteElement(boldBlackVertcalLines, boldBlackVertcalLine);
@@ -373,7 +373,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             System.out.println("BOLD2");
                             //only hold upper part of line
                             boldBlackVertcalLine[1] = rightSideOfAllocationRectangle[2];
-                        } else if (rightSideOfAllocationRectangle[2]<highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine>rightSideOfAllocationRectangle[1]) {
+                        } else if (rightSideOfAllocationRectangle[2]<highestYBoldBlackVertcalLine && lowestYBoldBlackVertcalLine<rightSideOfAllocationRectangle[1]) {
                             System.out.println("BOLD");
                             //add under part of line to array
                             boldBlackVertcalLines = AddingToArray(boldBlackVertcalLines, 3, boldBlackVertcalLine);
@@ -419,6 +419,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                       
                     // Update slots based on de bold lines
                     System.out.println("-----------------------START WITH SLOTS-------------------------");
+                    System.out.println("Old slots:");
+                    System.out.println(slots);
                     int[][] dashyLines = updateDashedLines(boldBlackVertcalLines);
                     System.out.println("Resulting slots: ");
                     for(int[] line: dashyLines){
@@ -427,6 +429,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                         slots.get(slots.size()-1).addAll(Arrays.asList(Arrays.stream(newSlot).boxed().toArray(Integer[]::new)));
                         System.out.println(Arrays.toString(newSlot));
                     }
+                    System.out.println("New slots:");
+                    System.out.println(slots);
                     System.out.println("-----------------------DONE WITH SLOTS-------------------------");
                 }
                 else{
