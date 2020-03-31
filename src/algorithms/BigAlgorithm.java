@@ -38,9 +38,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
     //return  placement if local
     int[][] placementReturn = new int[global.getNumRectangles()][];
     
-    //rectagnle number
-    int rectangle = 0;
-    
     //upper bound
     int fixedBound = 0;
     
@@ -49,8 +46,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
     
     //has been rotated
     int rotated = 0;
-    
-    int rectNum;
     
     //rotations array with reference
 
@@ -89,9 +84,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
         
         placementReturn = new int[size][];
     
-        //rectagnle number
-        rectangle = 0;
-    
         //upper bound
         fixedBound = 0;
         
@@ -107,7 +99,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
         for (int i = 0; i < passedRectangle.length; i++) { 
             int rectWidth = passedRectangle[i][0];
             int rectLength = passedRectangle[i][1];
-            rectNum = passedRectangle[i][2];
             if (global.getType().equals("free") && !global.getRA() ) {
                 placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             } 
@@ -128,12 +119,10 @@ public class BigAlgorithm extends AbstractAlgorithm {
                 }
                 placementFinal[i] = computeBottomleftFree(rectWidth, rectLength, passedRectangle);
             }
-            rectangle ++;
             int[] coord = new int[]{placementFinal[i][0], placementFinal[i][1], passedRectangle[i][2], rotated};
             placementReturn[i] = coord;
             if(local) {
                 if(placementReturn[i][3] == 1) {
-                    //rotationsF[i] = true;
                     int rectW = passedRectangle[i][0];
                     int rectL = passedRectangle[i][1];
                     passedRectangle[i] = new int[]{rectL, rectW, passedRectangle[i][2]};
@@ -148,6 +137,7 @@ public class BigAlgorithm extends AbstractAlgorithm {
         return coord;
     }
 
+    //looks at all y values and forwards the lowest y value at a given x position
     public int computeLowestPoint2(int width, int height, int[][] passedRectangle, int x2){
         int y2 = 0;
         int heightUsed = maxHeight;
@@ -173,7 +163,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
         int y2 = 0;
         int x2 = 0;
         int count = 0;
-        boolean[] rotations = new boolean[(maxWidth + 1) * 2];
         int[][] lowestPoints = new int[(maxWidth + 1) * 2][];
 
         for(int i = 0; i < maxWidth + 1; i++) {
@@ -181,7 +170,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
             if(overlapsRectangle(passedRectangle, width, height, y2, x2)) {
                 int[] coord = new int[]{x2, y2, 0};
                 lowestPoints[count] = coord;
-                rotations[count] = false;
                 count ++;
             }
             x2 ++;
@@ -193,7 +181,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
                     if(overlapsRectangle(passedRectangle, height, width, y2, x2)) {
                         int[] coord = new int[]{x2, y2, 1};
                         lowestPoints[count] = coord;
-                        rotations[count] = true;
                         count ++;
                     }
                 x2 ++;
@@ -261,22 +248,18 @@ public class BigAlgorithm extends AbstractAlgorithm {
         for(int i = 0; i < passedRectangle.length; i ++) {
             if(placementFinal[i] != null) { 
                 if((yInitial >= placementFinal[i][1]) && ((passedRectangle[i][1] + placementFinal[i][1]) >= (yInitial + height))) {
-                    //System.out.println("There is a rectangle larger than current. height " + passedRectangle[i][1]);
                     fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                 }
                 else {
                     if((yInitial <= placementFinal[i][1]) && ((passedRectangle[i][1] + placementFinal[i][1]) <= (yInitial + height))) {
-                        //System.out.println("There is a rectangle in middle of current. height " + passedRectangle[i][1]);
                         fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                     }
                     else { 
                         if(((yInitial >= placementFinal[i][1])&& ((passedRectangle[i][1] + placementFinal[i][1]) <= (yInitial + height)))  && (yInitial < (passedRectangle[i][1] + placementFinal[i][1]))) {
-                            //System.out.println("There is a rectangle starts before and ends in middle of current. height " + passedRectangle[i][1]);
                             fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                         }
                         else {
                             if(((yInitial <= placementFinal[i][1])&& ((passedRectangle[i][1] + placementFinal[i][1]) >= (yInitial + height))) && (placementFinal[i][1] < (yInitial + height))) {
-                                //System.out.println("There is a rectangle starts in middle and ends after current. height " + passedRectangle[i][1]);
                                 fits[count] = !overlapsXRectanlge(passedRectangle[i][0], width, xInitial, i);
                             }
                         }
@@ -301,15 +284,12 @@ public class BigAlgorithm extends AbstractAlgorithm {
     //otherwise true is returned.
     public boolean overlapsXRectanlge(int passedRectangle, int width, int xInitial, int i) {
         if((xInitial >= placementFinal[i][0]) && ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) {
-            //System.out.println("There is a rectangle larger than current. width " + passedRectangle);
             return false;
         }
         if((xInitial <= placementFinal[i][0]) && ((passedRectangle + placementFinal[i][0]) <= (xInitial + width))) {
-            //System.out.println("There is a rectangle in middle of current. width " + passedRectangle);
             return false;
         }
         if(((xInitial >= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) <= (xInitial + width)) && ((xInitial) < (passedRectangle + placementFinal[i][0])))) {
-            //System.out.println("There is a rectangle starts before and ends in middle of current. width " + passedRectangle);
             return false;
         }
         if (((xInitial <= placementFinal[i][0])&& ((passedRectangle + placementFinal[i][0]) >= (xInitial + width))) && ((xInitial + width) > (placementFinal[i][0]))) {
@@ -319,7 +299,7 @@ public class BigAlgorithm extends AbstractAlgorithm {
     }
 
     
-    // computation of bottomleft corner in case (containerType == "free")
+    // computation of bottomleft corner
     public int[] computeBottomleftFree(int width, int height, int[][] passedRectangle) {
         int[] z;
         int lowestY;
@@ -356,14 +336,14 @@ public class BigAlgorithm extends AbstractAlgorithm {
         return returnCoordinates;
     }
     
-    
-    public int[][][] splitArray(int[][] arrayToSplit, int chunkSize){
-        int chunks = arrayToSplit.length / chunkSize;
-        int[][][] arrays = new int[chunks][][];
-        for(int i = 0; i < chunks ; i++){
-            arrays[i] = Arrays.copyOfRange(arrayToSplit, i * chunkSize, i * chunkSize + chunkSize);
+    //inspired by https://stackoverflow.com/questions/27857011/how-to-split-a-string-array-into-small-chunk-arrays-in-java
+    public int[][][] splitArray(int[][] rectangles, int perEach){
+        int arrayNumber = rectangles.length / perEach;
+        int[][][] arraysRect = new int[arrayNumber][][];
+        for(int i = 0; i < arrayNumber ; i++){
+            arraysRect[i] = Arrays.copyOfRange(rectangles, (i * perEach), (i * perEach) + perEach);
         }
-        return arrays;
+        return arraysRect;
     }
     
     @Override
@@ -536,7 +516,6 @@ public class BigAlgorithm extends AbstractAlgorithm {
                 rotationsF[i] = true;
             }
         }
-        
         grid.storeRotations(rotationsF);
         global.setRectangles(rectanglesFinal);
         grid.storePlacement(placement);
