@@ -586,7 +586,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             // If there is a spot between 2 lines
             if(bL.get(i)[1] < bL.get(i+1)[0]){
                 // add spots are added to dL as dashedLines
-                int[] line = {0, bL.get(i)[1], bL.get(i+1)[0] - bL.get(i)[1]};
+                int[] line = {x, bL.get(i)[1], bL.get(i+1)[0] - bL.get(i)[1]};
                 dL.add(line);
             }
         }
