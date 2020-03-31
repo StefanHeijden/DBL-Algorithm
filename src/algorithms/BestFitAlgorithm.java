@@ -120,13 +120,13 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             else{
                 //the rectangle has to be placed in the upper left corner of the slot
                 coordinates[0] = xSlot;
-                coordinates[1] = yUpperSlot + rectangle[1];
+                coordinates[1] = yUpperSlot - rectangle[1];
             }
         }
         else {
             //the rectangle has to be placed in the upper left corner of the slot
             coordinates[0] = xSlot;
-            coordinates[1] = yUpperSlot + rectangle[1];
+            coordinates[1] = yUpperSlot - rectangle[1];
         }
         return coordinates;
     }
@@ -168,13 +168,13 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
             else{
                 //the rectangle has to be placed in the upper left corner of the slot
                 coordinates[0] = xSlot;
-                coordinates[1] = yUpperSlot + rectangle[1];
+                coordinates[1] = yUpperSlot - rectangle[1];
             }
         }
         else {
             //the rectangle has to be placed in the upper left corner of the slot
             coordinates[0] = xSlot;
-            coordinates[1] = yUpperSlot + rectangle[1];
+            coordinates[1] = yUpperSlot - rectangle[1];
         }
         return coordinates;
     }
@@ -302,10 +302,23 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             allocationPlace = UpperLeftCorner(allocationSlot, allocationRectangle);
                             break;
                         case "fattestNeighboringPiece":
+                            System.out.println("--------------START WITH FATTESTNEIGHBORINGPIECE-------------");
+                            System.out.println(Arrays.toString(allocationSlot));
+                            System.out.println((placedRectangles));
+                            System.out.println((places));
+                            System.out.println(Arrays.toString(allocationRectangle));
                             allocationPlace = FattestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);
+                            System.out.println(Arrays.toString(allocationPlace));
+                            System.out.println("--------------END WITH FATTESTNEIGHBORINGPIECE-------------");
                             break;
                         case "thinnestNeighboringPiece":
+                            System.out.println("--------------START WITH THINNESTNEIGHBORINGPIECE-------------");
+                            System.out.println(Arrays.toString(allocationSlot));
+                            System.out.println((placedRectangles));
+                            System.out.println((places));
                             allocationPlace = ThinnestNeighboringPiece(allocationSlot, placedRectangles, places, allocationRectangle);
+                            System.out.println(Arrays.toString(allocationPlace));
+                            System.out.println("--------------END WITH THINNESTNEIGHBORINGPIECE-------------");
                             break;
                         default:
                             System.out.println("MIAUW");
