@@ -233,7 +233,6 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
     
     @Override
     public void run() {
-        System.out.println("TEST");
         
         for (String policy : policies) {
             //identify the slot at the beginning
@@ -251,11 +250,15 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 //checks if there is a rectangle which can fit in a slot
                 boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
+                    System.out.println("TEST");
                     for(int j=0; j<slots.size(); j++){
+                        System.out.println("TEST1");
                         if(rectangles[i][1] < slots.get(j).get(2)){
+                            System.out.println("TEST2");
                             canFit = true;
                         } 
                         else {
+                            System.out.println("TESTTT");
                         
                         }
                     }
