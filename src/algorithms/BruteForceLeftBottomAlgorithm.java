@@ -18,6 +18,7 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
     int numberOfCalculations = 0;
     LevelPackingAlgorithm bottemLeftAgorithm;
     int[][] finalResultingPlacement;
+    boolean rotationsAllowed = false;
     
     public BruteForceLeftBottomAlgorithm(Grid grid, GlobalData data) {
         super(grid, data);
@@ -34,6 +35,16 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
 
     @Override
     public void run() {
+        // Make sure LB runs no rotations, even if it is allowed
+        if(global.getRA()){
+            boolean[] rotations = new boolean[global.getNumRectangles()];
+            for(int i = 0; i < global.getNumRectangles(); i++){
+                rotations[i] = false;
+            }
+            grid.storeRotations(rotations);
+            global.setRA(false);
+            rotationsAllowed = true;
+        }
         // Calculate the lists
         calcLB(0);
         
@@ -41,8 +52,10 @@ public class BruteForceLeftBottomAlgorithm extends AbstractAlgorithm{
         setBestResult();
         grid.computeFinalDensity(global);
         
-        // Show the number of calculation that are made
-        System.err.println("Number Of Calculations: " + numberOfCalculations);
+        // Reset rotationsAllowed for correct output
+        if(rotationsAllowed){
+            global.setRA(true);
+        }
     }
     
     public void calcLB(int depth){
