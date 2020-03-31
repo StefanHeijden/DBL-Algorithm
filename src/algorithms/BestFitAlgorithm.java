@@ -250,17 +250,10 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                 //checks if there is a rectangle which can fit in a slot
                 boolean canFit = false;
                 for(int i=0; i<notPlacedRectangles.length; i++){
-                    System.out.println("TEST");
                     for(int j=0; j<slots.size(); j++){
-                        System.out.println("TEST1");
                         if(rectangles[i][1] < slots.get(j).get(2)){
-                            System.out.println("TEST2");
                             canFit = true;
                         } 
-                        else {
-                            System.out.println("TESTTT");
-                        
-                        }
                     }
                 }
                 if (canFit){
@@ -302,6 +295,7 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     if(null != policy) //computing the exact place of the allocation
                         switch (policy) {
                         case "upperLeftCorner":
+                            System.out.println("--------------UPPERLEFTCORNER-------------");
                             allocationPlace = UpperLeftCorner(allocationSlot, allocationRectangle);
                             break;
                         case "fattestNeighboringPiece":
@@ -335,6 +329,11 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                     placedRectangles.add(new ArrayList<>());
                     placedRectangles.get(placedRectangles.size()-1).addAll(Arrays.asList(Arrays.stream(allocationRectangle).boxed().toArray(Integer[]::new)));
                     
+                    System.out.println("placing Rectangle " + (placedRectangles.size()-1) + " <---------------------------------------------------------------------------------------------");
+                    for(int r :placedRectangles.get(placedRectangles.size()-1)){
+                         System.out.println(r);
+                    }
+                    System.out.println("placed Rectangle <---------------------------------------------------------------------------------------------");
                     
                     //deleting rectangle from notPlacedRectangles
                     int[][] tempNotPlacedRectangles = notPlacedRectangles.clone();
@@ -388,6 +387,8 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                             int[] upperLine = {boldBlackVertcalLine[0], rightSideOfAllocationRectangle[2], boldBlackVertcalLine[2]};
                             boldBlackVertcalLinesTemp.add(upperLine);
                             //delete line from array (by doing nothing)
+                        }else{
+                            boldBlackVertcalLinesTemp.add(boldBlackVertcalLine);
                         }
                     }
                     //adding right side of allocation rectangle to boldBlackVertcalLines
