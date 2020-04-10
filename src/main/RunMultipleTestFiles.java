@@ -30,14 +30,21 @@ import logic.TestReader;
  * it creates a file with the result in the TestFiles folder
  */
 public class RunMultipleTestFiles {
-    // Some variables to be able to pas them to the GUI
+    // ---------------------------IMPORTANT------------------------------------
+    // You could change the path to somthing like:
+    // "./../DBL-Algorithm/testfiles/Jodi/" for example if you want to test
+    // the test in Jodi's folder
+    private static final String PATH = "./../DBL-Algorithm/testfiles/";
+    // Then change this to the algorithm you want to test
+    private static final String testingAlgorithm = "BestFit";
+    // ---------------------------IMPORTANT------------------------------------
+ 
+    
+    // Some variables to be able to do stuff
     private static AbstractReader input;
     private static GlobalData data;
     private static Grid grid;
     private static int numberOfFiles = 0;
-    private static final String PATH = "./../DBL-Algorithm/testfiles/";
-    // Use the next variables to determine what algorithm to run FOR TESTING!
-    private static final String testingAlgorithm = "BestFit";
     static StringBuffer inputBuffer;
     static String[] testFiles;
     static String[] density;
@@ -48,11 +55,19 @@ public class RunMultipleTestFiles {
      */
     public static void main(String[] args) {
         testFiles = getFiles();
+        //System.out.println(Arrays.toString(testFiles));
         density = new String[numberOfFiles];
         runtime = new long[numberOfFiles];
         
         for(int i = 0; i < numberOfFiles; i++){
-            input = new TestReader(testFiles[i]);
+            // Skip the result file if its in the testFiles
+            if(testFiles[i].equals("result.txt")){
+                continue;
+            }
+            // Print the current file being checked
+            System.err.println("start " + testFiles[i]);
+            // Get the global data from the files
+            input = new TestReader("./../DBL-Algorithm/testfiles/" + testFiles[i]);
             data = input.read();
             // Use inputs to determine what algorithm to run
             grid = new Grid();
@@ -79,8 +94,11 @@ public class RunMultipleTestFiles {
                            + "gave an error: " + E.toString());
             }
         }
+        
+        writeToFile();
     }
     
+    // Get all the files from the testFiles
     public static String[] getFiles(){
         // Obtain all the file paths from the path folder
         List<String> files = new ArrayList<>();
@@ -140,14 +158,16 @@ public class RunMultipleTestFiles {
     
     public static void writeToFile(){
         inputBuffer = new StringBuffer();
+        System.out.println("write to: ");
         for(int i = 0; i < numberOfFiles; i++){
-            String line = "Filename: " + testFiles[i];
+            String line = "Filename: " + testFiles[i] + "\n";
             inputBuffer.append(line);
-            line = "Density: " + density[i];
+            line = "Density: " + density[i] + "\n";
             inputBuffer.append(line);
-            line = "Runtime: " + runtime[i];
+            line = "Runtime: " + runtime[i] + "\n";
             inputBuffer.append(line);
         }
+        System.err.println("You can find the resuls in: " + PATH + "result.txt");
         try{
             FileOutputStream fileOut = new FileOutputStream(PATH + "result.txt");
             fileOut.write(inputBuffer.toString().getBytes());
