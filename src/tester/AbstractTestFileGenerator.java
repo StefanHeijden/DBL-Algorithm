@@ -13,7 +13,7 @@ import logic.GlobalData;
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
-    public final int MAXIMUMSIZE = 25;
+    public final int MAXIMUMSIZE = 10000;
     private final String PATH;
     StringBuffer inputBuffer;
     private String fileName;

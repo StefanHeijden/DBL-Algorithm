@@ -60,7 +60,8 @@ public class SimpleGUI {
     static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
     static String[] titelsGroup4 = {"Random generation", 
                                     "Random generation with bounds",
-                                    "Squares only"
+                                    "Squares only",
+                                    "Perfect"
     };// TitelGroup4 has to be added manually to the switch in generateTestFile()
       // in the class GenerateTestFile inside the class GUI!!
     
@@ -346,6 +347,9 @@ public class SimpleGUI {
                 createFile = new SquareTestFileGenerator(containerType, 
                         containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
+              case "Perfect":
+                  createFile = new PerfectTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
               default:
                 // code block
             }

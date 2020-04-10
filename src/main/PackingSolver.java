@@ -13,9 +13,6 @@ public class PackingSolver {
     private static GlobalData data;
     public static Grid grid;
     
-    // Use the next variables to determine what algorithm to run
-    private final static int BRUTEFORCETHRESHOLD = 6;
-    
     // Use the next variables to determine what algorithm to run FOR TESTING!
     private static String testingAlgorithm = "standard";
     /**
@@ -31,6 +28,7 @@ public class PackingSolver {
         // read inputs from file
         input = new TestReader(file);
         testingAlgorithm = algorithm;
+        System.out.println(testingAlgorithm);
         run();
         
     }
@@ -41,8 +39,7 @@ public class PackingSolver {
         
         // Use inputs to determine what algorithm to run
         grid = new Grid();
-        //AbstractAlgorithm algorithm = getAlgorithm();
-        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
+        AbstractAlgorithm algorithm = getAlgorithm();
         // The execute algorithm
         algorithm.run();
         
@@ -79,6 +76,9 @@ public class PackingSolver {
     public static String getAlgorithmName(){
         // When testing we can use algorithm directly, or if we choose standard
         // way of choosing algorithm
+        if(!testingAlgorithm.equalsIgnoreCase("standard")){
+            return testingAlgorithm;
+        }
         if (data.getType().equals("free") && !data.getRA() ) {
             if(data.getNumRectangles() == 4) {
                 return "BruteForceLeftBottom";
