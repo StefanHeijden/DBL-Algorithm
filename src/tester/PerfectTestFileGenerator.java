@@ -38,7 +38,6 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
         // On how many rectangles there are.
         determineSplits();
         // Split the xCoordinates
-        System.out.println("Start with the x");
         int currentNumberOfSplitsX = 1;
         while(currentNumberOfSplitsX < splitsX ){
             int[] toSplit = getLargest(xCoord, "x");
@@ -47,11 +46,6 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
             xCoord.add(newSplits[1]);
             currentNumberOfSplitsX++;
         }
-        System.out.println("xCoord: ");
-        for(int[] c: xCoord){
-            System.out.println(Arrays.toString(c));
-        }
-        System.out.println("Start with the y");
         // Split the yCoordinates
         int currentNumberOfSplitsY = 1;
         while(currentNumberOfSplitsY < splitsY ){
@@ -60,10 +54,6 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
             yCoord.add(newSplits[0]);
             yCoord.add(newSplits[1]);
             currentNumberOfSplitsY++;
-        }
-        System.out.println("yCoord: ");
-        for(int[] c: yCoord){
-            System.out.println(Arrays.toString(c));
         }
         // Create the rectangles
         // First add them to an Arraylist such that we can shuffle it
@@ -95,7 +85,6 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     // Split a line in two lines
     public int[][] split(int p1, int p2){
         // Make sure the integers can be split
-        System.out.println("Split: "  + p1 + " " + p2);
         if(Math.abs(p1-p2) < 2){
             return null;
         }
@@ -104,8 +93,6 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
         result[0][1] = p1 + (int) ((Math.abs(p1-p2) - 1) * Math.random()) + 1;
         result[1][0] = result[0][1];
         result[1][1] = p2;
-        System.out.println("into: " + Arrays.toString(result[0]));
-        System.out.println("and: " + Arrays.toString(result[1]));
         return result;
     }
     
@@ -120,8 +107,6 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
             height = (int) (SIZE * Math.random() + data.getNumRectangles());
             width = (int) (height * Math.random() + 0.5 * height);
         }
-        System.out.println("width: " + width);
-        System.out.println("height: " + height);
         rectangles = new int[data.getNumRectangles()][2];
         xCoord = new ArrayList();
         yCoord = new ArrayList();
@@ -135,15 +120,18 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     // Determine how many splits we can "split up" the rectangle, based 
     // On how many rectangles there are.
     public void determineSplits(){
-        if(data.getNumRectangles() % 1000 == 0){
+        if(data.getNumRectangles() % 1000 == 0 && data.getNumRectangles() / 1000 != 1){
             splitsX = 1000;
             splitsY = data.getNumRectangles() / 1000;
-        }else if(data.getNumRectangles() % 100 == 0){
+        }else if(data.getNumRectangles() % 100 == 0 && data.getNumRectangles() / 100 != 1){
             splitsX = 100;
             splitsY = data.getNumRectangles() / 100;
-        }else if(data.getNumRectangles() % 10 == 0){
+        }else if(data.getNumRectangles() % 10 == 0 && data.getNumRectangles() / 10 != 1){
             splitsX = 10;
             splitsY = data.getNumRectangles() / 10;
+        }else if(data.getNumRectangles() % 5 == 0){
+            splitsX = 5;
+            splitsY = data.getNumRectangles() / 5;
         }else if(data.getNumRectangles() % 4 == 0 && data.getNumRectangles() / 4 != 1){
             splitsX = 4;
             splitsY = data.getNumRectangles() / 4;
