@@ -57,12 +57,14 @@ public class SimpleGUI {
     static ButtonGroup algorithmGroup;
     static String[] titelsGroup1 = {"free", "fixed"};
     static String[] titelsGroup2 = {"no rotation", "rotation"};
-    static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
+    static String[] titelsGroup3 = {"4", "5", "6", "7", "8", "9", "10", 
+                                        "25", "50", "10000"};
     static String[] titelsGroup4 = {"Random generation", 
                                     "Random generation with bounds",
                                     "Squares only",
                                     "Perfect",
-                                    "Almost perfect"
+                                    "Almost perfect",
+                                    "Typed"
     };// TitelGroup4 has to be added manually to the switch in generateTestFile()
       // in the class GenerateTestFile inside the class GUI!!
     
