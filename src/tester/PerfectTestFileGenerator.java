@@ -18,7 +18,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     int splitsY;
     ArrayList<int[]> xCoord;
     ArrayList<int[]> yCoord;
-    int SIZE = 100;
+    int SIZE = 100; // Gives an estimate of how big the rectangle will be
     
     public PerfectTestFileGenerator(String containerType, int containerHeight, 
             boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
@@ -76,7 +76,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
                 rectanglesTemp2.add(y[1] - y[0]);
                 // If rotation is alowed, shuffle the x and y
                 if(data.getRA()){
-                    //Collections.shuffle(rectanglesTemp2);
+                    Collections.shuffle(rectanglesTemp2);
                 }
                 rectanglesTemp.add(rectanglesTemp2);
             }
