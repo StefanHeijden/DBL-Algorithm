@@ -164,4 +164,8 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
         }
         return result;
     }
+    
+    public int getWidth(){
+        return width;
+    }
 }

@@ -28,7 +28,6 @@ public class PackingSolver {
         // read inputs from file
         input = new TestReader(file);
         testingAlgorithm = algorithm;
-        System.out.println(testingAlgorithm);
         run();
         
     }
