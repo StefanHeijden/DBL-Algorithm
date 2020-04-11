@@ -11,7 +11,7 @@ public class CreateMultipleTestFiles {
     // Choose from: R(random), RB(random with bounds), S(sqaured),
     // P (perfect), AP (almost perfect), T (typed). for typed also specify types 
     // and sizes which is done in the main method before creating the files
-    static String TestFile = "P";
+    static String TestFile = "R";
     static int numberOfFiles = 3;
     static String containerType = "FREE";
     static boolean rotationsAllowed = false;
@@ -72,7 +72,7 @@ public class CreateMultipleTestFiles {
         switch(TestFile) {
           case "R":
             new RandomTestFileGenerator(containerType, 
-                    containerHeight, rotationsAllowed, numRectangles, PATH, currentFile);
+                    containerHeight, rotationsAllowed, numRectangles, PATH, currentFile, AverageSizeRectangles);
             break;
           case "RB":
             new BoundedTestFileGenerator(containerType, 

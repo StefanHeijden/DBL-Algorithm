@@ -22,6 +22,7 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
     public TypedTestFileGenerator(String containerType, int containerHeight, boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, path, numberOfFiles);
         alreadyInit = false;
+        generateFile();
     }
     
     public TypedTestFileGenerator(String containerType, int containerHeight, 
@@ -31,6 +32,7 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
         this.sizes = sizes;
         this.types = types;
         alreadyInit = true;
+        generateFile();
     }
     
     @Override

@@ -13,7 +13,7 @@ import logic.GlobalData;
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
-    public final int MAXIMUMSIZE = 10000;
+    public int MAXIMUMSIZE = 10000;
     private final String PATH;
     StringBuffer inputBuffer;
     private String fileName;
@@ -27,7 +27,6 @@ public class AbstractTestFileGenerator {
                 simple, numRectangles);
         PATH = path;
         this.numberOfFiles = numberOfFiles;
-        generateFile();
     }
     
     // Can also be init from global data object
@@ -36,7 +35,6 @@ public class AbstractTestFileGenerator {
         this.data = new GlobalData(data.getType(), data.getHeight(), 
                 data.getRA(), simple, data.getNumRectangles());
         PATH = path;
-        generateFile();
     }
     
     // Generate a new file 

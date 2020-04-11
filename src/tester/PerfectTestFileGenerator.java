@@ -24,6 +24,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
             boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, 
                 path, numberOfFiles);
+        generateFile();
     }
     
     @Override
