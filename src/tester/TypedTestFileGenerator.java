@@ -17,9 +17,20 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
     // The mean and variance determine how 
     int mean;
     int variance;
+    boolean alreadyInit;
     
     public TypedTestFileGenerator(String containerType, int containerHeight, boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, path, numberOfFiles);
+        alreadyInit = false;
+    }
+    
+    public TypedTestFileGenerator(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles,
+                ArrayList<String> types, ArrayList<String> sizes) {
+        super(containerType, containerHeight, rotationsAllowed, numRectangles, path, numberOfFiles);
+        this.sizes = sizes;
+        this.types = types;
+        alreadyInit = true;
     }
     
     @Override
@@ -96,55 +107,57 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
 
     // Gets the types from a input screen
     private void getTypes() {
-        // Init check boxes
-        JCheckBox smallField = new JCheckBox("Small boxes");
-        JCheckBox mediumField = new JCheckBox("Medium boxes");
-        JCheckBox bigField = new JCheckBox("Big boxes");
-        JCheckBox wideField = new JCheckBox("Wide boxes");
-        JCheckBox tallField = new JCheckBox("Tall boxes");
-        JCheckBox squarishField = new JCheckBox("Squarish boxes");
+        if(!alreadyInit){
+            // Init check boxes
+            JCheckBox smallField = new JCheckBox("Small boxes");
+            JCheckBox mediumField = new JCheckBox("Medium boxes");
+            JCheckBox bigField = new JCheckBox("Big boxes");
+            JCheckBox wideField = new JCheckBox("Wide boxes");
+            JCheckBox tallField = new JCheckBox("Tall boxes");
+            JCheckBox squarishField = new JCheckBox("Squarish boxes");
 
-        // Add boxes to the popupscreen
-        JPanel myPanel = new JPanel();
-        myPanel.add(smallField);
-        myPanel.add(mediumField);
-        myPanel.add(bigField);
-        myPanel.add(wideField);
-        myPanel.add(tallField);
-        myPanel.add(squarishField);
-        
-        // Add the types to the list
-        int result = JOptionPane.showConfirmDialog(null, myPanel, 
-                 "Please choose types of rectangles", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            if(smallField.isSelected()){
-                sizes.add("small");
+            // Add boxes to the popupscreen
+            JPanel myPanel = new JPanel();
+            myPanel.add(smallField);
+            myPanel.add(mediumField);
+            myPanel.add(bigField);
+            myPanel.add(wideField);
+            myPanel.add(tallField);
+            myPanel.add(squarishField);
+
+            // Add the types to the list
+            int result = JOptionPane.showConfirmDialog(null, myPanel, 
+                     "Please choose types of rectangles", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                if(smallField.isSelected()){
+                    sizes.add("small");
+                }
+                if(mediumField.isSelected()){
+                    sizes.add("medium");
+                }
+                if(bigField.isSelected()){
+                    sizes.add("big");
+                }
+                if(wideField.isSelected()){
+                    types.add("wide");
+                }
+                if(tallField.isSelected()){
+                    types.add("tall");
+                }
+                if(squarishField.isSelected()){
+                    types.add("squarish");
+                }
             }
-            if(mediumField.isSelected()){
-                sizes.add("medium");
-            }
-            if(bigField.isSelected()){
-                sizes.add("big");
-            }
-            if(wideField.isSelected()){
-                types.add("wide");
-            }
-            if(tallField.isSelected()){
-                types.add("tall");
-            }
-            if(squarishField.isSelected()){
+
+            // Make sure there is at least 1 type
+            if(types.size() < 1){
                 types.add("squarish");
             }
-        }
-        
-        // Make sure there is at least 1 type
-        if(types.size() < 1){
-            types.add("squarish");
-        }
-        
-        // Make sure there is at least 1 size
-        if(sizes.size() < 1){
-            sizes.add("medium");
+
+            // Make sure there is at least 1 size
+            if(sizes.size() < 1){
+                sizes.add("medium");
+            }
         }
         
         // Create new filename
