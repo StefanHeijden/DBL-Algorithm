@@ -11,13 +11,13 @@ public class CreateMultipleTestFiles {
     // Choose from: R(random), RB(random with bounds), S(sqaured),
     // P (perfect), AP (almost perfect), T (typed). for typed also specify types 
     // and sizes which is done in the main method before creating the files
-    static String TestFile = "R";
+    static String TestFile = "P";
     static int numberOfFiles = 3;
     static String containerType = "FREE";
     static boolean rotationsAllowed = false;
     // Specify here what different total different number of rectangles you want
     // For example {4, 6, 10, 25, 10000} would be for this project standard
-    static int[] AllnumRectangles = {10, 25, 50};
+    static int[] AllnumRectangles = {4, 5, 10, 25, 50};
     // Specify maxHeight for a fixed type run, for each file a random height
     // from 10 - maxHeight will be created
     static final int MAXHEIGHT = 300;
@@ -84,7 +84,7 @@ public class CreateMultipleTestFiles {
             break;
           case "P":
             new PerfectTestFileGenerator(containerType, 
-                    containerHeight, rotationsAllowed, numRectangles, PATH, currentFile);
+                    containerHeight, rotationsAllowed, numRectangles, PATH, currentFile, AverageSizeRectangles);
             break;
           case "AP":
             new AlmostPerfectTestFileGenerator(containerType, 
@@ -93,7 +93,7 @@ public class CreateMultipleTestFiles {
           case "T":
             new TypedTestFileGenerator(containerType, 
                     containerHeight, rotationsAllowed, numRectangles, PATH, currentFile,
-                        types, sizes);
+                        types, sizes, AverageSizeRectangles);
             break;
           default:
             // code block

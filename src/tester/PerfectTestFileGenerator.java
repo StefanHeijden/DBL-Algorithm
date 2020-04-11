@@ -27,6 +27,15 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
         generateFile();
     }
     
+    public PerfectTestFileGenerator(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles,
+            int size) {
+        super(containerType, containerHeight, rotationsAllowed, numRectangles, 
+                path, numberOfFiles);
+       this.SIZE = size * (int) Math.sqrt(numRectangles * 1.0);
+       generateFile();
+    }
+    
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){

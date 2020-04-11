@@ -21,8 +21,7 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
             int size) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, 
                 path, numberOfFiles);
-        System.out.println("size");
-       this.size = size;
+       this.size = size * 2;
        generateFile();
     }
     
@@ -39,16 +38,16 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
                 MAXIMUMSIZE > data.getHeight()){
             maxSizeX = data.getHeight();
             if(size > 0 && size < data.getHeight()){
+                MAXIMUMSIZE = size;
                 maxSizeX = size;
             }
         }else{
             // Or just because they then become to big to draw
-            maxSizeX = MAXIMUMSIZE;
             if(size > 0){
-                maxSizeX = size;
+                MAXIMUMSIZE = size;
             }
+            maxSizeX = MAXIMUMSIZE;
         }
-        System.out.println(maxSizeX);
         // Then create the random rectangles
         for (int[] rectangle : rectangles) {
             rectangle[0] = (int) Math.round((maxSizeX - 1) * Math.random() + 1);
