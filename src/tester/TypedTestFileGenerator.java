@@ -37,7 +37,7 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
     // Generate rectangles at random
     public int[][] generateRectangles(){
         mean = 50;
-        variance = 25;
+        variance = (int) mean / 2;
         rectangles = new int[data.getNumRectangles()][2];
         types = new ArrayList();
         sizes = new ArrayList();
