@@ -17,7 +17,8 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     int splitsY;
     ArrayList<int[]> xCoord;
     ArrayList<int[]> yCoord;
-    int SIZE = 100; // Gives an estimate of how big the rectangle will be
+    int SIZE = 200; // Gives an estimate of how big the rectangle will be
+    boolean needsOneMoreRectangle;
     
     public PerfectTestFileGenerator(String containerType, int containerHeight, 
             boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
@@ -70,6 +71,17 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
                 rectanglesTemp.add(rectanglesTemp2);
             }
         }
+        if(needsOneMoreRectangle){
+                ArrayList<Integer> rectanglesTemp2 = new ArrayList();
+                int x = (int) (width / 5) + 1;
+                rectanglesTemp2.add(x);
+                rectanglesTemp2.add(height);
+                // If rotation is alowed, shuffle the x and y
+                if(data.getRA()){
+                    Collections.shuffle(rectanglesTemp2);
+                }
+                rectanglesTemp.add(rectanglesTemp2);
+        }
         Collections.shuffle(rectanglesTemp); 
         // Add the temp list to the rectangles, such that we can create the file
         int counter = 0;
@@ -119,6 +131,13 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     // Determine how many splits we can "split up" the rectangle, based 
     // On how many rectangles there are.
     public void determineSplits(){
+        if(data.getNumRectangles() == 5 || data.getNumRectangles() == 7 ){
+            splitsX = 2;
+            splitsY = data.getNumRectangles() / 2;
+            needsOneMoreRectangle = true;
+        }else{
+            needsOneMoreRectangle = false;
+        }
         if(data.getNumRectangles() % 1000 == 0 && data.getNumRectangles() / 1000 != 1){
             splitsX = 1000;
             splitsY = data.getNumRectangles() / 1000;
@@ -128,7 +147,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
         }else if(data.getNumRectangles() % 10 == 0 && data.getNumRectangles() / 10 != 1){
             splitsX = 10;
             splitsY = data.getNumRectangles() / 10;
-        }else if(data.getNumRectangles() % 5 == 0){
+        }else if(data.getNumRectangles() % 5 == 0 && data.getNumRectangles() / 4 != 1){
             splitsX = 5;
             splitsY = data.getNumRectangles() / 5;
         }else if(data.getNumRectangles() % 4 == 0 && data.getNumRectangles() / 4 != 1){
