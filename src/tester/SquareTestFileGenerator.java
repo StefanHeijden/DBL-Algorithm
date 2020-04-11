@@ -16,7 +16,7 @@ public class SquareTestFileGenerator extends AbstractTestFileGenerator{
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Square");
+        addToFileName("Squared-");
         // Ini the rectangles array
         int[][] rectangles = new int[data.getNumRectangles()][2];
         int maxSizeX;

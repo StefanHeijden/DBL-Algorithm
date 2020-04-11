@@ -31,7 +31,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     public int[][] generateRectangles(){
         // Add string Perfect to testfile name, so that we know what kind of 
         // Test file it is
-        addToFileName("Perfect");
+        addToFileName("Perfect-");
         // Determine the height and the width for the perfect packing
         initRectangle();
         // Determine how many splits we can "split up" the rectangle, based 

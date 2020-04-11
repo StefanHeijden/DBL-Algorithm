@@ -42,12 +42,16 @@ public class AbstractTestFileGenerator {
     // Generate a new file 
     public void generateFile(){
         // Create new filename
+        fileName = "";
         if(data.getType().equalsIgnoreCase(data.FREE)){
-            fileName = data.getType() + data.getRA() + 
-                data.getNumRectangles() + ".java";
+            fileName = fileName + "r" + data.getNumRectangles() + "-hf-r";
         }else{
-            fileName = data.getType() + data.getHeight() + data.getRA() + 
-                    data.getNumRectangles() + ".java";
+            fileName = fileName + "r" + data.getNumRectangles() + "-h" + data.getHeight() + "-r";
+        }
+        if(data.getRA()){
+            fileName = fileName + "y.in";
+        }else{
+            fileName = fileName + "n.in";
         }
         
         // Generate rectangles
@@ -124,5 +128,9 @@ public class AbstractTestFileGenerator {
 
     public String getFileName() {
         return fileName;
+    }
+    
+    public void setFileName(String name) {
+        fileName = name;
     }
 }

@@ -16,7 +16,7 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Random");
+        addToFileName("Random-");
         // Ini the rectangles array
         int[][] rectangles = new int[data.getNumRectangles()][2];
         int maxSizeX;

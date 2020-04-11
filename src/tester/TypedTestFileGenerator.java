@@ -25,7 +25,6 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Typed");
         mean = 50;
         variance = 25;
         rectangles = new int[data.getNumRectangles()][2];
@@ -147,5 +146,37 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
         if(sizes.size() < 1){
             sizes.add("medium");
         }
+        
+        // Create new filename
+        String name = "";
+        if(sizes.size() < 3){
+            for(String size: sizes){
+                name = name + size;
+            }
+             name = name + "-";
+        }else{
+            name = name + "AllSizes-";
+        }
+        
+        if(types.size() < 3){
+            for(String type: types){
+                name = name + type;
+            }
+            name = name + "-";
+        }else{
+            name = name + "AllTypes-";
+        }
+        
+        if(data.getType().equalsIgnoreCase(data.FREE)){
+            name = name + "r" + data.getNumRectangles() + "-hf-r";
+        }else{
+            name = name + "r" + data.getNumRectangles() + "-h" + data.getHeight() + "-r";
+        }
+        if(data.getRA()){
+            name = name + "y.in";
+        }else{
+            name = name + "n.in";
+        }
+        setFileName(name);
     }
 }
