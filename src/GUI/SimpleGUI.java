@@ -351,10 +351,13 @@ public class SimpleGUI {
                         containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               case "Perfect":
-                  createFile = new PerfectTestFileGenerator(containerType, 
+                createFile = new PerfectTestFileGenerator(containerType, 
                         containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
               case "Almost perfect":
-                  createFile = new AlmostPerfectTestFileGenerator(containerType, 
+                createFile = new AlmostPerfectTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
+              case "Typed":
+                createFile = new TypedTestFileGenerator(containerType, 
                         containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
               default:
                 // code block
