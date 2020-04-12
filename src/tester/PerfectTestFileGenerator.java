@@ -144,7 +144,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
         }
         if(needsOneMoreRectangle){
                 ArrayList<Integer> rectanglesTemp3 = new ArrayList();
-                int x = (int) (width / 5) + 1;
+                int x = (int) (width / 2.5 * Math.random()) + 1;
                 rectanglesTemp3.add(x);
                 rectanglesTemp3.add(height);
                 // If rotation is alowed, shuffle the x and y
