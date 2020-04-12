@@ -98,7 +98,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
                 rectanglesTemp1[index - 1][0] = totalx;
                 // y
                 rectanglesTemp1[index][1] = (int) ((totaly - 2) * Math.random()) + 1;
-                rectanglesTemp1[index - 1][1] = totaly - rectanglesTemp1[index][0];
+                rectanglesTemp1[index - 1][1] = totaly - rectanglesTemp1[index][1];
                 // Make sure these rectangles are only updated once
                 done[index] = true;
                 done[index - 1] = true;
