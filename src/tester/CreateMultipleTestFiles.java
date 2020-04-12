@@ -12,12 +12,12 @@ public class CreateMultipleTestFiles {
     // P (perfect), AP (almost perfect), T (typed). for typed also specify types 
     // and sizes which is done in the main method before creating the files
     static String TestFile = "P";
-    static int numberOfFiles = 3;
+    static int numberOfFiles = 5;
     static String containerType = "free";
     static boolean rotationsAllowed = false;
     // Specify here what different total different number of rectangles you want
     // For example {4, 6, 10, 25, 10000} would be for this project standard
-    static int[] AllnumRectangles = {4, 5, 10, 25, 50};
+    static int[] AllnumRectangles = {4, 5, 6};
     // Specify maxHeight for a fixed type run, for each file a random height
     // from 10 - maxHeight will be created
     static final int MAXHEIGHT = 300;
@@ -29,7 +29,7 @@ public class CreateMultipleTestFiles {
     // Some other variables not to be changed:
     static ArrayList<String> types = new ArrayList();
     static ArrayList<String> sizes = new ArrayList();
-    private static final String PATH = "./../DBL-Algorithm/testfiles/";
+    private static final String PATH = "./../DBL-Algorithm/testMultipleFiles/";
     /**
      * // This main method can be used for testing
      */

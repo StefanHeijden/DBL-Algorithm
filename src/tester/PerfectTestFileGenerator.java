@@ -2,6 +2,7 @@
 package tester;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -92,7 +93,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
             if(!(index % xCoord.size() == 0) && !done[index] && !done[index - 1]){
                 adjuctend.add(index - 1);
                 int totalx = rectanglesTemp1[index][0] + rectanglesTemp1[index - 1][0];
-                int totaly = rectanglesTemp1[index][1] + rectanglesTemp1[index - 1][1];
+                int totaly = rectanglesTemp1[index][1];
                 // x
                 rectanglesTemp1[index][0] = totalx;
                 rectanglesTemp1[index - 1][0] = totalx;

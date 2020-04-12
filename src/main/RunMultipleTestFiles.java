@@ -37,7 +37,7 @@ public class RunMultipleTestFiles {
     // the test in Jodi's folder
     private static final String PATH = "./../DBL-Algorithm/testMultipleFiles/";
     // Then change this to the algorithm you want to test
-    private static final String testingAlgorithm = "BestFit";
+    private static final String testingAlgorithm = "BruteForceLeftBottom";
     // ---------------------------IMPORTANT------------------------------------
  
     
@@ -74,7 +74,7 @@ public class RunMultipleTestFiles {
             // Print the current file being checked
             System.err.println("start " + testFiles[i]);
             // Get the global data from the files
-            input = new TestReader("./../DBL-Algorithm/testfiles/" + testFiles[i]);
+            input = new TestReader(PATH + testFiles[i]);
             data = input.read();
             // Use inputs to determine what algorithm to run
             grid = new Grid();
@@ -183,13 +183,13 @@ public class RunMultipleTestFiles {
             inputBuffer.append(line);
         }
         //part added by Leighton to compute avg runtime and density
-        double avgDensity = totalDensity / (double) (numberOfFiles - 1);
+        double avgDensity = totalDensity / (double) (numberOfFiles);
         System.out.println("numFil " + numberOfFiles);
         System.out.println("totalD " + totalDensity);
         System.out.println("avgD " + avgDensity);
         inputBuffer.append("avgDensity: " + avgDensity + "   ");
 
-        double avgTime = totalTime / (double) (numberOfFiles - 1);
+        double avgTime = totalTime / (double) (numberOfFiles);
         inputBuffer.append("avgTime: " + avgTime + "   ");
         int count = 0;
         for(boolean b: legal){
