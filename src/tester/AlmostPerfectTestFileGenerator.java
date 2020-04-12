@@ -29,7 +29,8 @@ public class AlmostPerfectTestFileGenerator extends PerfectTestFileGenerator{
                 index = i;
             }
         }
-        rectangles[index][0] = rectangles[index][0] + offset;
+        offset = (int) (offset * 2 * Math.random());
+        rectangles[index][0] = rectangles[index][0] / 2 + offset;
         return rectangles;
     }
 }
