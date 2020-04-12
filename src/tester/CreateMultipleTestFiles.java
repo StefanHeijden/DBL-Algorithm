@@ -23,7 +23,7 @@ public class CreateMultipleTestFiles {
     static final int MAXHEIGHT = 300;
     // Average size of the rectangles can be set here:
     // if set to -1, it creates a random size from 0 to MAXHEIGHT for each file
-    static  int AverageSizeRectangles = 30;
+    static  int AverageSizeRectangles = 300;
     // ---------------------------------------------------------------------
     
     // Some other variables not to be changed:

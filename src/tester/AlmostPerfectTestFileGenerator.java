@@ -21,7 +21,15 @@ public class AlmostPerfectTestFileGenerator extends PerfectTestFileGenerator{
         if(offset < 1){
             offset = 1;
         }
-        rectangles[0][0] = rectangles[0][0] + offset;
+        int minHeight = Integer.MAX_VALUE;
+        int index = 0;
+        for(int i = 0; i < rectangles.length; i++){
+            if(rectangles[i][1] < minHeight){
+                 minHeight = rectangles[i][1];
+                index = i;
+            }
+        }
+        rectangles[index][0] = rectangles[index][0] + offset;
         return rectangles;
     }
 }

@@ -3,6 +3,7 @@ package tester;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 /**
  *
@@ -19,6 +20,7 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
     ArrayList<int[]> yCoord;
     int SIZE = 200; // Gives an estimate of how big the rectangle will be
     boolean needsOneMoreRectangle;
+    boolean[] done;
     
     public PerfectTestFileGenerator(String containerType, int containerHeight, 
             boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
@@ -66,36 +68,94 @@ public class PerfectTestFileGenerator extends AbstractTestFileGenerator{
             currentNumberOfSplitsY++;
         }
         // Create the rectangles
-        // First add them to an Arraylist such that we can shuffle it
-        // Easier at the end
-        ArrayList<ArrayList<Integer>> rectanglesTemp = new ArrayList();
+        int nor = data.getNumRectangles();
+        if(data.getNumRectangles() == 5 || data.getNumRectangles() == 7){
+            nor--;
+        }
+        int[][] rectanglesTemp1 = new int[nor][2];
+        int counter = 0;
         for(int[] y: yCoord){
             for(int[] x: xCoord){
-                ArrayList<Integer> rectanglesTemp2 = new ArrayList();
-                rectanglesTemp2.add(x[1] - x[0]);
-                rectanglesTemp2.add(y[1] - y[0]);
-                // If rotation is alowed, shuffle the x and y
-                if(data.getRA()){
-                    Collections.shuffle(rectanglesTemp2);
-                }
-                rectanglesTemp.add(rectanglesTemp2);
+                rectanglesTemp1[counter][0] = x[1] - x[0];
+                rectanglesTemp1[counter][1] = y[1] - y[0];
+                counter++;
             }
         }
+        int goon = 0;
+        done = new boolean[nor];
+        while(goon < (int) (nor / 2)){
+            // pick random rectangle
+            int index =  new Random().nextInt(rectanglesTemp1.length); 
+            ArrayList<Integer> adjuctend = new ArrayList();
+            // Determine left rectangle then vary the split between them
+            
+            if(!(index % xCoord.size() == 0) && !done[index] && !done[index - 1]){
+                adjuctend.add(index - 1);
+                int totalx = rectanglesTemp1[index][0] + rectanglesTemp1[index - 1][0];
+                int totaly = rectanglesTemp1[index][1] + rectanglesTemp1[index - 1][1];
+                // x
+                rectanglesTemp1[index][0] = totalx;
+                rectanglesTemp1[index - 1][0] = totalx;
+                // y
+                rectanglesTemp1[index][1] = (int) ((totaly - 2) * Math.random()) + 1;
+                rectanglesTemp1[index - 1][1] = totaly - rectanglesTemp1[index][0];
+                // Make sure these rectangles are only updated once
+                done[index] = true;
+                done[index - 1] = true;
+            }
+            /*
+            // Determine right rectangle then vary the split between them
+            if(!(index % xCoord.size() == xCoord.size() - 1)){
+                adjuctend.add(index + 1);
+                int total = rectanglesTemp1[index][0] + rectanglesTemp1[index + 1][0];
+                rectanglesTemp1[index][0] = (int) ((total - 2) * Math.random()) + 1;
+                rectanglesTemp1[index + 1][0] = total - rectanglesTemp1[index][0];
+            }
+            
+            // Determine under rectangle then vary the split between them
+            if(!(index < xCoord.size())){
+                int total = rectanglesTemp1[index][1] + rectanglesTemp1[index - xCoord.size()][1];
+                rectanglesTemp1[index][1] = (int) ((total - 2) * Math.random()) + 1;
+                rectanglesTemp1[index - xCoord.size()][1] = total - rectanglesTemp1[index][1];
+            }
+            // Determine upper rectangle then vary the split between them
+            if(!(index >= nor - xCoord.size())){
+                int total = rectanglesTemp1[index][1] + rectanglesTemp1[index + xCoord.size()][1];
+                rectanglesTemp1[index][1] = (int) ((total - 2) * Math.random()) + 1;
+                rectanglesTemp1[index + xCoord.size()][1] = total - rectanglesTemp1[index][1];
+            }
+            */
+            goon++;
+        }
+        
+        // First add them to an Arraylist such that we can shuffle it
+        // Easier at the end
+        ArrayList<ArrayList<Integer>> rectanglesTemp2 = new ArrayList();
+        for(int i = 0; i < nor; i++){
+            ArrayList<Integer> rectanglesTemp3 = new ArrayList();
+            rectanglesTemp3.add(rectanglesTemp1[i][0]);
+            rectanglesTemp3.add(rectanglesTemp1[i][1]);
+            // If rotation is alowed, shuffle the x and y
+            if(data.getRA()){
+                Collections.shuffle(rectanglesTemp3);
+            }
+            rectanglesTemp2.add(rectanglesTemp3);
+        }
         if(needsOneMoreRectangle){
-                ArrayList<Integer> rectanglesTemp2 = new ArrayList();
+                ArrayList<Integer> rectanglesTemp3 = new ArrayList();
                 int x = (int) (width / 5) + 1;
-                rectanglesTemp2.add(x);
-                rectanglesTemp2.add(height);
+                rectanglesTemp3.add(x);
+                rectanglesTemp3.add(height);
                 // If rotation is alowed, shuffle the x and y
                 if(data.getRA()){
-                    Collections.shuffle(rectanglesTemp2);
+                    Collections.shuffle(rectanglesTemp3);
                 }
-                rectanglesTemp.add(rectanglesTemp2);
+                rectanglesTemp2.add(rectanglesTemp3);
         }
-        Collections.shuffle(rectanglesTemp); 
+        Collections.shuffle(rectanglesTemp2); 
         // Add the temp list to the rectangles, such that we can create the file
-        int counter = 0;
-        for(ArrayList<Integer> rectangle: rectanglesTemp){
+        counter = 0;
+        for(ArrayList<Integer> rectangle: rectanglesTemp2){
             rectangles[counter][0] = rectangle.get(0);
             rectangles[counter][1] = rectangle.get(1);
             counter++;
