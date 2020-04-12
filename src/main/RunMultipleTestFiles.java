@@ -34,9 +34,9 @@ public class RunMultipleTestFiles {
     // You could change the path to somthing like:
     // "./../DBL-Algorithm/testfiles/Jodi/" for example if you want to test
     // the test in Jodi's folder
-    private static final String PATH = "./../DBL-Algorithm/testfiles/";
+    private static final String PATH = "./../DBL-Algorithm/testMultipleFiles/";
     // Then change this to the algorithm you want to test
-    private static final String testingAlgorithm = "BestFit";
+    private static final String testingAlgorithm = "BruteForce";
     // ---------------------------IMPORTANT------------------------------------
  
     
@@ -49,6 +49,10 @@ public class RunMultipleTestFiles {
     static String[] testFiles;
     static String[] density;
     static long[] runtime;
+
+    //globals added by leighton for average computations
+    private static double totalDensity;
+    private static double totalTime;
     
     /**
      * @param args the command line arguments
@@ -82,10 +86,12 @@ public class RunMultipleTestFiles {
                 Date d2 = new Date();
                 // Compare the two so that we know runtime
                 runtime[i] = (d2.getTime()-d1.getTime());
+                totalTime += runtime[i];
                 
                 // Then calculate the density
                 grid.computeFinalDensity(data);
                 double percentage = grid.getDensity();
+                totalDensity += percentage;
                 DecimalFormat df = new DecimalFormat("#.####");
                 df.setRoundingMode(RoundingMode.CEILING);
                 density[i] = df.format(percentage);
@@ -167,6 +173,17 @@ public class RunMultipleTestFiles {
             line = "Runtime: " + runtime[i] + "\n";
             inputBuffer.append(line);
         }
+        //part added by Leighton to compute avg runtime and density
+        double avgDensity = totalDensity / (double) (numberOfFiles - 1);
+        System.out.println("numFil " + numberOfFiles);
+        System.out.println("totalD " + totalDensity);
+        System.out.println("avgD " + avgDensity);
+        inputBuffer.append("avgDensity: " + avgDensity + "   ");
+
+        double avgTime = totalTime / (double) (numberOfFiles - 1);
+        inputBuffer.append("avgTime: " + avgTime);
+
+
         System.err.println("You can find the resuls in: " + PATH + "result.txt");
         try{
             FileOutputStream fileOut = new FileOutputStream(PATH + "result.txt");
