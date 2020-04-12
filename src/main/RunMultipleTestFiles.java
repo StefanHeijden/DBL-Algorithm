@@ -64,6 +64,7 @@ public class RunMultipleTestFiles {
         //System.out.println(Arrays.toString(testFiles));
         density = new String[numberOfFiles];
         runtime = new long[numberOfFiles];
+        legal = new boolean[numberOfFiles];
         
         for(int i = 0; i < numberOfFiles; i++){
             // Skip the result file if its in the testFiles
@@ -189,9 +190,15 @@ public class RunMultipleTestFiles {
         inputBuffer.append("avgDensity: " + avgDensity + "   ");
 
         double avgTime = totalTime / (double) (numberOfFiles - 1);
-        inputBuffer.append("avgTime: " + avgTime);
-
-
+        inputBuffer.append("avgTime: " + avgTime + "   ");
+        int count = 0;
+        for(boolean b: legal){
+            if(!b){
+                count++;
+            }
+        }
+        inputBuffer.append("number of NON legal: " + count);
+        
         System.err.println("You can find the resuls in: " + PATH + "result.txt");
         try{
             FileOutputStream fileOut = new FileOutputStream(PATH + "result.txt");
