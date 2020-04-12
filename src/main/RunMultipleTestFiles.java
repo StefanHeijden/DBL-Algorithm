@@ -7,6 +7,7 @@ import algorithms.BruteForceAlgorithm;
 import algorithms.BruteForceLeftBottomAlgorithm;
 import algorithms.LevelPackingAlgorithm;
 import algorithms.TestingAlgorithm;
+import java.awt.Rectangle;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -49,6 +50,7 @@ public class RunMultipleTestFiles {
     static String[] testFiles;
     static String[] density;
     static long[] runtime;
+    static boolean[] legal;
     
     /**
      * @param args the command line arguments
@@ -58,6 +60,7 @@ public class RunMultipleTestFiles {
         //System.out.println(Arrays.toString(testFiles));
         density = new String[numberOfFiles];
         runtime = new long[numberOfFiles];
+        legal = new boolean[numberOfFiles];
         
         for(int i = 0; i < numberOfFiles; i++){
             // Skip the result file if its in the testFiles
@@ -89,6 +92,9 @@ public class RunMultipleTestFiles {
                 DecimalFormat df = new DecimalFormat("#.####");
                 df.setRoundingMode(RoundingMode.CEILING);
                 density[i] = df.format(percentage);
+                
+                legal[i] = isLegal();
+                
             }catch(Exception E){
                    System.out.println("File: " + testFiles[i] + " "
                            + "gave an error: " + E.toString());
@@ -166,6 +172,8 @@ public class RunMultipleTestFiles {
             inputBuffer.append(line);
             line = "Runtime: " + runtime[i] + "\n";
             inputBuffer.append(line);
+            line = "Legal: " + legal[i] + "\n";
+            inputBuffer.append(line);
         }
         System.err.println("You can find the resuls in: " + PATH + "result.txt");
         try{
@@ -175,5 +183,23 @@ public class RunMultipleTestFiles {
         }catch(IOException e){
             System.out.println("Writing buffer to test file went wrong");
         }
+    }
+    
+    static public boolean isLegal(){
+        Rectangle[] r = new Rectangle[data.getNumRectangles()];
+        for(int i = 0; i < data.getNumRectangles(); i++){
+            r[i] = new Rectangle(grid.getPlacement()[i][0], grid.getPlacement()[i][1], 
+                    data.getRectangles()[i][0], data.getRectangles()[i][1]);
+        }
+        for(Rectangle r1: r){
+            for(Rectangle r2: r){
+                if(r1 != r2){
+                    if(r1.intersects(r2)){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

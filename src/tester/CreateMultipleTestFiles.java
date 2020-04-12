@@ -13,7 +13,7 @@ public class CreateMultipleTestFiles {
     // and sizes which is done in the main method before creating the files
     static String TestFile = "P";
     static int numberOfFiles = 3;
-    static String containerType = "FREE";
+    static String containerType = "free";
     static boolean rotationsAllowed = false;
     // Specify here what different total different number of rectangles you want
     // For example {4, 6, 10, 25, 10000} would be for this project standard
