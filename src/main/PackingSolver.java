@@ -17,7 +17,7 @@ public class PackingSolver {
     private final static int BRUTEFORCETHRESHOLD = 6;
     
     // Use the next variables to determine what algorithm to run FOR TESTING!
-    private static String testingAlgorithm = "standard";
+    private static String testingAlgorithm = "BruteForce";
     /**
      * @param args the command line arguments
      */
@@ -42,7 +42,7 @@ public class PackingSolver {
         // Use inputs to determine what algorithm to run
         grid = new Grid();
         //AbstractAlgorithm algorithm = getAlgorithm();
-        AbstractAlgorithm algorithm = new TestingAlgorithm(grid, data);
+        AbstractAlgorithm algorithm = new BruteForceAlgorithm(grid, data);
         // The execute algorithm
         algorithm.run();
         
@@ -79,6 +79,10 @@ public class PackingSolver {
     public static String getAlgorithmName(){
         // When testing we can use algorithm directly, or if we choose standard
         // way of choosing algorithm
+        if(!testingAlgorithm.equals("standard")){
+            return testingAlgorithm;
+        }
+
         if (data.getType().equals("free") && !data.getRA() ) {
             if(data.getNumRectangles() == 4) {
                 return "BruteForceLeftBottom";
@@ -87,7 +91,7 @@ public class PackingSolver {
                 return "BruteForceLeftBottom";
             }
             if(data.getNumRectangles() == 10) {
-                return "LevelPacking";   
+                return "LevelPacking";
             }
             if(data.getNumRectangles() == 25) {
                 return "LevelPacking";
@@ -95,7 +99,7 @@ public class PackingSolver {
             if(data.getNumRectangles() == 10000) {
                 return "Testing";
             }
-        } 
+        }
         if (data.getType().equals("free") && data.getRA() ) {
             if(data.getNumRectangles() == 4) {
                 return "BruteForceLeftBottom";
@@ -112,8 +116,8 @@ public class PackingSolver {
             if(data.getNumRectangles() == 10000) {
                 return "Testing";
             }
-        } 
-        
+        }
+
         if (data.getType().equals("fixed") && !data.getRA() ) {
             if(data.getNumRectangles() == 4) {
                 return "BruteForce";
@@ -128,11 +132,11 @@ public class PackingSolver {
                 return "LevelPacking";
             }
             if(data.getNumRectangles() == 10000) {
-                return "BigAlgorithm";
+                return "Testing";
             }
         }
         if (data.getType().equals("fixed") && data.getRA() ) {
-                
+
             if(data.getNumRectangles() == 4) {
                 return "LevelPacking";
             }
@@ -163,7 +167,7 @@ public class PackingSolver {
             return new BruteForceAlgorithm(grid, data);
         case "BruteForceLeftBottom":
             return new BruteForceLeftBottomAlgorithm(grid, data);
-        case "LevelPacking":    
+        case "LevelPacking":
             return new LevelPackingAlgorithm(grid, data);
         case "Testing":
             return new TestingAlgorithm(grid, data);
@@ -174,5 +178,5 @@ public class PackingSolver {
         System.err.println("Algorithm not found: " + testingAlgorithm);
         return new TestingAlgorithm(grid, data);
     }
-    
+
 }
