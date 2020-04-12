@@ -42,7 +42,7 @@ public class AbstractReader {
         
         // store the input in data
         String containerHeightTypeString = textData[0].substring(18);
-        if (containerHeightTypeString.equals("free")) {
+        if (containerHeightTypeString.equals("free") || containerHeightTypeString.equals("FREE")) {
             containerType = "free";
         } else {
             containerType = containerHeightTypeString.substring(0,5); //"fixed"
