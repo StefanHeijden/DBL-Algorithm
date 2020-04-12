@@ -17,7 +17,7 @@ public class PackingSolver {
     private final static int BRUTEFORCETHRESHOLD = 6;
     
     // Use the next variables to determine what algorithm to run FOR TESTING!
-    private static String testingAlgorithm = "BruteForce";
+    private static String testingAlgorithm;
     /**
      * @param args the command line arguments
      */
@@ -41,8 +41,7 @@ public class PackingSolver {
         
         // Use inputs to determine what algorithm to run
         grid = new Grid();
-        //AbstractAlgorithm algorithm = getAlgorithm();
-        AbstractAlgorithm algorithm = new BruteForceAlgorithm(grid, data);
+        AbstractAlgorithm algorithm = getAlgorithm();
         // The execute algorithm
         algorithm.run();
         

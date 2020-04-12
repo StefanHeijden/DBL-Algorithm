@@ -22,8 +22,10 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
     public TypedTestFileGenerator(String containerType, int containerHeight, boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, path, numberOfFiles);
         alreadyInit = false;
-        generateFile();
+        types = new ArrayList();
+        sizes = new ArrayList();
         mean = 50;
+        generateFile();
     }
     
     public TypedTestFileGenerator(String containerType, int containerHeight, 
@@ -42,12 +44,9 @@ public class TypedTestFileGenerator extends AbstractTestFileGenerator{
     public int[][] generateRectangles(){
         variance = (int) mean / 2;
         rectangles = new int[data.getNumRectangles()][2];
-        types = new ArrayList();
-        sizes = new ArrayList();
         
         // Get types from input screen
         getTypes();
-        
         // Then create rectangles for each type chosen at random
         for(int i = 0; i < data.getNumRectangles(); i++){
             rectangles[i] = createRectangle();
