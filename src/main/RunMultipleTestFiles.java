@@ -7,6 +7,7 @@ import algorithms.BruteForceAlgorithm;
 import algorithms.BruteForceLeftBottomAlgorithm;
 import algorithms.LevelPackingAlgorithm;
 import algorithms.TestingAlgorithm;
+import java.awt.Rectangle;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -36,7 +37,7 @@ public class RunMultipleTestFiles {
     // the test in Jodi's folder
     private static final String PATH = "./../DBL-Algorithm/testMultipleFiles/";
     // Then change this to the algorithm you want to test
-    private static final String testingAlgorithm = "BruteForce";
+    private static final String testingAlgorithm = "BestFit";
     // ---------------------------IMPORTANT------------------------------------
  
     
@@ -49,6 +50,7 @@ public class RunMultipleTestFiles {
     static String[] testFiles;
     static String[] density;
     static long[] runtime;
+    static boolean[] legal;
 
     //globals added by leighton for average computations
     private static double totalDensity;
@@ -95,6 +97,10 @@ public class RunMultipleTestFiles {
                 DecimalFormat df = new DecimalFormat("#.####");
                 df.setRoundingMode(RoundingMode.CEILING);
                 density[i] = df.format(percentage);
+                
+                // determine whether it is legal representation
+                legal[i] = isLegal();
+                
             }catch(Exception E){
                    System.out.println("File: " + testFiles[i] + " "
                            + "gave an error: " + E.toString());
@@ -172,6 +178,8 @@ public class RunMultipleTestFiles {
             inputBuffer.append(line);
             line = "Runtime: " + runtime[i] + "\n";
             inputBuffer.append(line);
+            line = "Legal: " + legal[i] + "\n";
+            inputBuffer.append(line);
         }
         //part added by Leighton to compute avg runtime and density
         double avgDensity = totalDensity / (double) (numberOfFiles - 1);
@@ -192,5 +200,23 @@ public class RunMultipleTestFiles {
         }catch(IOException e){
             System.out.println("Writing buffer to test file went wrong");
         }
+    }
+    
+    static public boolean isLegal(){
+        Rectangle[] r = new Rectangle[data.getNumRectangles()];
+        for(int i = 0; i < data.getNumRectangles(); i++){
+            r[i] = new Rectangle(grid.getPlacement()[i][0], grid.getPlacement()[i][1], 
+                    data.getRectangles()[i][0], data.getRectangles()[i][1]);
+        }
+        for(Rectangle r1: r){
+            for(Rectangle r2: r){
+                if(r1 != r2){
+                    if(r1.intersects(r2)){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
