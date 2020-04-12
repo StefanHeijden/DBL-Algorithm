@@ -57,10 +57,14 @@ public class SimpleGUI {
     static ButtonGroup algorithmGroup;
     static String[] titelsGroup1 = {"free", "fixed"};
     static String[] titelsGroup2 = {"no rotation", "rotation"};
-    static String[] titelsGroup3 = {"4", "6", "10", "25", "10000"};
+    static String[] titelsGroup3 = {"4", "5", "6", "7", "8", "9", "10", 
+                                        "25", "50", "10000"};
     static String[] titelsGroup4 = {"Random generation", 
                                     "Random generation with bounds",
-                                    "Squares only"
+                                    "Squares only",
+                                    "Perfect",
+                                    "Almost perfect",
+                                    "Typed"
     };// TitelGroup4 has to be added manually to the switch in generateTestFile()
       // in the class GenerateTestFile inside the class GUI!!
     
@@ -344,6 +348,18 @@ public class SimpleGUI {
                 break;
               case "Squares only":
                 createFile = new SquareTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
+                break;
+              case "Perfect":
+                createFile = new PerfectTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
+                break;
+              case "Almost perfect":
+                createFile = new AlmostPerfectTestFileGenerator(containerType, 
+                        containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
+                break;
+              case "Typed":
+                createFile = new TypedTestFileGenerator(containerType, 
                         containerHeight, rotationsAllowed, numRectangles, PATH, numberOfFiles);
                 break;
               default:

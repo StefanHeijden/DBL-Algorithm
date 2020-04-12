@@ -11,12 +11,13 @@ public class SquareTestFileGenerator extends AbstractTestFileGenerator{
             boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, 
                 path, numberOfFiles);
+        generateFile();
     }
     
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Square");
+        addToFileName("Squared-");
         // Ini the rectangles array
         int[][] rectangles = new int[data.getNumRectangles()][2];
         int maxSizeX;

@@ -286,13 +286,14 @@ public class BestFitAlgorithm extends AbstractAlgorithm {
                                 //possible values to compute the score with
                                 double W = notPlacedRectangle[0]; //width of the piece
                                 double H = notPlacedRectangle[1]; //height of the piece
-                                //double A = W * H; //area of piece
+                                double A = W * H; //area of piece
                                 double SW = slots.get(j).get(0); //sloth width, relative to base of sheet
                                 double SHL = slots.get(j).get(2) - notPlacedRectangle[1]; //difference between slot and piece heights
-                                //double GH = gridHeight; //height of grid;
+                                double GH = gridHeight; //height of grid;
                                 double GW = optimalWidth * 1.5; //width of optimum solution multiplied by 1.5
                                 //double ERC = ; //ephemeral random constant (to be determined if necessarily);
-                                double score = (SHL / (GW - W)) - (SW + H);
+                                //double score = (SHL / (GW - W)) - (SW + H);
+                                double score = (SHL / (GH - H)) - (SW + W);
                                 //if the score is better, safe the score, rectangle and place
                                 if (score > highestScore) {
                                     highestScore = score;

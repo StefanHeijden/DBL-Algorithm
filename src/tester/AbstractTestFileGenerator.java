@@ -13,7 +13,7 @@ import logic.GlobalData;
  */
 public class AbstractTestFileGenerator {
     public GlobalData data;
-    public final int MAXIMUMSIZE = 25;
+    public int MAXIMUMSIZE = 10000;
     private final String PATH;
     StringBuffer inputBuffer;
     private String fileName;
@@ -27,7 +27,6 @@ public class AbstractTestFileGenerator {
                 simple, numRectangles);
         PATH = path;
         this.numberOfFiles = numberOfFiles;
-        generateFile();
     }
     
     // Can also be init from global data object
@@ -36,18 +35,21 @@ public class AbstractTestFileGenerator {
         this.data = new GlobalData(data.getType(), data.getHeight(), 
                 data.getRA(), simple, data.getNumRectangles());
         PATH = path;
-        generateFile();
     }
     
     // Generate a new file 
     public void generateFile(){
         // Create new filename
+        fileName = "";
         if(data.getType().equalsIgnoreCase(data.FREE)){
-            fileName = data.getType() + data.getRA() + 
-                data.getNumRectangles() + ".java";
+            fileName = fileName + "r" + data.getNumRectangles() + "-hf-r";
         }else{
-            fileName = data.getType() + data.getHeight() + data.getRA() + 
-                    data.getNumRectangles() + ".java";
+            fileName = fileName + "r" + data.getNumRectangles() + "-h" + data.getHeight() + "-r";
+        }
+        if(data.getRA()){
+            fileName = fileName + "y.in";
+        }else{
+            fileName = fileName + "n.in";
         }
         
         // Generate rectangles
@@ -124,5 +126,9 @@ public class AbstractTestFileGenerator {
 
     public String getFileName() {
         return fileName;
+    }
+    
+    public void setFileName(String name) {
+        fileName = name;
     }
 }

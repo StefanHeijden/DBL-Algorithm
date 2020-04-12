@@ -6,17 +6,29 @@ package tester;
  * based on some GlobalData from GUI
  */
 public class RandomTestFileGenerator extends AbstractTestFileGenerator{
+    int size;
     
     public RandomTestFileGenerator(String containerType, int containerHeight, 
             boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles) {
         super(containerType, containerHeight, rotationsAllowed, numRectangles, 
                 path, numberOfFiles);
+        size = 0;
+        generateFile();
+    }
+    
+    public RandomTestFileGenerator(String containerType, int containerHeight, 
+            boolean rotationsAllowed, int numRectangles, String path, int numberOfFiles,
+            int size) {
+        super(containerType, containerHeight, rotationsAllowed, numRectangles, 
+                path, numberOfFiles);
+       this.size = size * 2;
+       generateFile();
     }
     
     @Override
     // Generate rectangles at random
     public int[][] generateRectangles(){
-        addToFileName("Random");
+        addToFileName("Random-");
         // Ini the rectangles array
         int[][] rectangles = new int[data.getNumRectangles()][2];
         int maxSizeX;
@@ -25,8 +37,15 @@ public class RandomTestFileGenerator extends AbstractTestFileGenerator{
         if(data.getType().equalsIgnoreCase(data.FIXED) && 
                 MAXIMUMSIZE > data.getHeight()){
             maxSizeX = data.getHeight();
+            if(size > 0 && size < data.getHeight()){
+                MAXIMUMSIZE = size;
+                maxSizeX = size;
+            }
         }else{
             // Or just because they then become to big to draw
+            if(size > 0){
+                MAXIMUMSIZE = size;
+            }
             maxSizeX = MAXIMUMSIZE;
         }
         // Then create the random rectangles
